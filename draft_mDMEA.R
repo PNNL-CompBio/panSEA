@@ -1,10 +1,10 @@
 # Multiomic DMEA
 # Author: Belinda B. Garana, belinda.garana@pnnl.gov
 # Created: 2023-10-16
-# Last modified: 2023-10-17
+# Last modified: 2023-10-16
 
 # input: molecular signature(s) of interest, molecular screening data set(s), drug screen data set, drug annotations
-# output: DMEA results for each molecular signature, heatmaps, correlation matrices
+# output: DMEA results for each molecular signature & overall
 
 mDMEA <- function(drug.sensitivity, gmt=NULL, expression, weights, types, value="AUC",
                   sample.names=colnames(expression)[1], gene.names=colnames(weights)[1],
@@ -82,12 +82,25 @@ mDMEA <- function(drug.sensitivity, gmt=NULL, expression, weights, types, value=
                                 colorScheme = list(
                                   values = list(-limit.NES, 0, limit.NES)))
   
-  ## run correlations
-  # create correlation matrix
-  corr.mat <- corrr:cor(NES.df)
+  ## run PCA
+  # format input data frame
+  pca.df <- NES.df
+  rownames(pca.df) <- pca.df$Drug_set
+  pca.df$Drug_set <- NULL
   
-  # plot correlation matrix
-  corr.mat.plot <- ggcorrplot::ggcorrplot(corr.mat)
+  # calculate components
+  pca <- prcomp(pca.df, scale = TRUE)
+  
+  # store plot of variance explained by each component
+  pca.var <- factoextra::fviz_eig(pca)
+  
+  # store plot of individuals
+  pca.plot <- factoextra::fviz_pca_ind(pca, repel = TRUE)
+  
+  # create UMAP plot
+  
+  
+  # run correlations
   
   #### Step 4. Compile drug results across omics types ####
   ## create heatmap data frames
@@ -118,12 +131,14 @@ mDMEA <- function(drug.sensitivity, gmt=NULL, expression, weights, types, value=
                                 colorScheme = list(
                                   values = list(-limit.NES, 0, limit.est)))
   
-  ## run correlations
-  # create correlation matrix
-  drug.corr.mat <- corrr:cor(est.df)
+  ## run PCA
+  # calculate components
   
-  # plot correlation matrix
-  drug.corr.mat.plot <- ggcorrplot::ggcorrplot(drug.corr.mat)
+  
+  # create UMAP plot
+  
+  # run correlations
+  
   
   return(list(all.results = DMEA.list,
               results = DMEA.df,
@@ -131,12 +146,14 @@ mDMEA <- function(drug.sensitivity, gmt=NULL, expression, weights, types, value=
               minusLogP.df = minusLogP.df,
               minusLogFDR.df = minusLogFDR.df,
               heatmap = heatmap,
-              corr = corr.mat,
-              corr.matrix = corr.mat.plot,
+              pca = pca.plot,
+              umap = umap.plot,
+              corr = DMEA.corr,
               drug.est.df = est.df,
               drug.minusLogP.df = minusLogP.df,
               drug.minusLogFDR.df = minusLogFDR.df,
               drug.heatmap = drug.heatmap,
-              drug.corr = drug.corr.mat,
-              drug.corr.matrix = drug.corr.mat.plot,))
+              drug.pca = drug.pca.plot,
+              drug.umap = drug.umap.plot,
+              drug.corr = drug.corr))
 }

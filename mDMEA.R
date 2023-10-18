@@ -50,8 +50,12 @@ mDMEA <- function(drug.sensitivity, gmt=NULL, expression, weights, types, value=
                                         scatter.plots, scatter.plot.type, 
                                         FDR.scatter.plots, xlab, ylab,
                                         position.x, position.y, se)
+    
+    # merge correlation results with drug annotations if !is.null(drug.info)
+    if (!is.null(drug.info)) { 
+      DMEA.list[[types[i]]]$corr.result <- 
+        merge(DMEA.list[[types[i]]]$corr.result, drug.info, by = drug)
   }
-  
   
   #### Step 3. Compile DMEA results across omics types ####
   ## create heatmap data frames

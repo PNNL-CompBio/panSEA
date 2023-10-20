@@ -55,8 +55,8 @@ mDMEA <- function(drug.sensitivity, gmt=NULL, expression, weights, types, value=
     if (!is.null(drug.info)) { 
       DMEA.list[[types[i]]]$corr.result <- 
         merge(DMEA.list[[types[i]]]$corr.result, drug.info, by = drug)
+    }
   }
-  
   #### Step 3. Compile DMEA results across omics types ####
   ## create heatmap data frames
   # extract DMEA results for each omics type
@@ -119,8 +119,8 @@ mDMEA <- function(drug.sensitivity, gmt=NULL, expression, weights, types, value=
   
   # generate heatmap
   drug.heatmap <- morpheus::morpheus(est.df, 
-                                colorScheme = list(
-                                  values = list(-limit.NES, 0, limit.est)))
+                                     colorScheme = list(
+                                       values = list(-limit.NES, 0, limit.est)))
   
   ## run correlations
   # create correlation matrix

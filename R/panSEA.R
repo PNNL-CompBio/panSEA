@@ -1,7 +1,8 @@
-panSEA <- function(data, types, group.names="Diseased", 
+panSEA <- function(data, types, element.names, rank.var = NULL, 
+                   group.names="Diseased", 
                    group.samples=1:ncol(data[[1]]), 
                    gmt.features="msigdb_Homo sapiens_C2_CP:KEGG", 
-                   gmt.drugs="PRISM", FDR=0.25, min.per.set=6, 
+                   gmt.drugs="PRISM", p=0.05, FDR=0.25, min.per.set=6, 
                    drug.sensitivity="PRISM", expression="adherent CCLE",
                    n.top.sets = length(types)){
   #### Step 1. Check if formats are correct ####
@@ -23,8 +24,14 @@ panSEA <- function(data, types, group.names="Diseased",
       }
     }
     gmt.features <- as.list(rep(gmt.features, length(types))) 
-  } else if (length(types) != length(gmt.features)) {
-      stop("Length of types vector must match that of gmt.features list")
+  } else if (length(types) != length(gmt.features) | 
+             length(types) != length(element.names)) {
+      stop(paste("Lengths of types vector, element.names vector, and", 
+                 "gmt.features list must all match"))
+  }
+  
+  if (!is.null(rank.var) & length(types) != length(rank.var)) {
+    stop("Lengths of types and rank.var vectors must match")
   }
 
   if (length(conditions) > 2 | length(conditions) < 1) {
@@ -40,17 +47,13 @@ panSEA <- function(data, types, group.names="Diseased",
                               min.per.set = min.per.set)
       
       # compile inputs & results for network graph
-      inputs <- data.table::rbindlist(deg$DEGs, use.names = TRUE, 
-                                      idcol = "type")
-      
       outputs <- list()
       for (i in 1:length(types)) {
         outputs[[types[i]]] <- ssGSEA.results[[types[i]]]$result
       }
-      outputs <- data.table::rbindlist(outputs, use.names = TRUE, 
-                                       idcol = "type")
       
-      ssGSEA.network <- netEA(inputs, outputs, n.top.sets)
+      ssGSEA.network <- netEA(deg$DEGs, outputs, element.names, rank.var, 
+                              n.top.sets, p, FDR)
     }
     
     ### DMEA & network graph
@@ -64,24 +67,24 @@ panSEA <- function(data, types, group.names="Diseased",
       for (i in 1:length(types)) {
         inputs[[types[i]]] <- DMEA.results[[types[i]]]$corr.result
       }
-      inputs <- data.table::rbindlist(inputs, use.names = TRUE, 
-                                      idcol = "type")
       
       outputs <- list()
       for (i in 1:length(types)) {
         outputs[[types[i]]] <- DMEA.results[[types[i]]]$result
       }
-      outputs <- data.table::rbindlist(outputs, use.names = TRUE, 
-                                       idcol = "type")
       
-      DMEA.network <- netEA(inputs, outputs, n.top.sets)
+      DMEA.network <- netEA(inputs, outputs, element.names, 
+                            rep("Pearson.est", length(element.names)), 
+                            n.top.sets, p, FDR)
     } 
   } else if (length(conditions) == 1) {
-    for (j in 2:ncol(data)) {
+    for (j in 1:ncol(data)) {
       #### Step 2. Extract omics data for each sample ####
       temp.data <- list()
       for (i in 1:length(types)) {
-        temp.data[[types[i]]] <- data[[types[i]]][ , c(1,j)]
+        temp.df <- data[[types[i]]][ , c(j)]
+        temp.df$feature <- rownames(temp.df)
+        temp.data[[types[i]]] <- temp.df[ , c(2, 1)]
       }
       
       #### Step 3. Enrichment analyses ####
@@ -91,20 +94,15 @@ panSEA <- function(data, types, group.names="Diseased",
                                 min.per.set = min.per.set)
         
         # compile inputs & outputs for network graph
-        inputs <- data.table::rbindlist(temp.data, use.names = TRUE, 
-                                        idcol = "type")
-        
         outputs <- list()
         for (i in 1:length(types)) {
           outputs[[types[i]]] <- ssGSEA.results[[types[i]]]$result
         }
-        outputs <- data.table::rbindlist(outputs, use.names = TRUE, 
-                                         idcol = "type")
         
-        ssGSEA.network <- netEA(inputs, outputs, n.top.sets)
+        ssGSEA.network <- netEA(temp.data, outputs, n.top.sets)
       }
       
-      ### DMEA ###
+      ### DMEA & network graph
       if (!is.null(drug.sensitivity) & !is.null(expression) 
           & !is.null(gmt.drugs)) {
         DMEA.results <- mDMEA(drug.sensitivity, gmt.drugs, expression, 
@@ -115,15 +113,11 @@ panSEA <- function(data, types, group.names="Diseased",
         for (i in 1:length(types)) {
           inputs[[types[i]]] <- DMEA.results[[types[i]]]$corr.result
         }
-        inputs <- data.table::rbindlist(inputs, use.names = TRUE, 
-                                        idcol = "type")
         
         outputs <- list()
         for (i in 1:length(types)) {
           outputs[[types[i]]] <- DMEA.results[[types[i]]]$result
         }
-        outputs <- data.table::rbindlist(outputs, use.names = TRUE, 
-                                         idcol = "type")
         
         DMEA.network <- netEA(inputs, outputs, n.top.sets)
       }

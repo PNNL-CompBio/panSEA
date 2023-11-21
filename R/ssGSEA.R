@@ -1,5 +1,6 @@
-ssGSEA <- function(data, gmt="msigdb_Homo sapiens_C2_CP:KEGG", direction.adjust=NULL, FDR=0.25, 
-                   num.permutations=1000, stat.type="Weighted", min.per.set=6){
+ssGSEA <- function(data, gmt="msigdb_Homo sapiens_C2_CP:KEGG", 
+                   direction.adjust=NULL, FDR=0.25, num.permutations=1000, 
+                   stat.type="Weighted", min.per.set=6){
   # get gmt if not provided
   if (is.character(gmt)) {
     if (grepl("msigdb", gmt, ignore.case = TRUE)) {

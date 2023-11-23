@@ -1,5 +1,6 @@
 mDEG <- function(data, types, group.names=c("Diseased", "Healthy"), 
-                   group.samples){
+                   group.samples=c(1:(0.5*ncol(data[[1]])), 
+                                   (0.5*ncol(data[[1]])+1):ncol(data[[1]]))){
   #### Step 1. Check if formats are correct ####
   # check that there are as many types as data inputs
   if (length(types) != length(data)) {

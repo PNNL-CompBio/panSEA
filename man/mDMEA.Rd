@@ -12,31 +12,39 @@ determine the enrichment of drug mechanisms-of-action.
 }
 
 \usage{
-mDMEA(drug.sensitivity, gmt=NULL, expression, weights, types, value="AUC",
-    sample.names=colnames(expression)[1], gene.names=colnames(weights)[1],
-    weight.values=colnames(weights)[2], rank.metric="Pearson.est", FDR=0.25,
-    num.permutations=1000, stat.type="Weighted", drug.info=NULL, drug="Drug",
-    set.type="moa", min.per.set=6, sep="[|]",
-    exclusions=c("-666", "NA", "na", "NaN", "NULL"), descriptions=NULL,
-    min.per.corr=3, scatter.plots=TRUE, scatter.plot.type="pearson",
-    FDR.scatter.plots=0.05, xlab="Weighted Voting Score", ylab=value,
-    position.x="min", position.y="min", se=TRUE)
+mDMEA(drug.sensitivity="PRISM", gmt="PRISM", 
+  expression=as.list(rep("adherent CCLE", length(types))), weights, types, 
+  value="AUC", sample.names=colnames(drug.sensitivity)[1], 
+  gene.names=rep("Gene", length(types)), 
+  weight.values=rep("Log2FC", length(types)), 
+  rank.metric=rep("Pearson.est", length(types)), p=0.05, FDR=0.25, 
+  num.permutations=1000, stat.type="Weighted", drug.info=NULL, drug="Drug", 
+  set.type="moa", min.per.set=6, sep="[|]", 
+  exclusions=c("-666", "NA", "na", "NaN", "NULL"), 
+  descriptions=NULL, min.per.corr=3, scatter.plots=TRUE, 
+  scatter.plot.type="pearson", FDR.scatter.plots=0.05, 
+  xlab="Weighted Voting Score", ylab=value, position.x="min", 
+  position.y="min", se=TRUE, n.dot.sets=10)
 }
 
 \arguments{
   \item{drug.sensitivity}{Data frame containing drug sensitivity scores
-  (e.g., AUC) with drug names as column names,
-  except for one column which contains sample names.
+  (e.g., AUC) with drug names as column names, except for one column which 
+  contains sample names. If "PRISM", drug AUC sensitivity scores for cancer 
+  cell lines from the PRISM drug screen will be used. Default: "PRISM".
   }
 
   \item{gmt}{Optional: gmt object containing drug sets (e.g., output from
   GSA.read.gmt function from GSA package). If gmt is not provided, drug.info
-  parameter must be provided. Default: NULL.
+  parameter must be provided. If "PRISM", drug mechanisms of action 
+  annotations from the PRISM drug screen will be used. Default: "PRISM".
   }
 
   \item{expression}{List of data frames containing normalized expression with 
   feature names (e.g., gene symbols) as column names, except for one column 
-  which contains sample names.
+  which contains sample names. If "adherent CCLE", normalized RNA-seq data for 
+  327 adherent cancer cell lines from CCLE version 19Q4 will be used. Default: 
+  as.list(rep("adherent CCLE", length(types))).
   }
 
   \item{weights}{List of data frames with gene.names and weight.values (e.g.,
@@ -52,24 +60,28 @@ mDMEA(drug.sensitivity, gmt=NULL, expression, weights, types, value="AUC",
   }
 
   \item{sample.names}{Column name in drug sensitivity and expression data
-  frames containing the sample names. Default: colnames(expression)[1].
+  frames containing the sample names. Default: colnames(drug.sensitivity)[1].
   }
 
   \item{gene.names}{Column name in weights data frame containing gene symbols.
-  Default: colnames(weights)[1].
+  Default: rep("Gene", length(types)).
   }
 
   \item{weight.values}{Column name in weights data frame containing weight
-  values (e.g., log2(fold-change) values). Default: colnames(weights)[2].
+  values (e.g., log2(fold-change) values). Default: rep("Log2FC", length(types)).
   }
 
-  \item{rank.metric}{Estimate for ranking drugs for enrichment analysis. Must
-  be "Pearson.est", "Spearman.est", "Slope", "Rank.slope", or another column
-  name in the output produced by the rank_corr function. Default: "Pearson.est".
+  \item{rank.metric}{Vector of estimates for ranking drugs for enrichment 
+  analysis. Possible values include "Pearson.est", "Spearman.est", "Slope", 
+  "Rank.slope", or another column name in the output produced by the rank_corr 
+  function. Default: rep("Pearson.est", length(types)).
   }
 
-  \item{FDR}{False discovery rate cut-off value to produce mountain plots for
-  significant enrichments. Default: 0.25.
+  \item{p}{P-value cut-off for significant enrichments. Default: 0.05.
+  }
+  
+  \item{FDR}{False discovery rate cut-off value for significant enrichments.  
+  Default: 0.25.
   }
 
   \item{num.permutations}{Number of permutations to perform for enrichment
@@ -102,8 +114,8 @@ mDMEA(drug.sensitivity, gmt=NULL, expression, weights, types, value="AUC",
   }
 
   \item{exclusions}{A vector of drug set names to be excluded from the generated
-  gmt. Optional unless gmt is not provided. Default: c("-666", "NA", "na", "NaN",
-  "NULL").
+  gmt. Optional unless gmt is not provided. Default: 
+  c("-666", "NA", "na", "NaN", "NULL").
   }
 
   \item{descriptions}{Optional: column name in drug.info containing
@@ -143,41 +155,21 @@ mDMEA(drug.sensitivity, gmt=NULL, expression, weights, types, value="AUC",
   Must be "min", "mid", "max", or numeric. Default: "max".
   }
 
-    \item{se}{Logical operator describing whether or not to include the 95
-    percent confidence interval limits of the regression line on the scatter
-    plots. Default: TRUE.
-    }
+  \item{se}{Logical operator describing whether or not to include the 95
+  percent confidence interval limits of the regression line on the scatter
+  plots. Default: TRUE.
+  }
+  
+  \item{n.dot.sets}{Number of sets from enrichment analyses to be represented 
+  in the dot plot. The top significant sets will be selected based on 
+  abs(NES) and p & FDR cutoff values. Default: 10.
+  }
 }
 
 \value{
-  \item{WV.scores}{Data frame with Weighted Voting scores for each sample.}
+  \item{compiled.results}{Outputs from compile_mDMEA function.}
 
-  \item{unused.weights}{Data frame with input weights not used for Weighted
-  Voting.}
-
-  \item{corr.result}{Data frame with Pearson & Spearman correlation
-  estimates, p-values, and FDR q-values (Benjamini-Hochberg method) for each
-  variable item.}
-
-  \item{corr.scatter.plots}{ggplot object with a scatter plot for each
-  significant correlation on each page.}
-
-  \item{gmt}{gmt object containing list of elements (genesets), set names
-  (geneset.names), and set descriptions (geneset.descriptions).}
-
-  \item{result}{Data frame containing GSEA results for drug sets.}
-
-  \item{mtn.plots}{ggplot object list of mountain plots for drug sets with
-  enrichment which meet the FDR threshold.}
-
-  \item{volcano.plot}{ggplot object for volcano plot summarizing enrichment of
-  all drug sets evaluated.}
-
-  \item{removed.sets}{Data frame containing any drug sets which had too few
-  elements to be evaluated and their number of elements.}
-
-  \item{unannotated.drugs}{Data frame containing input drug names which were
-  not matched to a drug set and their ranks.}
+  \item{all.results}{List of outputs from DMEA function for each input type.}
 }
 
 \references{

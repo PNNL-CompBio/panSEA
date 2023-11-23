@@ -9,8 +9,10 @@
 }
 
 \usage{
-mGSEA(data, gmt, types, direction.adjust=NULL, FDR=0.25, 
-num.permutations=1000, stat.type="Weighted", min.per.set=6)
+mGSEA(data, gmt=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))), 
+  types, feature.names=rep("Gene", length(types)), direction.adjust=NULL, 
+  p=0.05, FDR=0.25, num.permutations=1000, stat.type="Weighted", 
+  min.per.set=6, n.dot.sets=10)
 }
 
 \arguments{
@@ -19,12 +21,24 @@ num.permutations=1000, stat.type="Weighted", min.per.set=6)
   the rank metric (e.g., Log2FC).
   }
 
-  \item{gmt}{Gmt object containing sets of features (e.g., output from
-  GSA.read.gmt function from GSA package).
+  \item{gmt}{List of gmt objects containing sets of features (e.g., output from
+  GSA.read.gmt function from GSA package) or character strings with input 
+  parameters for msigdbr::msigdbr separated by "_". Default: 
+  as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))).
   }
 
   \item{types}{Vector of character descriptions of each omics type (e.g., 
   c("Transcriptomics", "Proteomics")).
+  }
+  
+  \item{feature.names}{Vector of column names containing feature names (e.g., 
+  gene symbols) in each corresponding data frame in the inputs list. Default: 
+  rep("Gene", length(inputs)).
+  }
+  
+  \item{rank.var}{Vector of column names containing rank variable for 
+  enrichment analysis for each corresponding input data frame. 
+  Default: rep("Log2FC", length(types)).
   }
   
   \item{direction.adjust}{Vector of conditions for set.type to identify which,
@@ -32,8 +46,11 @@ num.permutations=1000, stat.type="Weighted", min.per.set=6)
   Default: NULL.
   }
   
-  \item{FDR}{False discovery rate cut-off value to produce mountain plots for
-  significant enrichments. Default: 0.25.
+  \item{p}{P-value cut-off for significant enrichments. Default: 0.05.
+  }
+  
+  \item{FDR}{False discovery rate cut-off value for significant enrichments. 
+  Default: 0.25.
   }
   
   \item{num.permutations}{Number of permutations to perform for enrichment
@@ -47,10 +64,15 @@ num.permutations=1000, stat.type="Weighted", min.per.set=6)
   
   \item{min.per.set}{The minimum number of drugs required per set. Default: 6.
   }
+  
+  \item{n.dot.sets}{Number of sets from enrichment analyses to be represented 
+  in the dot plot. The top significant sets will be selected based on 
+  abs(NES) and p & FDR cutoff values. Default: 10.
+  }
 }
 
 \value{
-  \item{compiled.results}{Outputs from compilGSEA function.}
+  \item{compiled.results}{Outputs from compile_mGSEA function.}
 
   \item{all.results}{List of outputs from ssGSEA function for each input type.}
 }
@@ -62,7 +84,7 @@ num.permutations=1000, stat.type="Weighted", min.per.set=6)
 }
 
 \seealso{
-  \link[mGSEA]{compilDMEA}
+  \link[panSEA]{compilGSEA}
 }
 
 \examples{
@@ -84,7 +106,7 @@ weights2$Rank_metric <- rnorm(length(Gene))
 ## Step 2: prepare set info
 info <- as.data.frame(Gene)
 
-# moa is our default name for the column containing drug set annotations
+# add column for gene set annotations
 info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 4)]), 6)
 
 # convert data frame into gmt object

@@ -1,4 +1,5 @@
 ssGSEA <- function(data, gmt="msigdb_Homo sapiens_C2_CP:KEGG", 
+                   feature.names=colnames(data)[1], rank.var=colnames(data)[2], 
                    direction.adjust=NULL, FDR=0.25, num.permutations=1000, 
                    stat.type="Weighted", min.per.set=6){
   # get gmt if not provided
@@ -21,7 +22,7 @@ ssGSEA <- function(data, gmt="msigdb_Homo sapiens_C2_CP:KEGG",
   }
   
   # run ssGSEA
-  results <- DMEA::drugSEA(data, gmt, colnames(data)[1], colnames(data)[2],
+  results <- DMEA::drugSEA(data, gmt, feature.names, rank.var,
                            "gs_name", direction.adjust, FDR,
                            num.permutations, stat.type, min.per.set,
                            sep, exclusions, descriptions)

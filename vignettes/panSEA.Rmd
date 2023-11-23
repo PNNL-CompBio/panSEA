@@ -1,7 +1,19 @@
+---
+title: "Multi-omic Set Enrichment Analysis"
+author: 
+  - name: Belinda B. Garana
+package: panSEA
+output:
+  BiocStyle::html_document:
+  vignette: >
+    %\VignetteIndexEntry{Drug Mechanism Enrichment Analysis}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteIEncoding{UTF-8}
+      toc_float: true
+      toc_depth: 2
+---
 
-# Multi-omic Set Enrichment Analysis
-
-## Introduction
+# Introduction
 Though there are many algorithms for enrichment analysis, most do not perform 
 permutation statistics which do not rely on assumptions about the input 
 distribution and do not allow for analysis of multiple omics data types. 
@@ -14,31 +26,30 @@ data which corresponds to the input omics data type or use the default CCLE
 RNA-seq data (version 19Q4) and PRISM drug screen of 327 adherent cancer cell 
 lines.
 
-## Citation
-
+# Citation
 To cite this package, please use:
 Garana, B.B., Joly, J.H., Delfarah, A. et al. Drug mechanism enrichment analysis improves prioritization of therapeutics for repurposing. BMC Bioinformatics 24, 215 (2023). https://doi.org/10.1186/s12859-023-05343-8
 
-## Installation
+# Installation
 To install this package directly from GitHub, start R and enter:
-
-``` r
-if (!require("devtools", quietly = TRUE))
+```{r eval=FALSE}
+if (!require("devtools", quietly = TRUE)) {
   install.packages("devtools")
-  
-devtools::install_github("BelindaBGarana/DMEA")
+}
+
+devtools::install_github("BelindaBGarana/panSEA")
 ```
 
-If you are using Windows OS, you may need to change the above code to:
-
-``` r
-if (!require("devtools", quietly = TRUE))
+If you are using Windows OS, you may need to change the code above to:
+```{r eval=FALSE}
+if (!require("devtools", quietly = TRUE)) {
   install.packages("devtools")
-  
-devtools::install_github("BelindaBGarana/DMEA", build = FALSE)
-```
-## Case 1: 2 Groups (e.g., Diseased vs. Healthy)
+}
 
+devtools::install_github("BelindaBGarana/panSEA", build = FALSE)
+```
+
+# Case 1: 2 Groups (e.g., Diseased vs. Healthy)
 If you input data from 2 groups (e.g., diseased vs. healthy), the panSEA 
 function will run differential expression analysis using limma::eBayes 
 followed by ssGSEA (e.g., using the resulting gene Log2FC values) and DMEA 
@@ -173,7 +184,7 @@ panSEA.2groups$mGSEA.network
 panSEA.2groups$mDMEA.network
 ```
 
-## Case 2: 1 Group (e.g., Diseased)
+# Case 2: 1 Group (e.g., Diseased)
 If you input data from 1 group (e.g., diseased), the panSEA function will run 
 ssGSEA and DMEA for each column of each input type. If you provide a list of 
 different input types, then this analysis will be run for each element in the 
@@ -220,4 +231,9 @@ panSEA.1group$mGSEA.network[["Log2FC"]]
 
 # visualize connectivity of leading edge drugs (network graph)
 panSEA.1group$mDMEA.network[["Log2FC"]]
+```
+
+# Session Info
+```{r}
+sessionInfo()
 ```

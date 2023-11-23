@@ -9,7 +9,9 @@
 }
 
 \usage{
-mDEG(data, types, group.names=c("Diseased", "Healthy"), group.samples)
+mDEG(data, types, group.names=c("Diseased", "Healthy"), 
+  group.samples=c(1:(0.5*ncol(data[[1]])), 
+  (0.5*ncol(data[[1]])+1):ncol(data[[1]])))
 }
 
 \arguments{
@@ -29,7 +31,8 @@ mDEG(data, types, group.names=c("Diseased", "Healthy"), group.samples)
   group names. For example, if columns 1:3 correspond to the first group (e.g., 
   "Diseased") and columns 4:6 correspond to the second group (e.g., "Healthy"), 
   then group.samples would be c(1:3, 4:6). The order of samples must be the 
-  same across all input data frames.
+  same across all input data frames. Default: c(1:(0.5*ncol(data[[1]])), 
+  (0.5*ncol(data[[1]])+1):ncol(data[[1]])).
   }
 }
 
@@ -42,10 +45,6 @@ mDEG(data, types, group.names=c("Diseased", "Healthy"), group.samples)
 }
 
 \author{Belinda B. Garana
-}
-
-\seealso{
-  \link[mDEG]{compilDMEA}
 }
 
 \examples{
@@ -71,7 +70,9 @@ expr2 <- as.data.frame(Sample_1, Sample_2, Sample_3,
   Sample_4, Sample_5, Sample_6)
 rownames(expr2) <- Gene
 
-## Step 3: perform DMEA and store results
+## Step 3: perform differential expression analysis
+# by default, we assume the first half of samples (1-3) are "Diseased"
+# and the second half of samples (4-6) are "Healthy"
 mDEG.test <- mDEG(list(expr, expr2), 
-  types = c("Transcriptomics", "Proteomics"), group.samples = c(1:3, 4:6))
+  types = c("Transcriptomics", "Proteomics"))
 }

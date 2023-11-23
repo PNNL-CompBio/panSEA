@@ -10,9 +10,9 @@ from top significant enrichments
 }
 
 \usage{
-netSEA(inputs, outputs, element.name = rep("Gene", length(inputs)), 
-rank.var = rep("Log2FC", length(inputs)), 
-n.top.sets = 3, p = 0.05, FDR = 0.25)
+netSEA(inputs, outputs, element.names = rep("Gene", length(inputs)), 
+rank.var = rep("Log2FC", length(inputs)), p = 0.05, FDR = 0.25,
+n.network.sets = length(inputs))
 }
 
 \arguments{
@@ -28,17 +28,14 @@ n.top.sets = 3, p = 0.05, FDR = 0.25)
   "FDR_q_value", and "Leading_edge".
   }
 
-  \item{element.name}{Vector of column names containing element names (e.g., 
-  gene symbols) in each corresponding data frame in the inputs list.
+  \item{element.names}{Vector of column names containing element names (e.g., 
+  gene symbols) in each corresponding data frame in the inputs list. Default: 
+  rep("Gene", length(inputs)).
   }
 
   \item{rank.var}{Vector of column names containing rank variable (e.g., 
-  Log2FC) in each corresponding data frame in the inputs list.
-  }
-
-  \item{n.top.sets}{Number of sets from enrichment analyses to be represented 
-  in the network graph. The top significant sets will be selected based on 
-  abs(NES).
+  Log2FC) in each corresponding data frame in the inputs list. Default: 
+  rep("Log2FC", length(inputs)).
   }
   
   \item{p}{P-value cut-off for significant enrichments. Default: 0.05.
@@ -46,6 +43,11 @@ n.top.sets = 3, p = 0.05, FDR = 0.25)
 
   \item{FDR}{False discovery rate cut-off value for significant enrichments. 
   Default: 0.25.
+  }
+  
+  \item{n.network.sets}{Number of sets from enrichment analyses to be 
+  represented in the network graph. The top significant sets will be selected 
+  based on abs(NES) and p & FDR cutoff values. Default: length(inputs).
   }
 }
 
@@ -55,7 +57,8 @@ n.top.sets = 3, p = 0.05, FDR = 0.25)
 }
 
 \seealso{
-  \link[netSEA]{compilDMEA}
+  \link[netSEA]{mGSEA}
+  \link[netSEA]{mDMEA}
 }
 
 \examples{

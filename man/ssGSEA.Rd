@@ -24,6 +24,10 @@ FDR=0.25, num.permutations=1000, stat.type="Weighted", min.per.set=6)
   "msigdb_Homo sapiens_C2_CP:KEGG".
   }
 
+  \item{feature.names}{Column name containing feature names (e.g., 
+  gene symbols) in the input data frame. Default: colnames(data)[2].
+  }
+
   \item{direction.adjust}{Vector of conditions for set.type to identify which,
   if any, estimates to multiply by -1 (e.g., c(" agonist", " activator")).
   Default: NULL.

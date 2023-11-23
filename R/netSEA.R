@@ -1,13 +1,13 @@
-netSEA <- function(inputs, outputs, element.name = rep("Gene", length(inputs)), 
+netSEA <- function(inputs, outputs, element.names = rep("Gene", length(inputs)), 
                    rank.var = rep("Log2FC", length(inputs)), 
-                   n.top.sets = 3, p = 0.05, FDR = 0.25){
+                   n.network.sets = length(inputs), p = 0.05, FDR = 0.25){
   message("Generating network graph...")
   
   #### Step 1. Identify top sets ####
   outputs <- data.table::rbindlist(outputs, use.names = TRUE, 
                                    idcol = "type")
   sig.outputs <- outputs[outputs$p_value < p & outputs$FDR_q_value < FDR, ]
-  top.outputs <- sig.outputs %>% dplyr::slice_max(abs(NES), n = n.top.sets)
+  top.outputs <- sig.outputs %>% dplyr::slice_max(abs(NES), n = n.network.sets)
   
   #### Step 2. Identify leading edge elements and shared sets ####
   pair <- c()
@@ -35,10 +35,10 @@ netSEA <- function(inputs, outputs, element.name = rep("Gene", length(inputs)),
   
   #### Step 3. Extract data for graph ####
   # compile inputs based on rank.var
-  all.inputs <- inputs[[1]][ , c(element.name[1], rank.var[1])]
+  all.inputs <- inputs[[1]][ , c(element.names[1], rank.var[1])]
   colnames(all.inputs) <- c("feature", "rank")
   for (i in 2:length(inputs)) {
-    temp.input <- inputs[[i]][ , c(element.name[i], rank.var[i])]
+    temp.input <- inputs[[i]][ , c(element.names[i], rank.var[i])]
     colnames(temp.inputs) <- c("feature", "rank")
     all.inputs <- rbind(all.inputs, temp.input)
   }
@@ -85,7 +85,7 @@ netSEA <- function(inputs, outputs, element.name = rep("Gene", length(inputs)),
   igraph::V(network)$size <- igraph::degree(network, mode = "all")*3
   
   # generate plot
-  netPlot <- plot(network) + 
+  netPlot <- igraph::plot(network) + 
     legend("bottomleft", legend = levels(V(network)$carac), 
            col = color.pal, bty = "n", pch = 20, pt.cex = 3, cex = 1.5, 
            text.col = color.pal, horiz = FALSE, inset = c(0.1, 0.1))

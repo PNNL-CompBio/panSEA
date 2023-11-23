@@ -1,10 +1,10 @@
-compilGSEA <- function(GSEA.results){
+compile_mGSEA <- function(ssGSEA.list, p=0.05, FDR=0.25, n.tile.sets=10){
   ## create heatmap data frames
   # extract GSEA results for each omics type
-  types <- names(GSEA.results)
+  types <- names(ssGSEA.list)
   GSEA.df <- list()
   for (i in 1:length(types)) {
-    GSEA.df[[types[i]]] <- GSEA.results[[types[i]]]$result
+    GSEA.df[[types[i]]] <- ssGSEA.list[[types[i]]]$result
   }
   
   # collapse GSEA results across omics types
@@ -13,8 +13,8 @@ compilGSEA <- function(GSEA.results){
   GSEA.df$minusLogFDR <- -log(GSEA.df$FDR_q_value, base = 10)
   
   # reduce plot data down to top results
-  sig.GSEA.df <- GSEA.df[GSEA.df$p_value < 0.05 & 
-                           GSEA.df$FDR_q_value < 0.25, ]
+  sig.GSEA.df <- GSEA.df[GSEA.df$p_value < p & 
+                           GSEA.df$FDR_q_value < FDR, ]
   top.sig.GSEA.df <- sig.GSEA.df %>% dplyr::slice_max(abs(NES), n = n.plot)
   top.GSEA.df <- GSEA.df[GSEA.df$Gene_set %in% top.sig.GSEA.df$Gene_set, ]
   
@@ -74,6 +74,6 @@ compilGSEA <- function(GSEA.results){
                   minusLogFDR.df = minusLogFDR.df,
                   tile.plot = tile.plot,
                   corr = corr.mat,
-                  corr.matrix = corr.mat.plot)
+                  corr.plot = corr.mat.plot)
   return(outputs)
 }

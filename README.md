@@ -26,7 +26,7 @@ To install this package directly from GitHub, start R and enter:
 if (!require("devtools", quietly = TRUE))
   install.packages("devtools")
   
-devtools::install_github("BelindaBGarana/DMEA")
+devtools::install_github("BelindaBGarana/panSEA")
 ```
 
 If you are using Windows OS, you may need to change the above code to:
@@ -35,7 +35,7 @@ If you are using Windows OS, you may need to change the above code to:
 if (!require("devtools", quietly = TRUE))
   install.packages("devtools")
   
-devtools::install_github("BelindaBGarana/DMEA", build = FALSE)
+devtools::install_github("BelindaBGarana/panSEA", build = FALSE)
 ```
 ## Case 1: 2 Groups (e.g., Diseased vs. Healthy)
 

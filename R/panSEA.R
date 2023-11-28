@@ -47,7 +47,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
       # compile inputs & results for network graph
       outputs <- list()
       for (i in 1:length(types)) {
-        outputs[[types[i]]] <- ssGSEA.results[[types[i]]]$result
+        outputs[[types[i]]] <- ssGSEA.results$all.results[[types[i]]]$result
       }
       
       ssGSEA.network <- netSEA(deg$DEGs, outputs, feature.names, 
@@ -69,12 +69,12 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
       # compile inputs & outputs for network graph
       inputs <- list()
       for (i in 1:length(types)) {
-        inputs[[types[i]]] <- DMEA.results[[types[i]]]$corr.result
+        inputs[[types[i]]] <- DMEA.results$all.results[[types[i]]]$corr.result
       }
       
       outputs <- list()
       for (i in 1:length(types)) {
-        outputs[[types[i]]] <- DMEA.results[[types[i]]]$result
+        outputs[[types[i]]] <- DMEA.results$all.results[[types[i]]]$result
       }
       
       DMEA.network <- netSEA(inputs, outputs, rep("Drug", length(inputs)), 
@@ -105,7 +105,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
         # compile inputs & outputs for network graph
         outputs <- list()
         for (i in 1:length(types)) {
-          outputs[[types[i]]] <- ssGSEA.results[[types[i]]]$result
+          outputs[[types[i]]] <- ssGSEA.results$all.results[[types[i]]]$result
         }
         
         ssGSEA.network[[colnames(data.list[[1]])[j]]] <- 
@@ -128,12 +128,12 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
         # compile inputs & outputs for network graph
         inputs <- list()
         for (i in 1:length(types)) {
-          inputs[[types[i]]] <- DMEA.results[[types[i]]]$corr.result
+          inputs[[types[i]]] <- DMEA.results$all.results[[types[i]]]$corr.result
         }
         
         outputs <- list()
         for (i in 1:length(types)) {
-          outputs[[types[i]]] <- DMEA.results[[types[i]]]$result
+          outputs[[types[i]]] <- DMEA.results$all.results[[types[i]]]$result
         }
         
         DMEA.network[[colnames(data.list[[1]])[j]]] <- 

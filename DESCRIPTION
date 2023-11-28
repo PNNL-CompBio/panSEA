@@ -1,0 +1,29 @@
+Package: panSEA
+Type: Package
+Title: Multi-omic Set Enrichment Analysis
+Version: 0.99.0
+Authors@R: c(
+	person(given = c("Belinda", "B."),
+		 family = "Garana", 
+		 role = c("aut", "cre"),
+		 email = "garana.belinda@gmail.com",
+		 comment = c(ORCID = "0000-0001-8906-5270")))
+Description: Though there are many algorithms for enrichment analysis, most do not perform permutation statistics which do not rely on assumptions about the input distribution and do not allow for analysis of multiple omics data types. This tool enables users to input any omics data type as long as they provide corresponding set annotations or use the default gene set annotations. Users can also use this tool to prioritize drug mechanisms of action based on selective toxicity using drug mechanism enrichment analysis (https://belindabgarana.github.io/DMEA) as long as they provide expression data which corresponds to the input omics data type or use the default CCLE RNA-seq data (version 19Q4) and PRISM drug screen of 327 adherent cancer cell lines.
+License: MIT
+URL: https://github.com/BelindaBGarana/panSEA
+BugReports: https://github.com/BelindaBGarana/panSEA/issues
+Encoding: UTF-8
+Imports:
+	ggplot2, DMEA, plyr, dplyr, Biobase, data.table, ggcorrplot, GSA, 
+	graph, limma, msigdbr, reshape2, stats, stringr, viridis, utils
+VignetteBuilder: knitr
+Suggests: BiocStyle, knitr, rmarkdown
+Collate:
+	'mDEG.R'
+	'ssGSEA.R'
+	'compile_mGSEA.R'
+	'compile_mDMEA.R'
+	'mGSEA.R'
+	'mDMEA.R'
+	'netSEA.R'
+	'panSEA.R'

@@ -85,7 +85,7 @@ info <- as.data.frame(Gene)
 # create column containing gene set annotations
 info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 5)]), 10)
 
-## Step 1c: perform DMEA and store results
+## Step 1c: perform mGSEA and store results
 data.list <- list(weights, weights2)
 gmt <- DMEA::as_gmt(info, element.names = "Gene", set.names = "gs_name")
 gmt.list <- list(gmt, gmt)
@@ -95,9 +95,9 @@ mGSEA.test <- mGSEA(data.list, gmt.list, types)
 ### Step 2: Extract results
 outputs <- list()
 for (i in 1:length(types)) {
-  outputs[[types[i]]] <- ssGSEA.results[[types[i]]]$result
+  outputs[[types[i]]] <- mGSEA.test$all.results[[types[i]]]$result
 }
 
 ### Step 3: Create network graph
-mGSEA.network <- netSEA(data, outputs)
+mGSEA.network <- netSEA(data.list, outputs)
 }

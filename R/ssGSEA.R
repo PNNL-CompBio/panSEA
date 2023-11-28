@@ -1,7 +1,8 @@
-ssGSEA <- function(data, gmt="msigdb_Homo sapiens_C2_CP:KEGG", 
-                   feature.names=colnames(data)[1], rank.var=colnames(data)[2], 
-                   direction.adjust=NULL, FDR=0.25, num.permutations=1000, 
-                   stat.type="Weighted", min.per.set=6){
+ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
+                   feature.names = colnames(data)[1], 
+                   rank.var = colnames(data)[2], direction.adjust = NULL, 
+                   FDR = 0.25, num.permutations = 1000,
+                   stat.type = "Weighted", min.per.set = 6) {
   # get gmt if not provided
   if (is.character(gmt)) {
     if (grepl("msigdb", gmt, ignore.case = TRUE)) {
@@ -14,25 +15,32 @@ ssGSEA <- function(data, gmt="msigdb_Homo sapiens_C2_CP:KEGG",
         } else {
           msigdb.info <- msigdbr::msigdbr(gmt.info[2], gmt.info[3], gmt.info[4])
         }
-        
-        gmt <- DMEA::as_gmt(msigdb.info, "gene_symbol", "gs_name", 
-                            "gs_description")
+
+        gmt <- DMEA::as_gmt(
+          msigdb.info, "gene_symbol", "gs_name",
+          "gs_description"
+        )
       }
     }
   }
-  
+
   # run ssGSEA
-  results <- DMEA::drugSEA(data, gmt, feature.names, rank.var,
-                           "gs_name", direction.adjust, FDR,
-                           num.permutations, stat.type, min.per.set,
-                           sep, exclusions, descriptions)
-  
-  # change "Drug_set" column names to "Gene_set"
-  colnames(results$result)[1] <- "Gene_set"
-  colnames(results$removed.sets)[1] <- "Gene_set"
-  
+  results <- DMEA::drugSEA(
+    data, gmt, feature.names, rank.var,
+    "gs_name", direction.adjust, FDR,
+    num.permutations, stat.type, min.per.set
+  )
+
+  # change "Drug_set" column names to "Feature_set"
+  colnames(results$result)[2] <- "Feature_set"
+  colnames(results$removed.sets)[1] <- "Feature_set"
+  colnames(results$removed.sets)[2] <- "N_features"
+
   # remove irrelevant outputs of drugSEA function
   results$replaced.drugs <- NULL
-  
+
+  # change name of output referring to drugs to features
+  names(results)[6] <- "unannotated.features"
+
   return(results)
 }

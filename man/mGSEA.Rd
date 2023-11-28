@@ -9,14 +9,14 @@
 }
 
 \usage{
-mGSEA(data, gmt=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))), 
+mGSEA(data.list, gmt=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))), 
   types, feature.names=rep("Gene", length(types)), direction.adjust=NULL, 
   p=0.05, FDR=0.25, num.permutations=1000, stat.type="Weighted", 
   min.per.set=6, n.dot.sets=10)
 }
 
 \arguments{
-  \item{data}{List of data frames where the first column of each data frame 
+  \item{data.list}{List of data frames where the first column of each data frame 
   contains feature names (e.g., gene symbols) and the second column contains 
   the rank metric (e.g., Log2FC).
   }
@@ -32,12 +32,12 @@ mGSEA(data, gmt=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))),
   }
   
   \item{feature.names}{Vector of column names containing feature names (e.g., 
-  gene symbols) in each corresponding data frame in the inputs list. Default: 
-  rep("Gene", length(inputs)).
+  gene symbols) in each corresponding data frame in the input data.list. 
+  Default: rep("Gene", length(inputs)).
   }
   
   \item{rank.var}{Vector of column names containing rank variable for 
-  enrichment analysis for each corresponding input data frame. 
+  enrichment analysis for each corresponding data frame in the input data.list. 
   Default: rep("Log2FC", length(types)).
   }
   
@@ -100,19 +100,25 @@ weights2 <- as.data.frame(Gene)
 # give each gene a weight
 # by default, gene weight values are found in
 # the second column of your weights data frame
-weights$Rank_metric <- rnorm(length(Gene))
-weights2$Rank_metric <- rnorm(length(Gene))
+weights$Log2FC <- rnorm(length(Gene))
+weights2$Log2FC <- rnorm(length(Gene))
+
+# combine input data frames into list
+data.list <- list(weights, weights2)
 
 ## Step 2: prepare set info
 info <- as.data.frame(Gene)
 
 # add column for gene set annotations
-info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 4)]), 6)
+info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 5)]), 10)
 
 # convert data frame into gmt object
 gmt <- DMEA::as_gmt(info, element.names = "Gene", set.names = "gs_name")
 
-## Step 3: perform DMEA and store results
-mGSEA.test <- mGSEA(list(weights, weights2), gmt, 
+# create list of gmt objects corresponding to each input in data.list
+gmt.list <- list(gmt, gmt)
+
+## Step 3: perform mGSEA and store results
+mGSEA.test <- mGSEA(data.list, gmt.list, 
                   types = c("Transcriptomics", "Proteomics"))
 }

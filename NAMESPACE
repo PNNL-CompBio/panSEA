@@ -1,8 +1,8 @@
 import(ggplot2)
 import(DMEA)
+import(plyr)
 import(dplyr)
-importFrom(ply, ddply)
-importFrom(Biobase, ExpressionSet
+importFrom(Biobase, ExpressionSet, exprs)
 importFrom(data.table, rbindlist)
 importFrom(ggcorrplot, ggcorrplot)
 importFrom(GSA, GSA.read.gmt)

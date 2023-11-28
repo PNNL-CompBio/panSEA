@@ -72,22 +72,22 @@ ranks2 <- as.data.frame(Drug)
 # give each drug a rank
 # by default, drug rank values are found in
 # the second column of your input data frame
-ranks$Rank_metric <- rnorm(length(Drug))
-ranks2$Rank_metric <- rnorm(length(Drug))
+ranks$Pearson.est <- rnorm(length(Drug))
+ranks2$Pearson.est <- rnorm(length(Drug))
 
 ## Step 2: prepare set info
 info <- as.data.frame(Drug)
 
 # moa is our default name for the column containing drug set annotations
-info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 4)]), 6)
+info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 5)]), 10)
 
 # convert data frame into gmt object
 gmt <- DMEA::as_gmt(info, element.names = "Drug", set.names = "gs_name")
 
-## Step 3: perform DMEA and store results
+## Step 3: perform drug set enrichment analysis and store results
 DMEA.results <- list()
-DMEA.results[["Transcriptomics"]] <- DMEA(ranks, gmt)
-DMEA.results[["Proteomics"]] <- DMEA(ranks2, gmt)
+DMEA.results[["Transcriptomics"]] <- DMEA::drugSEA(ranks, gmt)
+DMEA.results[["Proteomics"]] <- DMEA::drugSEA(ranks2, gmt)
 
 ## Step 4: compile list of DMEA results
 compile_mDMEA.test <- compile_mDMEA(DMEA.results)

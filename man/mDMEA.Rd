@@ -15,7 +15,7 @@ determine the enrichment of drug mechanisms-of-action.
 mDMEA(drug.sensitivity="PRISM", gmt="PRISM", 
   expression=as.list(rep("adherent CCLE", length(types))), weights, types, 
   value="AUC", sample.names=colnames(drug.sensitivity)[1], 
-  gene.names=rep("Gene", length(types)), 
+  feature.names=rep("Gene", length(types)), 
   weight.values=rep("Log2FC", length(types)), 
   rank.metric=rep("Pearson.est", length(types)), p=0.05, FDR=0.25, 
   num.permutations=1000, stat.type="Weighted", drug.info=NULL, drug="Drug", 
@@ -47,7 +47,7 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
   as.list(rep("adherent CCLE", length(types))).
   }
 
-  \item{weights}{List of data frames with gene.names and weight.values (e.g.,
+  \item{weights}{List of data frames with feature.names and weight.values (e.g.,
   log2(fold-change) values).
   }
 
@@ -63,8 +63,8 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
   frames containing the sample names. Default: colnames(drug.sensitivity)[1].
   }
 
-  \item{gene.names}{Column name in weights data frame containing gene symbols.
-  Default: rep("Gene", length(types)).
+  \item{feature.names}{Vector of column names in weights data frames containing 
+  gene symbols. Default: rep("Gene", length(types)).
   }
 
   \item{weight.values}{Column name in weights data frame containing weight
@@ -231,8 +231,8 @@ weights2 <- as.data.frame(Gene)
 # give each gene a weight
 # by default, gene weight values are found in
 # the second column of your weights data frame
-weights$Rank_metric <- rnorm(length(Gene))
-weights2$Rank_metric <- rnorm(length(Gene))
+weights$Log2FC <- rnorm(length(Gene))
+weights2$Log2FC <- rnorm(length(Gene))
 
 ## Step 4: prepare expression data frames
 # by default, column 1 of your expression data frame is
@@ -250,7 +250,8 @@ for(i in 1:length(Gene)){
 }
 
 ## Step 5: perform DMEA and store results
-mDMEA.test <- mDMEA(drug.sensitivity, expression = list(expr, expr2), 
-                  types = c("Transcriptomics", "Proteomics"),
-                  weights = list(weights, weights2), drug.info = info)
+mDMEA.test <- mDMEA(drug.sensitivity, gmt = NULL, 
+  expression = list(expr, expr2), 
+  types = c("Transcriptomics", "Proteomics"), 
+  weights = list(weights, weights2), drug.info = info)
 }

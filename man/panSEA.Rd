@@ -12,12 +12,12 @@ enriched feature and drug sets.
 }
 
 \usage{
-panSEA(data, types, feature.names = rep("Gene", length(inputs)), 
+panSEA(data.list, types, feature.names = rep("Gene", length(inputs)), 
   GSEA.rank.var = rep("Log2FC", length(types)), 
   DMEA.rank.var = rep("Pearson.est", length(types)),
   group.names=c("Diseased", "Healthy"), 
-  group.samples=c(1:(0.5*ncol(data[[1]])), 
-  (0.5*ncol(data[[1]])+1):ncol(data[[1]])), 
+  group.samples=list(1:(0.5*ncol(data.list[[1]])), 
+  (0.5*ncol(data.list[[1]])+1):ncol(data.list[[1]])), 
   gmt.features="msigdb_Homo sapiens_C2_CP:KEGG", gmt.drugs="PRISM", 
   p=0.05, FDR=0.25, min.per.set=6, drug.sensitivity="PRISM", 
   expression=as.list(rep("adherent CCLE", length(types))), 
@@ -25,7 +25,7 @@ panSEA(data, types, feature.names = rep("Gene", length(inputs)),
 }
 
 \arguments{
-  \item{data}{List of data frames where each data frame has feature names 
+  \item{data.list}{List of data frames where each data frame has feature names 
   (e.g., gene symbols) as row names and sample names as column names.
   }
   
@@ -34,34 +34,35 @@ panSEA(data, types, feature.names = rep("Gene", length(inputs)),
   }
   
   \item{feature.names}{Vector of column names containing feature names (e.g., 
-  gene symbols) in each corresponding data frame in the inputs list. Default: 
-  rep("Gene", length(inputs)).
+  gene symbols) in each corresponding data frame in the input data.list. 
+  Default: rep("Gene", length(inputs)).
   }
   
   \item{GSEA.rank.var}{Vector of column names containing rank variable for 
   gene set enrichment analysis for each corresponding input data frame. If 
   group.names has length 2, column name must be an output of differential 
   expression analysis. If group.names has length 1, column name must match a 
-  column name in the corresponding input data frame.
+  column name in the corresponding data frame in the input data.list.
   Default: rep("Log2FC", length(types)).
   }
   
   \item{DMEA.rank.var}{Vector of column names containing rank variable for 
-  drug mechanism enrichment analysis for each corresponding input data frame. 
-  Column names must match a column name from the result of DMEA::rank_corr.
-  Default: rep("Pearson.est", length(types)).
+  drug mechanism enrichment analysis for each corresponding data frame in the 
+  input data.list. Column names must match a column name from the result of 
+  DMEA::rank_corr. Default: rep("Pearson.est", length(types)).
   }
   
   \item{group.names}{Vector of names for 2 sample groups. 
   Default: c("Diseased", "Healthy").
   }
   
-  \item{group.samples}{Vector of column numbers or names corresponding to the 
+  \item{group.samples}{List of column numbers or names corresponding to the 
   group names. For example, if columns 1:3 correspond to the first group (e.g., 
   "Diseased") and columns 4:6 correspond to the second group (e.g., "Healthy"), 
-  then group.samples would be c(1:3, 4:6). The order of samples must be the 
-  same across all input data frames. Default: c(1:(0.5*ncol(data[[1]])), 
-  (0.5*ncol(data[[1]])+1):ncol(data[[1]])).
+  then group.samples would be list(1:3, 4:6). The order of samples must be the 
+  same across all data frames in the input data.list. Default: 
+  list(1:(0.5*ncol(data.list[[1]])), 
+  (0.5*ncol(data.list[[1]])+1):ncol(data.list[[1]])).
   }
   
   \item{gmt.features}{List of gmt objects containing sets of features for gene 
@@ -138,21 +139,21 @@ panSEA(data, types, feature.names = rep("Gene", length(inputs)),
   
   \item{mGSEA.results}{Outputs from mGSEA function. If 
   length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
-  column name in each input data frame)}
+  column name in each data frame in the input data.list)}
   
   \item{mDMEA.results}{Outputs from mDMEA function. If 
   length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
-  column name in each input data frame)}
+  column name in each data frame in the input data.list)}
   
   \item{mGSEA.network}{Network graph of leading edge features from top 
   significantly enriched sets from mGSEA analysis. If 
   length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
-  column name in each input data frame)}
+  column name in each data frame in the input data.list)}
   
   \item{mDMEA.network}{Network graph of leading edge drugs from top 
   significantly enriched sets from mDMEA analysis. If 
   length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
-  column name in each input data frame)}
+  column name in each data frame in the input data.list)}
 }
 
 \references{

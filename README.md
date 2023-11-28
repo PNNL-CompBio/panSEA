@@ -64,13 +64,11 @@ Sample_6 <- rnorm(length(Gene), sd = 0.5)
 
 # feature names (e.g., gene symbols) should be row names and 
 # column names should be sample names
-expr <- as.data.frame(Sample_1, Sample_2, Sample_3, 
-  Sample_4, Sample_5, Sample_6)
-rownames(expr) <- Gene
+expr <- data.frame(Sample_1, Sample_2, Sample_3, 
+  Sample_4, Sample_5, Sample_6, row.names = Gene)
 
-expr2 <- as.data.frame(Sample_1, Sample_2, Sample_3, 
-  Sample_4, Sample_5, Sample_6)
-rownames(expr2) <- Gene
+expr2 <- data.frame(Sample_1, Sample_2, Sample_3, 
+  Sample_4, Sample_5, Sample_6, row.names = Gene)
 
 # combine inputs as a list of data frames
 types <- c("Transcriptomics", "Proteomics")
@@ -84,8 +82,8 @@ annotation information (i.e., gmt objects) for each omics type
 # create data frame for gene set info
 info <- as.data.frame(Gene)
 
-# moa is our default name for the column containing drug set annotations
-info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 4)]), 6)
+# create column containing gene set annotations
+info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 5)]), 10)
 
 # convert data frame into gmt object
 gmt.features <- DMEA::as_gmt(info, element.names = "Gene", set.names = "gs_name")

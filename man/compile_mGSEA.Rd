@@ -73,7 +73,7 @@ weights2$Rank_metric <- rnorm(length(Gene))
 info <- as.data.frame(Gene)
 
 # moa is our default name for the column containing drug set annotations
-info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 4)]), 6)
+info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 5)]), 10)
 
 # convert data frame into gmt object
 gmt <- DMEA::as_gmt(info, element.names = "Gene", set.names = "gs_name")

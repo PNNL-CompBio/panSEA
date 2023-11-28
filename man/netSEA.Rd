@@ -75,21 +75,22 @@ weights2 <- as.data.frame(Gene)
 # give each gene a weight
 # by default, gene weight values are found in
 # the second column of your weights data frame
-weights$Rank_metric <- rnorm(length(Gene))
-weights2$Rank_metric <- rnorm(length(Gene))
+weights$Log2FC <- rnorm(length(Gene))
+weights2$Log2FC <- rnorm(length(Gene))
 
 ## Step 1b: prepare set info data frame
 # alternatively, a gmt object could be provided
 info <- as.data.frame(Gene)
 
-# moa is our default name for the column containing drug set annotations
-info$moa <- rep(paste("Set", LETTERS[seq(from = 1, to = 4)]), 6)
+# create column containing gene set annotations
+info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 5)]), 10)
 
 ## Step 1c: perform DMEA and store results
-data <- list(weights, weights2)
-gmt <- DMEA::as_gmt(info)
+data.list <- list(weights, weights2)
+gmt <- DMEA::as_gmt(info, element.names = "Gene", set.names = "gs_name")
+gmt.list <- list(gmt, gmt)
 types <- c("Transcriptomics", "Proteomics")
-mGSEA.test <- mGSEA(data, gmt, types)
+mGSEA.test <- mGSEA(data.list, gmt.list, types)
 
 ### Step 2: Extract results
 outputs <- list()

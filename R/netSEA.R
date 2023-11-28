@@ -13,6 +13,7 @@ netSEA <- function(inputs, outputs,
   top.outputs <- sig.outputs %>% dplyr::slice_max(abs(NES), n = n.network.sets)
 
   #### Step 2. Identify leading edge elements and shared sets ####
+  alpha.pairs <- c()
   pairs <- c()
   leads <- c()
   for (i in 1:nrow(top.outputs)) {
@@ -21,13 +22,16 @@ netSEA <- function(inputs, outputs,
     leads <- c(leads, set.leads)
     for (j in 1:length(set.leads)) {
       for (k in 1:length(set.leads)) {
-        alpha.leads <- sort(c(set.leads[j], set.leads[k]))
+        #alpha.leads <- sort(c(set.leads[j], set.leads[k]))
         alpha.pair <- paste0(alpha.leads[1], "_&_", alpha.leads[2])
-        pairs <- c(pairs, alpha.pair)
+        alpha.pairs <- c(alpha.pairs, alpha.pair)
+        temp.pair <- paste0(set.leads[j], "_&_", set.leads[k])
+        pairs <- c(pairs, temp.pair)
       }
     }
   }
   pairs <- unique(pairs)
+  alpha.pairs <- unique(alpha.pairs)
   leads <- unique(leads)
 
   # organize shared set info in data frame
@@ -82,6 +86,9 @@ netSEA <- function(inputs, outputs,
   } else {
     edge.df$importance <- 1
   }
+  
+  # effectively remove lines between non-unique pairs
+  edge.df[!(edge.df$pairs %in% alpha.pairs), ]$importance <- 0
 
   #### Step 3. Generate network graph ####
   # make color palette
@@ -95,12 +102,6 @@ netSEA <- function(inputs, outputs,
   network <- igraph::graph_from_data_frame(
     d = edge.df, directed = FALSE, vertices = node.df[, c("Element", "carac")]
   )
-  # Error in igraph::graph_from_data_frame(d = edge.df, directed = FALSE,  : 
-  # Some vertex names in edge list are not listed in vertex data frame
-  # 
-  # This is because not all genes are listed as a 'source' element in edge.df
-  # Need to revise pairs for edge.df so that each element is represented as 
-  # 'source' and ideally would also not repeat pairs of elements
 
   # assign node size based on degree of connectivity
   igraph::V(network)$size <- igraph::degree(network, mode = "all") * 3

@@ -188,7 +188,7 @@ for (i in 1:length(types)) {
 inputs[[types[i]]] <- read.csv(
 paste0("https://raw.githubusercontent.com/BelindaBGarana/", 
 "DMEA/shiny-app/Examples/Gene_signature/", types[i], 
-"Filtered_gene_signature_no_duplicates.csv"))
+"/Filtered_gene_signature_no_duplicates.csv"))
 
 # make sure gene symbols are row names and samples are the only column names
 rownames(inputs[[types[i]]]) <- inputs[[types[i]]]$Gene

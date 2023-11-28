@@ -101,7 +101,7 @@ gmt.features <- DMEA::as_gmt(info, element.names = "Gene", set.names = "gs_name"
 
 # create list so that each input data frame has a corresponding gmt object
 # in this example, both input data frames will use the same gmt for gene sets
-gmt.features <- as.list(rep(gmt.features, length(types)))
+gmt.features <- list(gmt.features, gmt.features)
 ```
 
 3. Prepare drug set info
@@ -164,7 +164,7 @@ gmt.genes or adjust it to query the MSigDB; you could also use the default
 gmt.drugs, drug.sensitivity, and expression to query adherent CCLE RNA-seq data 
 (version 19Q4) and the PRISM drug screen
 ```{r}
-panSEA.2groups <- panSEA(data.list, types, gmt.features = gmt.features, 
+panSEA.2groups <- panSEA::panSEA(data.list, types, gmt.features = gmt.features, 
                                  gmt.drugs = gmt.drugs, 
                                  drug.sensitivity = drug.sensitivity, 
                                  expression = expression)
@@ -215,7 +215,7 @@ inputs[[types[i]]]$Gene <- NULL
 
 2. Run panSEA and examine enrichment results visually
 ```{r}
-panSEA.1group <- panSEA(inputs, types = rep("Transcriptomic", 3), 
+panSEA.1group <- panSEA::panSEA(inputs, types = rep("Transcriptomic", 3), 
 group.names = "Sensitive_vs_resistant_to_EGFRi", group.samples = 1)
 
 # visualize enrichment of gene sets (dot plot)

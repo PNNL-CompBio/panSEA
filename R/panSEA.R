@@ -81,6 +81,11 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                              DMEA.rank.var, p, FDR, n.network.sets)
     } 
   } else if (length(group.names) == 1) {
+    # extract feature names for each omics type
+    for (i in 1:length(types)) {
+      data.list[[i]][ , c(feature.names[i])] <- rownames(data.list[[i]])
+    }
+    
     ssGSEA.results <- list()
     ssGSEA.network <- list()
     DMEA.results <- list()
@@ -89,9 +94,9 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
       ## extract omics data for each sample
       temp.data <- list()
       for (i in 1:length(types)) {
-        temp.df <- data.list[[i]][ , c(j)]
-        temp.df$feature <- rownames(temp.df)
-        temp.data[[types[i]]] <- temp.df[ , c(2, 1)]
+        temp.sample <- colnames(data.list[[i]])[j]
+        temp.data[[types[i]]] <- 
+          data.list[[i]][ , c(feature.names[i], temp.sample)]
       }
       
       ## ssGSEA & network graph

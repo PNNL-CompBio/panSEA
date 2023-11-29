@@ -4,18 +4,25 @@ netSEA <- function(inputs, outputs,
                    n.network.sets = length(inputs), p = 0.05, FDR = 0.25) {
   message("Generating network graph...")
 
-  #### Step 1. Identify top sets ####
+  #### Step 1. Identify significantly enriched sets across all types ####
   outputs <- data.table::rbindlist(outputs,
     use.names = TRUE,
     idcol = "type"
   )
   sig.outputs <- outputs[outputs$p_value < p & outputs$FDR_q_value < FDR, ]
-  top.outputs <- sig.outputs %>% dplyr::slice_max(abs(NES), n = n.network.sets)
 
-  #### Step 2. Identify leading edge elements and shared sets ####
-  if (nrow(top.outputs) == 0) {
+  #### Step 2. Identify leading edge elements of top sets ####
+  if (nrow(sig.outputs) == 0) {
     warning("No enrichments passed significance thresholds for network graph")
   } else {
+    # identify top significantly enriched sets
+    if (nrow(top.outputs) > n.network.sets) {
+      top.outputs <- sig.outputs %>% dplyr::slice_max(abs(NES), 
+                                                      n = n.network.sets)
+    } else {
+      top.outputs <- sig.outputs
+    }
+    
     pairs <- c()
     alpha.pairs <- c()
     leads <- c()

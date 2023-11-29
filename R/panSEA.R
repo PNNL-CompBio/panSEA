@@ -147,13 +147,11 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
         !is.null(gmt.drugs)) {
         DMEA.results[[colnames(data.list[[1]])[j]]] <-
           panSEA::mDMEA(drug.sensitivity, gmt.drugs, expression, temp.data,
-            types,
-            rank.metric = DMEA.rank.var, weight.values = GSEA.rank.var,
+            types, rank.metric = DMEA.rank.var, weight.values = GSEA.rank.var,
             p = p, FDR = FDR, num.permutations = num.permutations,
             stat.type = stat.type, min.per.set = min.per.set,
             scatter.plots = scatter.plots,
-            scatter.plot.type = scatter.plot.type,
-            n.dot.sets = n.dot.sets
+            scatter.plot.type = scatter.plot.type, n.dot.sets = n.dot.sets
           )
 
         # compile inputs & outputs for network graph

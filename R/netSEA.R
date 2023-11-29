@@ -1,7 +1,7 @@
 netSEA <- function(inputs, outputs,
                    element.names = rep("Gene", length(inputs)),
                    rank.var = rep("Log2FC", length(inputs)),
-                   n.network.sets = length(inputs), p = 0.05, FDR = 0.25) {
+                   p = 0.05, FDR = 0.25, n.network.sets = length(inputs)) {
   message("Generating network graph...")
 
   #### Step 1. Identify significantly enriched sets across all types ####

@@ -80,9 +80,9 @@ gmt <- DMEA::as_gmt(info, element.names = "Gene", set.names = "gs_name")
 
 ## Step 3: perform ssGSEA and store results
 ssGSEA.results <- list()
-ssGSEA.results[["Transcriptomics"]] <- ssGSEA(weights, gmt)
-ssGSEA.results[["Proteomics"]] <- ssGSEA(weights2, gmt)
+ssGSEA.results[["Transcriptomics"]] <- panSEA::ssGSEA(weights, gmt)
+ssGSEA.results[["Proteomics"]] <- panSEA::ssGSEA(weights2, gmt)
 
 ## Step 4: compile list of ssGSEA results
-compile_mGSEA.test <- compile_mGSEA(ssGSEA.results)
+compile_mGSEA.test <- panSEA::compile_mGSEA(ssGSEA.results)
 }

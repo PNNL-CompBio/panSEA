@@ -11,9 +11,10 @@ netSEA <- function(inputs, outputs,
   )
   sig.outputs <- outputs[outputs$p_value < p & outputs$FDR_q_value < FDR, ]
 
-  #### Step 2. Identify leading edge elements of top sets ####
+  #### Step 2. Extract data for & graph leading edge elements of top sets ####
   if (nrow(sig.outputs) == 0) {
     warning("No enrichments passed significance thresholds for network graph")
+    netPlot <- NA
   } else {
     # identify top significantly enriched sets
     if (nrow(top.outputs) > n.network.sets) {
@@ -53,12 +54,7 @@ netSEA <- function(inputs, outputs,
     edge.df$target <- stringr::str_split_i(edge.df$pair, "_&_", 2)
     edge.df <- edge.df[edge.df$source != edge.df$target, ] # remove self pairs
     edge.df$importance <- NA # this value will determine edge width
-  }
 
-  #### Step 3. Extract data for & generate network graph ####
-  if (nrow(top.outputs) == 0) {
-    netPlot <- NA
-  } else {
     # add Element, Rank columns based on element.names, rank.var
     for (i in 1:length(types)) {
       inputs[[i]][, c("Element", "Rank")] <-

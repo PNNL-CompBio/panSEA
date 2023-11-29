@@ -78,6 +78,6 @@ expr2 <- data.frame(Sample_1, Sample_2, Sample_3,
 ## Step 3: perform differential expression analysis
 # by default, we assume the first half of samples (1-3) are "Diseased"
 # and the second half of samples (4-6) are "Healthy"
-mDEG.test <- mDEG(list(expr, expr2), 
+mDEG.test <- panSEA::mDEG(list(expr, expr2), 
   types = c("Transcriptomics", "Proteomics"))
 }

@@ -104,5 +104,5 @@ info$gs_name <- rep(paste("Set", LETTERS[seq(from = 1, to = 5)]), 10)
 gmt <- DMEA::as_gmt(info, element.names = "Gene", set.names = "gs_name")
 
 ## Step 3: perform DMEA and store results
-ssGSEA.test <- ssGSEA(weights, gmt)
+ssGSEA.test <- panSEA::ssGSEA(weights, gmt)
 }

@@ -119,6 +119,6 @@ gmt <- DMEA::as_gmt(info, element.names = "Gene", set.names = "gs_name")
 gmt.list <- list(gmt, gmt)
 
 ## Step 3: perform mGSEA and store results
-mGSEA.test <- mGSEA(data.list, gmt.list, 
+mGSEA.test <- panSEA::mGSEA(data.list, gmt.list, 
                   types = c("Transcriptomics", "Proteomics"))
 }

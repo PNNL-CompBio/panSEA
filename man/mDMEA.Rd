@@ -250,7 +250,7 @@ for(i in 1:length(Gene)){
 }
 
 ## Step 5: perform DMEA and store results
-mDMEA.test <- mDMEA(drug.sensitivity, gmt = NULL, 
+mDMEA.test <- panSEA::mDMEA(drug.sensitivity, gmt = NULL, 
   expression = list(expr, expr2), 
   types = c("Transcriptomics", "Proteomics"), 
   weights = list(weights, weights2), drug.info = info)

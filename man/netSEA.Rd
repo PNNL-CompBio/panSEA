@@ -90,7 +90,7 @@ data.list <- list(weights, weights2)
 gmt <- DMEA::as_gmt(info, element.names = "Gene", set.names = "gs_name")
 gmt.list <- list(gmt, gmt)
 types <- c("Transcriptomics", "Proteomics")
-mGSEA.test <- mGSEA(data.list, gmt.list, types)
+mGSEA.test <- panSEA::mGSEA(data.list, gmt.list, types)
 
 ### Step 2: Extract results
 outputs <- list()
@@ -99,5 +99,5 @@ for (i in 1:length(types)) {
 }
 
 ### Step 3: Create network graph
-mGSEA.network <- netSEA(data.list, outputs)
+mGSEA.network <- panSEA::netSEA(data.list, outputs)
 }

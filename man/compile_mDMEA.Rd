@@ -90,5 +90,5 @@ DMEA.results[["Transcriptomics"]] <- DMEA::drugSEA(ranks, gmt)
 DMEA.results[["Proteomics"]] <- DMEA::drugSEA(ranks2, gmt)
 
 ## Step 4: compile list of DMEA results
-compile_mDMEA.test <- compile_mDMEA(DMEA.results)
+compile_mDMEA.test <- panSEA::compile_mDMEA(DMEA.results)
 }

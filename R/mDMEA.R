@@ -70,7 +70,9 @@ mDMEA <- function(drug.sensitivity = "PRISM", gmt = "PRISM",
 
     RNA.df <- rbind(RNA.first200, RNA.rest)
 
-    expression[expression == "adherent CCLE"] <- RNA.df
+    for (i in which(expression == "adherent CCLE")) {
+      expression[[i]] <- RNA.df
+    }
   }
 
   # check that there are as many types as weights data frames

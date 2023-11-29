@@ -19,11 +19,11 @@ mDMEA <- function(drug.sensitivity = "PRISM", gmt = "PRISM",
   if (is.character(drug.sensitivity)) {
     if (drug.sensitivity == "PRISM") {
       message("Loading PRISM drug sensitivity AUC scores")
-      PRISM.AUC <- read.csv(file = paste0(
+      drug.sensitivity <- read.csv(file = paste0(
         "https://raw.github.com/BelindaBGarana/",
         "DMEA/shiny-app/Inputs/PRISM_drug_mean_AUC_6-23-21.csv"
       )) # 481 cell lines
-      PRISM.AUC$X <- NULL
+      drug.sensitivity$X <- NULL
     } else {
       stop(paste(
         "drug.sensitivity must be either 'PRISM' or data frame per",

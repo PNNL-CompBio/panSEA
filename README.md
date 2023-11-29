@@ -204,7 +204,7 @@ inputs[[types[i]]]$Gene <- NULL
 
 2. Run panSEA and examine enrichment results visually
 ```{r}
-panSEA.1group <- panSEA::panSEA(inputs, types = rep("Transcriptomic", 3), 
+panSEA.1group <- panSEA::panSEA(inputs, types, 
 group.names = "Sensitive_vs_resistant_to_EGFRi", group.samples = 1)
 
 # visualize enrichment of gene sets (dot plot)

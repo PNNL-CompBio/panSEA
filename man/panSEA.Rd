@@ -196,6 +196,6 @@ inputs[[types[i]]]$Gene <- NULL
 }
 
 ## Step 2: run multi-omic enrichment analyses
-panSEA.test <- panSEA::panSEA(inputs, types = rep("Transcriptomic", 3), 
+panSEA.test <- panSEA::panSEA(inputs, types, 
 group.names = "Sensitive_vs_resistant_to_EGFRi", group.samples = 1)
 }

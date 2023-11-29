@@ -33,7 +33,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
   if (length(group.names) > 2 | length(group.names) < 1) {
     stop("Only 1 or 2 group.names are allowed")
   } else if (length(group.names) == 2) {
-    deg <- mDEG(data.list, types, group.names, group.samples)
+    deg <- panSEA::mDEG(data.list, types, group.names, group.samples)
     DEGs <- deg$DEGs
     Log2Transformed <- deg$Log2Transformed
   } else if (length(group.names) == 1) {
@@ -41,12 +41,13 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
     Log2Transformed <- NA
   }
 
-  #### Step 2. Enrichment analyses ####
+  #### Step 3. Enrichment analyses ####
   if (length(group.names) == 2) {
     ## ssGSEA & network graph
     if (!is.null(gmt.features)) {
-      ssGSEA.results <- panSEA::mGSEA(deg$DEGs, gmt.features, types, 
-        feature.names, p = p, FDR = FDR,
+      ssGSEA.results <- panSEA::mGSEA(deg$DEGs, gmt.features, types,
+        feature.names,
+        p = p, FDR = FDR,
         num.permutations = num.permutations,
         stat.type = stat.type, min.per.set = min.per.set,
         n.dot.sets = n.dot.sets
@@ -68,7 +69,8 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
     if (!is.null(drug.sensitivity) & !is.null(expression) &
       !is.null(gmt.drugs)) {
       DMEA.results <- panSEA::mDMEA(drug.sensitivity, gmt.drugs, expression,
-        deg$DEGs, types, rank.metric = DMEA.rank.var,
+        deg$DEGs, types,
+        rank.metric = DMEA.rank.var,
         weight.values = GSEA.rank.var, p = p, FDR = FDR,
         num.permutations = num.permutations,
         stat.type = stat.type, min.per.set = min.per.set,
@@ -103,7 +105,12 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
     ssGSEA.network <- list()
     DMEA.results <- list()
     DMEA.network <- list()
-    for (j in 1:ncol(data.list[[1]])) {
+    if (length(group.samples[[1]]) > 1) {
+      sample.vector <- group.samples[[1]]
+    } else {
+      sample.vector <- group.samples[[1]]:group.samples[[1]]
+    }
+    for (j in sample.vector) {
       ## extract omics data for each sample
       temp.data <- list()
       for (i in 1:length(types)) {
@@ -140,7 +147,8 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
         !is.null(gmt.drugs)) {
         DMEA.results[[colnames(data.list[[1]])[j]]] <-
           panSEA::mDMEA(drug.sensitivity, gmt.drugs, expression, temp.data,
-            types, rank.metric = DMEA.rank.var, weight.values = GSEA.rank.var,
+            types,
+            rank.metric = DMEA.rank.var, weight.values = GSEA.rank.var,
             p = p, FDR = FDR, num.permutations = num.permutations,
             stat.type = stat.type, min.per.set = min.per.set,
             scatter.plots = scatter.plots,

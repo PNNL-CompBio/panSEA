@@ -18,8 +18,8 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   group.names=c("Diseased", "Healthy"), 
   group.samples=list(1:(0.5*ncol(data.list[[1]])), 
   (0.5*ncol(data.list[[1]])+1):ncol(data.list[[1]])), 
-  gmt.features="msigdb_Homo sapiens_C2_CP:KEGG", gmt.drugs="PRISM", 
-  p=0.05, FDR=0.25, min.per.set=6, drug.sensitivity="PRISM", 
+  gmt.features=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))), 
+  gmt.drugs="PRISM", p=0.05, FDR=0.25, min.per.set=6, drug.sensitivity="PRISM", 
   expression=as.list(rep("adherent CCLE", length(types))), 
   n.network.sets=length(types), n.dot.sets=10)
 }
@@ -196,6 +196,6 @@ inputs[[types[i]]]$Gene <- NULL
 }
 
 ## Step 2: run multi-omic enrichment analyses
-panSEA.test <- panSEA(inputs, types = rep("Transcriptomic", 3), 
+panSEA.test <- panSEA::panSEA(inputs, types = rep("Transcriptomic", 3), 
 group.names = "Sensitive_vs_resistant_to_EGFRi", group.samples = 1)
 }

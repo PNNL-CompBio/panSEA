@@ -1,6 +1,6 @@
 ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
-                   feature.names = colnames(data)[1], 
-                   rank.var = colnames(data)[2], direction.adjust = NULL, 
+                   feature.names = colnames(data)[1],
+                   rank.var = colnames(data)[2], direction.adjust = NULL,
                    FDR = 0.25, num.permutations = 1000,
                    stat.type = "Weighted", min.per.set = 6) {
   # get gmt if not provided
@@ -16,9 +16,16 @@ ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
           msigdb.info <- msigdbr::msigdbr(gmt.info[2], gmt.info[3], gmt.info[4])
         }
 
-        gmt <- DMEA::as_gmt(
-          msigdb.info, "gene_symbol", "gs_name",
+        # extract necessary info into data frame
+        msigdb.info <- as.data.frame(msigdb.info[, c(
+          "gene_symbol",
+          "gs_name",
           "gs_description"
+        )])
+
+        gmt <- DMEA::as_gmt(
+          msigdb.info, "gene_symbol", "gs_name", min.per.set,
+          descriptions = "gs_description"
         )
       }
     }

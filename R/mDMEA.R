@@ -120,7 +120,7 @@ mDMEA <- function(drug.sensitivity = "PRISM", gmt = "PRISM",
   }
 
   #### Step 3. Compile DMEA results across omics types ####
-  compiled.DMEA <- compile_mDMEA(DMEA.list, p, FDR, n.dot.sets)
+  compiled.DMEA <- panSEA::compile_mDMEA(DMEA.list, p, FDR, n.dot.sets)
 
   return(list(
     compiled.results = compiled.DMEA,

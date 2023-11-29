@@ -12,7 +12,7 @@ mGSEA <- function(data.list, gmt = as.list(rep(
   for (i in 1:length(types)) {
     message(paste("Running ssGSEA using", types[i], "data"))
 
-    ssGSEA.list[[types[i]]] <- ssGSEA(
+    ssGSEA.list[[types[i]]] <- panSEA::ssGSEA(
       data.list[[i]],
       gmt[[i]], feature.names[i], rank.var[i],
       direction.adjust, FDR,
@@ -21,7 +21,7 @@ mGSEA <- function(data.list, gmt = as.list(rep(
   }
 
   #### Step 2. Compile ssGSEA results across omics types ####
-  compiled.GSEA <- compile_mGSEA(ssGSEA.list, p, FDR, n.dot.sets)
+  compiled.GSEA <- panSEA::compile_mGSEA(ssGSEA.list, p, FDR, n.dot.sets)
 
   return(list(
     compiled.results = compiled.GSEA,

@@ -165,6 +165,16 @@ improves prioritization of therapeutics for repurposing. BMC Bioinformatics 24,
 \author{Belinda B. Garana
 }
 
+\note{To save network graphs (e.g., mGSEA.network and mDMEA.network outputs), 
+generate plot and then use dev.print. For example: 
+
+# Run netSEA or object in which netSEA results are stored
+#netSEA()
+
+# Save resulting plot as PDF named "Network_graph.pdf"
+dev.print(pdf, "Network_graph.pdf")
+}
+
 \section{Warning}{The column name for your samples must be the same in your
 drug sensitivity data frame as in your expression data frame.
 }
@@ -179,8 +189,8 @@ drug sensitivity data frame as in your expression data frame.
 \examples{
 ### example of 1 group: signatures of sensitivity to EGFR or RAF inhibitors
 ## Step 1: get inputs & format
-types <- c("GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib", 
-"GSE66539_SKCM_sensitive_vs_resistant_to_vemurafenib")
+types <- c("GSE66539_SKCM_sensitive_vs_resistant_to_vemurafenib",
+"GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib")
 
 #types <- c("GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib")
 inputs <- list()

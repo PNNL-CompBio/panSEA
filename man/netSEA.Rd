@@ -56,6 +56,15 @@ n.network.sets = length(inputs))
 \author{Belinda B. Garana
 }
 
+\note{To save output, generate plot and then use dev.print. For example: 
+
+# Run netSEA or object in which netSEA results are stored
+#netSEA()
+
+# Save resulting plot as PDF named "Network_graph.pdf"
+dev.print(pdf, "Network_graph.pdf")
+}
+
 \seealso{
   \link[netSEA]{mGSEA}
   \link[netSEA]{mDMEA}

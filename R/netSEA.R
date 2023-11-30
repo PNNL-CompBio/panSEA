@@ -17,7 +17,7 @@ netSEA <- function(inputs, outputs,
     netPlot <- NA
   } else {
     # identify top significantly enriched sets
-    if (nrow(top.outputs) > n.network.sets) {
+    if (nrow(sig.outputs) > n.network.sets) {
       top.outputs <- sig.outputs %>% dplyr::slice_max(abs(NES), 
                                                       n = n.network.sets)
     } else {
@@ -112,18 +112,20 @@ netSEA <- function(inputs, outputs,
 
     # turn data frame into igraph object
     network <- igraph::graph_from_data_frame(
-      d = edge.df, directed = FALSE, vertices = node.df[, c("Element", "carac")]
+      d = edge.df[ , 2:4], directed = FALSE, 
+      vertices = node.df[, c("Element", "carac")]
     )
 
     # assign node size based on degree of connectivity
     igraph::V(network)$size <- igraph::degree(network, mode = "all") * 3
 
     # generate plot
-    netPlot <- igraph::plot(network) +
-      legend("bottomleft",
-        legend = levels(V(network)$carac),
-        col = color.pal, bty = "n", pch = 20, pt.cex = 3, cex = 1.5,
-        text.col = color.pal, horiz = FALSE, inset = c(0.1, 0.1)
+    igraph::plot.igraph(network)
+    legend("bottomleft",
+             legend = levels(node.df$carac),
+             col = color.pal, bty = "n", pch = 20, pt.cex = 3, cex = 1.5,
+             text.col = color.pal, horiz = FALSE, inset = c(0.1, 0.1)
+    netPlot <- recordPlot()
       )
   }
   return(netPlot)

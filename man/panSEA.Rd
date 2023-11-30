@@ -177,13 +177,13 @@ drug sensitivity data frame as in your expression data frame.
 }
 
 \examples{
-### example of 1 group: 3 signatures of sensitivity to EGFR inhibitors
+### example of 1 group: signatures of sensitivity to EGFR or RAF inhibitors
 ## Step 1: get inputs & format
-inputs <- list()
-types <- c("Coldren_et_al_NSCLC_sensitive_vs_resistant_to_gefitinib",
-"GSE12790_BRCA_sensitive_vs_resistant_to_erlotinib",
-"GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib")
+types <- c("GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib", 
+"GSE66539_SKCM_sensitive_vs_resistant_to_vemurafenib")
 
+#types <- c("GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib")
+inputs <- list()
 for (i in 1:length(types)) {
 inputs[[types[i]]] <- read.csv(
 paste0("https://raw.githubusercontent.com/BelindaBGarana/", 
@@ -197,5 +197,5 @@ inputs[[types[i]]]$Gene <- NULL
 
 ## Step 2: run multi-omic enrichment analyses
 panSEA.test <- panSEA::panSEA(inputs, types, 
-group.names = "Sensitive_vs_resistant_to_EGFRi", group.samples = 1)
+group.names = "Sensitive_vs_resistant_to_inhibitor", group.samples = list(1))
 }

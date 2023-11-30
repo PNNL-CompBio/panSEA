@@ -2,7 +2,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                    GSEA.rank.var = rep("Log2FC", length(types)),
                    DMEA.rank.var = rep("Pearson.est", length(types)),
                    group.names = c("Diseased", "Healthy"),
-                   group.samples = c(
+                   group.samples = list(
                      1:(0.5 * ncol(data.list[[1]])),
                      (0.5 * ncol(data.list[[1]]) + 1):ncol(data.list[[1]])
                    ),
@@ -132,7 +132,8 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
         # compile inputs & outputs for network graph
         outputs <- list()
         for (i in 1:length(types)) {
-          outputs[[types[i]]] <- ssGSEA.results$all.results[[types[i]]]$result
+          outputs[[types[i]]] <- 
+            ssGSEA.results[[colnames(data.list[[1]])[j]]]$all.results[[types[i]]]$result
         }
 
         ssGSEA.network[[colnames(data.list[[1]])[j]]] <-
@@ -157,12 +158,14 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
         # compile inputs & outputs for network graph
         inputs <- list()
         for (i in 1:length(types)) {
-          inputs[[types[i]]] <- DMEA.results$all.results[[types[i]]]$corr.result
+          inputs[[types[i]]] <- 
+            DMEA.results[[colnames(data.list[[1]])[j]]]$all.results[[types[i]]]$corr.result
         }
 
         outputs <- list()
         for (i in 1:length(types)) {
-          outputs[[types[i]]] <- DMEA.results$all.results[[types[i]]]$result
+          outputs[[types[i]]] <- 
+            DMEA.results[[colnames(data.list[[1]])[j]]]$all.results[[types[i]]]$result
         }
 
         DMEA.network[[colnames(data.list[[1]])[j]]] <-

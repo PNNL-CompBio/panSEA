@@ -30,22 +30,16 @@ netSEA <- function(inputs, outputs,
     for (i in 1:nrow(top.outputs)) {
       # get leading edge elements from each set
       set.leads <- stringr::str_split(top.outputs$Leading_edge[i], ", ")[[1]]
-      leads <- c(leads, set.leads)
+      leads <- unique(c(leads, set.leads))
       for (j in 1:length(set.leads)) {
         for (k in 1:length(set.leads)) {
-          # generate list of all possible feature pairings
-          temp.pair <- paste0(set.leads[j], "_&_", set.leads[k])
-          pairs <- c(pairs, temp.pair)
-
-          # generate list of alphabetically-ordered pairs
+          # generate list of unique alphabetically-ordered pairs
           alpha.leads <- sort(c(set.leads[j], set.leads[k]))
           alpha.pair <- paste0(alpha.leads[1], "_&_", alpha.leads[2])
-          alpha.pairs <- c(alpha.pairs, alpha.pair)
+          pairs <- unique(c(alpha.pairs, alpha.pair))
         }
       }
     }
-    pairs <- unique(alpha.pairs)
-    leads <- unique(leads)
 
     # organize shared set info in data frame
     edge.df <- as.data.frame(pairs)
@@ -113,7 +107,7 @@ netSEA <- function(inputs, outputs,
     )
 
     # assign node size, color based on degree of connectivity, mean rank
-    igraph::V(network)$size <- igraph::degree(network, mode = "all")
+    igraph::V(network)$size <- abs(node.df$AvgRank)
     igraph::V(network)$color <- ifelse(node.df$carac == "Positive", 
                                        "blue", "red")
 

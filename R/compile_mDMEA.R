@@ -1,5 +1,5 @@
 compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
-                          n.tile.sets = 10) {
+                          n.dot.sets = 10) {
   ## create heatmap data frames
   # extract DMEA results for each omics type
   types <- names(mDMEA.results)
@@ -16,10 +16,10 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
   # reduce plot data down to top results
   sig.DMEA.df <- DMEA.df[DMEA.df$p_value < p &
     DMEA.df$FDR_q_value < FDR, ]
-  top.sig.DMEA.df <- sig.DMEA.df %>% dplyr::slice_max(abs(NES), n = n.tile.sets)
+  top.sig.DMEA.df <- sig.DMEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
   top.DMEA.df <- DMEA.df[DMEA.df$Drug_set %in% top.sig.DMEA.df$Drug_set, ]
 
-  ## create tile plot
+  ## create dot plot
   # set order of drug sets (decreasing by NES)
   top.DMEA.df <- dplyr::arrange(top.DMEA.df, desc(NES))
 
@@ -45,8 +45,8 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
     axis.ticks.y = element_line(colour = "black")
   )
 
-  # generate tile plot
-  tile.plot <- ggplot2::ggplot(
+  # generate dot plot
+  dot.plot <- ggplot2::ggplot(
     top.DMEA.df,
     ggplot2::aes(
       x = type, y = Drug_set, color = NES,
@@ -87,7 +87,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
     results = DMEA.df,
     NES.df = NES.df,
     minusLogFDR.df = minusLogFDR.df,
-    tile.plot = tile.plot,
+    dot.plot = dot.plot,
     corr = corr.mat,
     corr.matrix = corr.mat.plot
   )

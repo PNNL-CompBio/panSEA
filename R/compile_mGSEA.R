@@ -1,4 +1,4 @@
-compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.tile.sets = 10) {
+compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   ## create heatmap data frames
   # extract GSEA results for each omics type
   types <- names(ssGSEA.list)
@@ -15,10 +15,10 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.tile.sets = 10) {
   # reduce plot data down to top results
   sig.GSEA.df <- GSEA.df[GSEA.df$p_value < p &
     GSEA.df$FDR_q_value < FDR, ]
-  top.sig.GSEA.df <- sig.GSEA.df %>% dplyr::slice_max(abs(NES), n = n.tile.sets)
+  top.sig.GSEA.df <- sig.GSEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
   top.GSEA.df <- GSEA.df[GSEA.df$Feature_set %in% top.sig.GSEA.df$Feature_set, ]
 
-  ## create tile plot
+  ## create dot plot
   # set order of drug sets (decreasing by NES)
   top.GSEA.df <- dplyr::arrange(top.GSEA.df, desc(NES))
 
@@ -44,8 +44,8 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.tile.sets = 10) {
     axis.ticks.y = element_line(colour = "black")
   )
 
-  # generate tile plot
-  tile.plot <- ggplot2::ggplot(
+  # generate dot plot
+  dot.plot <- ggplot2::ggplot(
     top.GSEA.df,
     ggplot2::aes(
       x = type, y = Feature_set, color = NES,
@@ -86,7 +86,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.tile.sets = 10) {
     results = GSEA.df,
     NES.df = NES.df,
     minusLogFDR.df = minusLogFDR.df,
-    tile.plot = tile.plot,
+    dot.plot = dot.plot,
     corr = corr.mat,
     corr.plot = corr.mat.plot
   )

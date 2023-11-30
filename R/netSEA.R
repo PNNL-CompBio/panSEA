@@ -44,8 +44,7 @@ netSEA <- function(inputs, outputs,
         }
       }
     }
-    pairs <- unique(pairs)
-    alpha.pairs <- unique(alpha.pairs)
+    pairs <- unique(alpha.pairs)
     leads <- unique(leads)
 
     # organize shared set info in data frame
@@ -100,9 +99,6 @@ netSEA <- function(inputs, outputs,
       edge.df$importance <- 1
     }
 
-    # effectively remove lines between non-unique pairs
-    edge.df[!(edge.df$pairs %in% alpha.pairs), ]$importance <- 0
-
     # make color palette where blue = positive, red = negative mean rank
     color.pal <- c("blue", "red") # all the avg ranks should be nonzero
     node.df$carac <- NA
@@ -116,11 +112,13 @@ netSEA <- function(inputs, outputs,
       vertices = node.df[, c("Element", "carac")]
     )
 
-    # assign node size based on degree of connectivity
-    igraph::V(network)$size <- igraph::degree(network, mode = "all") * 3
+    # assign node size, color based on degree of connectivity, mean rank
+    igraph::V(network)$size <- igraph::degree(network, mode = "all")
+    igraph::V(network)$color <- ifelse(node.df$carac == "Positive", 
+                                       "blue", "red")
 
     # generate plot
-    igraph::plot.igraph(network)
+    igraph::plot.igraph(network, edge.width = edge.df$importance)
     legend("bottomleft",
              legend = levels(node.df$carac),
              col = color.pal, bty = "n", pch = 20, pt.cex = 3, cex = 1.5,

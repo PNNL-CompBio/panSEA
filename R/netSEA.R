@@ -126,7 +126,6 @@ netSEA <- function(inputs, outputs,
              col = color.pal, bty = "n", pch = 20, pt.cex = 3, cex = 1.5,
              text.col = color.pal, horiz = FALSE, inset = c(0.1, 0.1))
     netPlot <- recordPlot()
-      )
   }
   return(netPlot)
 }

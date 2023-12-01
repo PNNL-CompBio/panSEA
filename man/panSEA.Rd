@@ -21,7 +21,7 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   gmt.features=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))), 
   gmt.drugs="PRISM", p=0.05, FDR=0.25, min.per.set=6, drug.sensitivity="PRISM", 
   expression=as.list(rep("adherent CCLE", length(types))), 
-  n.network.sets=length(types), n.dot.sets=10)
+  n.network.sets=2*length(types), n.dot.sets=10)
 }
 
 \arguments{
@@ -119,7 +119,7 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   
   \item{n.network.sets}{Number of sets from enrichment analyses to be 
   represented in the network graphs. The top significant sets will be selected 
-  based on abs(NES) and p & FDR cutoff values. Default: length(inputs).
+  based on abs(NES) and p & FDR cutoff values. Default: 2*length(inputs).
   }
   
   \item{n.dot.sets}{Number of sets from enrichment analyses to be represented 

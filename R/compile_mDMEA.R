@@ -20,8 +20,10 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
   top.DMEA.df <- DMEA.df[DMEA.df$Drug_set %in% top.sig.DMEA.df$Drug_set, ]
 
   ## create dot plot
-  # set order of drug sets (decreasing by NES)
-  top.DMEA.df <- dplyr::arrange(top.DMEA.df, desc(NES))
+  # set order of drug sets (decreasing by mean NES)
+  mean.DMEA.df <- plyr::ddply(top.DMEA.df, .(Drug_set), summarize,
+                              mean.NES = mean(NES))
+  mean.DMEA.df <- dplyr::arrange(mean.DMEA.df, desc(mean.NES))
 
   # set theme
   bg.theme <- ggplot2::theme(
@@ -54,7 +56,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
     )
   ) +
     ggplot2::geom_point() +
-    ggplot2::scale_y_discrete(limits = top.DMEA.df$Drug_set) +
+    ggplot2::scale_y_discrete(limits = mean.DMEA.df$Drug_set) +
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(

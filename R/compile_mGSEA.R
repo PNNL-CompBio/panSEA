@@ -20,7 +20,9 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
 
   ## create dot plot
   # set order of drug sets (decreasing by NES)
-  top.GSEA.df <- dplyr::arrange(top.GSEA.df, desc(NES))
+  mean.GSEA.df <- plyr::ddply(top.GSEA.df, .(Feature_set), summarize,
+                              mean.NES = mean(NES))
+  mean.GSEA.df <- dplyr::arrange(mean.GSEA.df, desc(mean.NES))
 
   # set theme
   bg.theme <- ggplot2::theme(
@@ -53,7 +55,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
     )
   ) +
     ggplot2::geom_point() +
-    ggplot2::scale_y_discrete(limits = top.GSEA.df$Feature_set) +
+    ggplot2::scale_y_discrete(limits = mean.GSEA.df$Feature_set) +
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(

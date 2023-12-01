@@ -15,7 +15,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                    min.per.set = 6, scatter.plots = TRUE,
                    scatter.plot.type = "pearson", drug.sensitivity = "PRISM",
                    expression = as.list(rep("adherent CCLE", length(types))),
-                   n.network.sets = length(types), n.dot.sets = 10) {
+                   n.network.sets = 2*length(types), n.dot.sets = 10) {
   #### Step 1. Check if formats are correct ####
   # make sure that there are as many types as other inputs
   if (length(types) != length(gmt.features) |

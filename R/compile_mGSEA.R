@@ -15,8 +15,16 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   # reduce plot data down to top results
   sig.GSEA.df <- GSEA.df[GSEA.df$p_value < p &
     GSEA.df$FDR_q_value < FDR, ]
-  top.sig.GSEA.df <- sig.GSEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
-  top.GSEA.df <- GSEA.df[GSEA.df$Feature_set %in% top.sig.GSEA.df$Feature_set, ]
+  
+  if (nrow(sig.GSEA.df) > 0) {
+    top.sig.GSEA.df <- 
+      sig.GSEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
+    top.GSEA.df <- 
+      GSEA.df[GSEA.df$Feature_set %in% top.sig.GSEA.df$Feature_set, ]
+  } else {
+    top.GSEA.df <- 
+      GSEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
+  }
 
   ## create dot plot
   # set order of drug sets (decreasing by NES)

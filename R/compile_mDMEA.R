@@ -16,8 +16,16 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
   # reduce plot data down to top results
   sig.DMEA.df <- DMEA.df[DMEA.df$p_value < p &
     DMEA.df$FDR_q_value < FDR, ]
-  top.sig.DMEA.df <- sig.DMEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
-  top.DMEA.df <- DMEA.df[DMEA.df$Drug_set %in% top.sig.DMEA.df$Drug_set, ]
+  
+  if (nrow(sig.DMEA.df) > 0) {
+    top.sig.DMEA.df <- 
+      sig.DMEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
+    top.DMEA.df <- 
+      DMEA.df[DMEA.df$Drug_set %in% top.sig.DMEA.df$Drug_set, ]
+  } else {
+    top.DMEA.df <- 
+      DMEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
+  }
 
   ## create dot plot
   # set order of drug sets (decreasing by mean NES)

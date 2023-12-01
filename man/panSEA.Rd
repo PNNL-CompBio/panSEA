@@ -187,7 +187,7 @@ drug sensitivity data frame as in your expression data frame.
 }
 
 \examples{
-### example of 1 group: signatures of sensitivity to EGFR or RAF inhibitors
+### example of 1 group: signatures of sensitivity to RAF or EGFR inhibitors
 ## Step 1: get inputs & format
 types <- c("GSE66539_SKCM_sensitive_vs_resistant_to_vemurafenib",
 "GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib")

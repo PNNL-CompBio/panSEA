@@ -158,7 +158,7 @@ for(i in 1:length(Gene)){
 expression <- list(expr, expr2)
 ```
 
-6. Run panSEA and examine enrichment results visually
+6. Run panSEA
 If you were using real transcriptomic data, you could use the default 
 gmt.genes or adjust it to query the MSigDB; you could also use the default 
 gmt.drugs, drug.sensitivity, and expression to query adherent CCLE RNA-seq data 
@@ -168,18 +168,6 @@ panSEA.2groups <- panSEA::panSEA(data.list, types, gmt.features = gmt.features,
                                  gmt.drugs = gmt.drugs, 
                                  drug.sensitivity = drug.sensitivity, 
                                  expression = expression)
-
-# visualize enrichment of gene sets (dot plot)
-panSEA.2groups$mGSEA.results$compiled.results$dot.plot
-
-# visualize enrichment of drug sets (dot plot)
-panSEA.2groups$mDMEA.results$compiled.results$dot.plot
-
-# visualize connectivity of leading edge genes (network graph)
-panSEA.2groups$mGSEA.network
-
-# visualize connectivity of leading edge drugs (network graph)
-panSEA.2groups$mDMEA.network
 ```
 
 # Case 2: 1 Group (e.g., Diseased)
@@ -192,31 +180,30 @@ analyses for each column (e.g., sample) in the input data types.
 
 Example:
 1. Prepare list of input data frames
-In this example, we will use differential expression from 3 different
-transcriptomic data sets for sensitivity vs. resistance to EGFR inhibitors. 
-However, different omics data types could also be used and have multiple columns
+In this example, we will use differential expression from transcriptomic data 
+sets for sensitivity vs. resistance to EGFR or RAF inhibitors. However, 
+different omics data types could also be used and have multiple columns
 ```{r}
-inputs <- list()
-types <- c("Coldren_et_al_NSCLC_sensitive_vs_resistant_to_gefitinib",
-"GSE12790_BRCA_sensitive_vs_resistant_to_erlotinib",
+types <- c("GSE66539_SKCM_sensitive_vs_resistant_to_vemurafenib",
 "GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib")
 
+data.list <- list()
 for (i in 1:length(types)) {
-inputs[[types[i]]] <- read.csv(
+data.list[[types[i]]] <- read.csv(
 paste0("https://raw.githubusercontent.com/BelindaBGarana/", 
 "DMEA/shiny-app/Examples/Gene_signature/", types[i], 
-"Filtered_gene_signature_no_duplicates.csv"))
+"/Filtered_gene_signature_no_duplicates.csv"))
 
 # make sure gene symbols are row names and samples are the only column names
-rownames(inputs[[types[i]]]) <- inputs[[types[i]]]$Gene
-inputs[[types[i]]]$Gene <- NULL
+rownames(data.list[[types[i]]]) <- data.list[[types[i]]]$Gene
+data.list[[types[i]]]$Gene <- NULL
 }
 ```
 
 2. Run panSEA and examine enrichment results visually
 ```{r}
-panSEA.1group <- panSEA::panSEA(inputs, types, 
-group.names = "Sensitive_vs_resistant_to_EGFRi", group.samples = 1)
+panSEA.1group <- panSEA::panSEA(data.list, types, 
+group.names = "Sensitive_vs_resistant_to_EGFRi", group.samples = list(1))
 
 # visualize enrichment of gene sets (dot plot)
 panSEA.1group$mGSEA.results[["Log2FC"]]$compiled.results$dot.plot

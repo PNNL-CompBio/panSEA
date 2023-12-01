@@ -14,7 +14,7 @@ mDMEA <- function(drug.sensitivity = "PRISM", gmt = "PRISM",
                   xlab = "Weighted Voting Score", ylab = value, 
                   position.x = "min", position.y = "min", se = TRUE, 
                   n.dot.sets = 10) {
-  #### Step 1. Check if formats are correct ####
+  #### Step 1. Load data if necessary ####
   # get drug.sensitivity, gmt, and expression if PRISM/CCLE
   if (is.character(drug.sensitivity)) {
     if (drug.sensitivity == "PRISM") {

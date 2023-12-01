@@ -25,7 +25,6 @@ netSEA <- function(inputs, outputs,
     }
     
     pairs <- c()
-    alpha.pairs <- c()
     leads <- c()
     for (i in 1:nrow(top.outputs)) {
       # get leading edge elements from each set
@@ -36,7 +35,7 @@ netSEA <- function(inputs, outputs,
           # generate list of unique alphabetically-ordered pairs
           alpha.leads <- sort(c(set.leads[j], set.leads[k]))
           alpha.pair <- paste0(alpha.leads[1], "_&_", alpha.leads[2])
-          pairs <- unique(c(alpha.pairs, alpha.pair))
+          pairs <- unique(c(pairs, alpha.pair))
         }
       }
     }

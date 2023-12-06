@@ -3,8 +3,8 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                    DMEA.rank.var = rep("Pearson.est", length(types)),
                    group.names = c("Diseased", "Healthy"),
                    group.samples = list(
-                     1:(0.5 * ncol(data.list[[1]])),
-                     (0.5 * ncol(data.list[[1]]) + 1):ncol(data.list[[1]])
+                     2:(0.5 * (ncol(data.list[[1]])) - 1),
+                     (0.5 * ncol(data.list[[1]])):ncol(data.list[[1]])
                    ),
                    gmt.features = as.list(rep(
                      "msigdb_Homo sapiens_C2_CP:KEGG",
@@ -28,7 +28,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
       "DMEA.rank.var, gmt.features, and expression must all match"
     ))
   }
-
+  
   #### Step 2. Differential expression analysis if 2 groups ####
   if (length(group.names) > 2 | length(group.names) < 1) {
     stop("Only 1 or 2 group.names are allowed")
@@ -94,16 +94,22 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
       )
     }
   } else if (length(group.names) == 1) {
+    # make sure feature names are in column 1
+    for (i in 1:length(types)) {
+      data.list[[types[i]]] <-
+        data.list[[i]][, c(feature.names[i], 
+                           colnames(data.list[[i]])
+                           [colnames(data.list[[i]]) != feature.names[i]])]
+    }
+    
     ssGSEA.results <- list()
     ssGSEA.network <- list()
     DMEA.results <- list()
     DMEA.network <- list()
     if (length(group.samples[[1]]) > 1) {
-      sample.vector <- group.samples[[1]]
-    } else {
-      sample.vector <- group.samples[[1]]:group.samples[[1]]
+      group.samples <- group.samples[[1]]
     }
-    for (j in sample.vector) {
+    for (j in group.samples) {
       ## extract omics data for each sample
       temp.data <- list()
       for (i in 1:length(types)) {

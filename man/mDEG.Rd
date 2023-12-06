@@ -10,8 +10,8 @@
 
 \usage{
 mDEG(data.list, types, group.names=c("Diseased", "Healthy"), 
-  group.samples=list(1:(0.5*ncol(data[[1]])), 
-  (0.5*ncol(data[[1]])+1):ncol(data[[1]])), 
+  group.samples=list(2:(0.5 * (ncol(data.list[[1]]) + 1)),
+  (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])), 
   feature.names=rep("Gene", length(types)))
 }
 
@@ -34,8 +34,8 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
   "Diseased") and columns 4:6 correspond to the second group (e.g., "Healthy"), 
   then group.samples would be list(1:3, 4:6). The order of samples must be the 
   same across all data frames in the input data.list. Default: 
-  list(1:(0.5*ncol(data.list[[1]])), 
-  (0.5*ncol(data.list[[1]])+1):ncol(data.list[[1]])).
+  list(2:(0.5 * (ncol(data.list[[1]]) + 1)), 
+  (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])).
   }
   
   \item{feature.names}{Vector of column names containing feature names (e.g., 

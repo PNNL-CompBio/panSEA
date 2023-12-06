@@ -16,8 +16,8 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   GSEA.rank.var = rep("Log2FC", length(types)), 
   DMEA.rank.var = rep("Pearson.est", length(types)),
   group.names=c("Diseased", "Healthy"), 
-  group.samples=list(1:(0.5*ncol(data.list[[1]])), 
-  (0.5*ncol(data.list[[1]])+1):ncol(data.list[[1]])), 
+  group.samples=list(2:(0.5 * (ncol(data.list[[1]]) + 1)),
+  (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])), 
   gmt.features=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))), 
   gmt.drugs="PRISM", p=0.05, FDR=0.25, min.per.set=6, drug.sensitivity="PRISM", 
   expression=as.list(rep("adherent CCLE", length(types))), 
@@ -62,8 +62,8 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   "Diseased") and columns 4:6 correspond to the second group (e.g., "Healthy"), 
   then group.samples would be list(1:3, 4:6). The order of samples must be the 
   same across all data frames in the input data.list. Default: 
-  list(1:(0.5*ncol(data.list[[1]])), 
-  (0.5*ncol(data.list[[1]])+1):ncol(data.list[[1]])).
+  list(2:(0.5 * (ncol(data.list[[1]]) + 1)),
+  (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])).
   }
   
   \item{gmt.features}{List of gmt objects containing sets of features for gene 

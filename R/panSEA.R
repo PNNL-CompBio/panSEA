@@ -3,8 +3,8 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                    DMEA.rank.var = rep("Pearson.est", length(types)),
                    group.names = c("Diseased", "Healthy"),
                    group.samples = list(
-                     2:(0.5 * (ncol(data.list[[1]])) - 1),
-                     (0.5 * ncol(data.list[[1]])):ncol(data.list[[1]])
+                     2:(0.5 * (ncol(data.list[[1]]) + 1)),
+                     (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])
                    ),
                    gmt.features = as.list(rep(
                      "msigdb_Homo sapiens_C2_CP:KEGG",

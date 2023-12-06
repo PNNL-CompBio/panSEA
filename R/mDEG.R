@@ -1,7 +1,7 @@
 mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
                  group.samples = list(
-                   1:(0.5 * ncol(data.list[[1]])),
-                   (0.5 * ncol(data.list[[1]]) + 1):ncol(data.list[[1]])
+                   2:(0.5 * (ncol(data.list[[1]]) + 1)),
+                   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])
                  ), feature.names = rep("Gene", length(types))) {
   #### Step 1. Check if formats are correct ####
   # check that there are as many types as data.list inputs

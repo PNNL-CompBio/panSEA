@@ -16,8 +16,9 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
 }
 
 \arguments{
-  \item{data.list}{List of data frames where each data frame has feature names 
-  (e.g., gene symbols) as row names and sample names as column names.
+  \item{data.list}{List of data frames where each data frame has one column 
+  containing feature names (e.g., gene symbols) and the rest of its columns 
+  having sample names as column names.
   }
 
   \item{types}{Vector of character descriptions of each omics type (e.g., 
@@ -67,11 +68,11 @@ Sample_6 <- rnorm(length(Gene), sd = 0.5)
 
 # feature names (e.g., gene symbols) should be row names and 
 # column names should be sample names
-expr <- data.frame(Sample_1, Sample_2, Sample_3, 
-  Sample_4, Sample_5, Sample_6, row.names = Gene)
+expr <- data.frame(Gene, Sample_1, Sample_2, Sample_3, 
+  Sample_4, Sample_5, Sample_6)
 
-expr2 <- data.frame(Sample_1, Sample_2, Sample_3, 
-  Sample_4, Sample_5, Sample_6, row.names = Gene)
+expr2 <- data.frame(Gene, Sample_1, Sample_2, Sample_3, 
+  Sample_4, Sample_5, Sample_6)
 
 ## Step 3: perform differential expression analysis
 # by default, we assume the first half of samples (1-3) are "Diseased"

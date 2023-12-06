@@ -75,11 +75,11 @@ Sample_6 <- rnorm(length(Gene), sd = 0.5)
 
 # feature names (e.g., gene symbols) should be row names and 
 # column names should be sample names
-expr <- data.frame(Sample_1, Sample_2, Sample_3, 
-  Sample_4, Sample_5, Sample_6, row.names = Gene)
+expr <- data.frame(Gene, Sample_1, Sample_2, Sample_3, 
+  Sample_4, Sample_5, Sample_6)
 
-expr2 <- data.frame(Sample_1, Sample_2, Sample_3, 
-  Sample_4, Sample_5, Sample_6, row.names = Gene)
+expr2 <- data.frame(Gene, Sample_1, Sample_2, Sample_3, 
+  Sample_4, Sample_5, Sample_6)
 
 # combine inputs as a list of data frames
 types <- c("Transcriptomics", "Proteomics")
@@ -132,7 +132,7 @@ Drug <- paste0("Drug_", seq(from = 1, to = 24))
 
 # give each drug values representative of AUC sensitivity scores
 for(i in 1:length(Drug)){
-  drug.sensitivity[,c(Drug[i])] <- rnorm(length(CCLE_ID),
+  drug.sensitivity[ , Drug[i]] <- rnorm(length(CCLE_ID),
                                         mean = 0.83, sd = 0.166)
 }
 ```
@@ -149,8 +149,8 @@ expr2 <- as.data.frame(CCLE_ID)
 # give each gene values representative of normalized expression
 # each gene is represented by a column in your expression data frame
 for(i in 1:length(Gene)){
-  expr[,c(Gene[i])] <- rnorm(length(CCLE_ID), sd = 0.5)
-  expr2[,c(Gene[i])] <- rnorm(length(CCLE_ID), sd = 0.5)
+  expr[ , Gene[i]] <- rnorm(length(CCLE_ID), sd = 0.5)
+  expr2[ , Gene[i]] <- rnorm(length(CCLE_ID), sd = 0.5)
 }
 
 # create list so that each input data frame has a corresponding 
@@ -193,10 +193,6 @@ data.list[[types[i]]] <- read.csv(
 paste0("https://raw.githubusercontent.com/BelindaBGarana/", 
 "DMEA/shiny-app/Examples/Gene_signature/", types[i], 
 "/Filtered_gene_signature_no_duplicates.csv"))
-
-# make sure gene symbols are row names and samples are the only column names
-rownames(data.list[[types[i]]]) <- data.list[[types[i]]]$Gene
-data.list[[types[i]]]$Gene <- NULL
 }
 ```
 

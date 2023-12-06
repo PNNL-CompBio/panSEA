@@ -33,7 +33,8 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
   if (length(group.names) > 2 | length(group.names) < 1) {
     stop("Only 1 or 2 group.names are allowed")
   } else if (length(group.names) == 2) {
-    DEGs <- panSEA::mDEG(data.list, types, group.names, group.samples)
+    DEGs <- panSEA::mDEG(data.list, types, group.names,
+                         group.samples, feature.names)
   } else if (length(group.names) == 1) {
     DEGs <- NA
   }
@@ -93,11 +94,6 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
       )
     }
   } else if (length(group.names) == 1) {
-    # extract feature names for each omics type
-    for (i in 1:length(types)) {
-      data.list[[i]][, c(feature.names[i])] <- rownames(data.list[[i]])
-    }
-
     ssGSEA.results <- list()
     ssGSEA.network <- list()
     DMEA.results <- list()

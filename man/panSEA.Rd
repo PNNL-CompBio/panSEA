@@ -25,8 +25,9 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
 }
 
 \arguments{
-  \item{data.list}{List of data frames where each data frame has feature names 
-  (e.g., gene symbols) as row names and sample names as column names.
+  \item{data.list}{List of data frames where each data frame has one column 
+  containing feature names (e.g., gene symbols) and the rest of its columns 
+  having sample names as column names.
   }
   
   \item{types}{Vector of character descriptions of each omics type (e.g., 
@@ -196,10 +197,6 @@ inputs[[types[i]]] <- read.csv(
 paste0("https://raw.githubusercontent.com/BelindaBGarana/", 
 "DMEA/shiny-app/Examples/Gene_signature/", types[i], 
 "/Filtered_gene_signature_no_duplicates.csv"))
-
-# make sure gene symbols are row names and samples are the only column names
-rownames(inputs[[types[i]]]) <- inputs[[types[i]]]$Gene
-inputs[[types[i]]]$Gene <- NULL
 }
 
 ## Step 2: run multi-omic enrichment analyses

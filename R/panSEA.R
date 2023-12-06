@@ -33,19 +33,16 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
   if (length(group.names) > 2 | length(group.names) < 1) {
     stop("Only 1 or 2 group.names are allowed")
   } else if (length(group.names) == 2) {
-    deg <- panSEA::mDEG(data.list, types, group.names, group.samples)
-    DEGs <- deg$DEGs
-    Log2Transformed <- deg$Log2Transformed
+    DEGs <- panSEA::mDEG(data.list, types, group.names, group.samples)
   } else if (length(group.names) == 1) {
     DEGs <- NA
-    Log2Transformed <- NA
   }
 
   #### Step 3. Enrichment analyses ####
   if (length(group.names) == 2) {
     ## ssGSEA & network graph
     if (!is.null(gmt.features)) {
-      ssGSEA.results <- panSEA::mGSEA(deg$DEGs, gmt.features, types,
+      ssGSEA.results <- panSEA::mGSEA(DEGs, gmt.features, types,
         feature.names,
         p = p, FDR = FDR,
         num.permutations = num.permutations,
@@ -60,7 +57,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
       }
 
       ssGSEA.network <- panSEA::netSEA(
-        deg$DEGs, outputs, feature.names,
+        DEGs, outputs, feature.names,
         GSEA.rank.var, p, FDR, n.network.sets
       )
     }
@@ -69,7 +66,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
     if (!is.null(drug.sensitivity) & !is.null(expression) &
       !is.null(gmt.drugs)) {
       DMEA.results <- panSEA::mDMEA(drug.sensitivity, gmt.drugs, expression,
-        deg$DEGs, types,
+        DEGs, types,
         rank.metric = DMEA.rank.var,
         weight.values = GSEA.rank.var, p = p, FDR = FDR,
         num.permutations = num.permutations,
@@ -178,7 +175,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
   }
 
   return(list(
-    DEGs = DEGs, Log2Transformed = Log2Transformed,
+    DEGs = DEGs,
     mGSEA.results = ssGSEA.results, mDMEA.results = DMEA.results,
     mGSEA.network = ssGSEA.network, mDMEA.network = DMEA.network
   ))

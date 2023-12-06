@@ -130,12 +130,10 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
 
 \value{
   \item{DEGs}{List of data frames containing differential expression results 
-  after using limma::eBayes for each input data frame. NULL if 
-  length(group.names) == 1.}
-
-  \item{Log2Transformed}{Vector of logical operators describing if the 
+  after using limma::eBayes for each input data frame. The 
+  last column of each output data frame 'Log2Transformed' describes if the 
   corresponding input data was log2-transformed to normalize the distribution. 
-  NULL if length(group.names) == 1.}
+  NA if length(group.names) == 1.}
   
   \item{mGSEA.results}{Outputs from mGSEA function. If 
   length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
@@ -192,7 +190,6 @@ drug sensitivity data frame as in your expression data frame.
 types <- c("GSE66539_SKCM_sensitive_vs_resistant_to_vemurafenib",
 "GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib")
 
-#types <- c("GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib")
 inputs <- list()
 for (i in 1:length(types)) {
 inputs[[types[i]]] <- read.csv(

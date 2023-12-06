@@ -14,7 +14,6 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
     stop("Only 2 groups are allowed for differential expression analysis")
   } else {
     deg <- list()
-    allLogC <- c()
     for (i in 1:length(types)) {
       # make sure there are no duplicated feature names
       if (nrow(data.list[[i]]) > length(unique(rownames(data.list[[i]])))) {
@@ -42,7 +41,6 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
           ex[which(ex <= 0)] <- NaN
           exprs(eset) <- log2(ex)
         }
-        allLogC <- c(allLogC, LogC)
 
         # identify sample phenotypes
         gs <- factor(c(rep(0, ncol(data.list1)), rep(1, ncol(data.list2))))
@@ -75,12 +73,13 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
             colnames(deg[[types[i]]])
             [1:(ncol(deg[[types[i]]]) - 1)]
           )]
+        
+        # add log2transform info as last column
+        deg[[types[i]]]$Log2Transformed <- LogC
       }
     }
   }
 
-  return(list(
-    DEGs = deg,
-    Log2Transformed = allLogC
-  ))
+  return(deg
+  )
 }

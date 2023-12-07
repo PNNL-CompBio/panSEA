@@ -75,7 +75,8 @@ netSEA <- function(inputs, outputs,
     ## run correlations between nodes for edge thickness if relevant
     if (length(unique(lead.inputs$type)) >= 3) {
       # create matrix for correlations
-      lead.mat <- reshape2::dcast(lead.inputs, type ~ Element)
+      lead.mat <- reshape2::dcast(lead.inputs, type ~ Element,
+                                  value.var = "AvgRank")
       rownames(lead.mat) <- lead.mat$type
       lead.mat$type <- NULL
       lead.mat <- as.matrix(lead.mat)

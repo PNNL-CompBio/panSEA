@@ -144,15 +144,15 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
   column name in each data frame in the input data.list)}
   
-  \item{mGSEA.network}{Network graph of leading edge features from top 
-  significantly enriched sets from mGSEA analysis. If 
-  length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
-  column name in each data frame in the input data.list)}
+  \item{mGSEA.network}{Outputs from netSEA function containing network graphs 
+  of leading edge features from top significantly enriched sets from mGSEA 
+  analysis. If  length(group.names) == 1, list of outputs corresponds to each 
+  sample (i.e., column name in each data frame in the input data.list)}
   
-  \item{mDMEA.network}{Network graph of leading edge drugs from top 
-  significantly enriched sets from mDMEA analysis. If 
-  length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
-  column name in each data frame in the input data.list)}
+  \item{mDMEA.network}{Outputs from netSEA function containing network graphs 
+  of leading edge drugs from top significantly enriched sets from mDMEA 
+  analysis. If length(group.names) == 1, list of outputs corresponds to each 
+  sample (i.e., column name in each data frame in the input data.list)}
 }
 
 \references{

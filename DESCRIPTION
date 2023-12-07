@@ -15,7 +15,7 @@ BugReports: https://github.com/BelindaBGarana/panSEA/issues
 Encoding: UTF-8
 Imports:
 	ggplot2, DMEA, plyr, dplyr, Biobase, data.table, ggcorrplot, GSA, 
-	igraph, limma, msigdbr, reshape2, stats, stringr, viridis, utils
+	igraph, limma, msigdbr, reshape2, stats, stringr, viridis, visIgraph, utils
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
 Collate:

@@ -115,13 +115,16 @@ netSEA <- function(inputs, outputs,
     igraph::V(network)$color <- ifelse(node.df$carac == "Positive", 
                                        "blue", "red")
 
-    # generate plot
+    # generate static plot
     igraph::plot.igraph(network, edge.width = edge.df$importance)
     legend("bottomleft",
              legend = levels(node.df$carac),
              col = color.pal, bty = "n", pch = 20, pt.cex = 3, cex = 1.5,
              text.col = color.pal, horiz = FALSE, inset = c(0.1, 0.1))
     netPlot <- recordPlot()
+    
+    # generate interactive plot
+    intPlot <- visNetwork::visIgraph(network)
   }
-  return(netPlot)
+  return(list(static = netPlot, interactive = intPlot))
 }

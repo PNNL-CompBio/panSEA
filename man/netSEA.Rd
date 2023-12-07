@@ -51,19 +51,23 @@ n.network.sets = 2*length(inputs))
   }
 }
 
-\value{Network graph of leading-edge elements from top significant enrichments.}
+\value{
+  \item{static}{Static network graph of leading edge features from top 
+  significantly enriched sets. If 
+  length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
+  column name in each data frame in the input data.list)}
+  
+  \item{interactive}{Interactive network graph of leading edge features from top 
+  significantly enriched sets. If 
+  length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
+  column name in each data frame in the input data.list)}
+}
 
 \author{Belinda B. Garana
 }
 
-\note{To save output, generate plot and then use dev.print. For example: 
-
-# Run netSEA or object in which netSEA results are stored
-#netSEA()
-
-# Save resulting plot as PDF named "Network_graph.pdf"
-dev.print(pdf, "Network_graph.pdf")
-}
+\note{To save static output, generate plot and then use dev.print. 
+To save interactive output as HTML file, use visNetwork::visSave.
 
 \seealso{
   \link[netSEA]{mGSEA}

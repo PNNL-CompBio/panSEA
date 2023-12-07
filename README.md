@@ -197,8 +197,8 @@ panSEA.1group$mGSEA.results[["Log2FC"]]$compiled.results$dot.plot
 panSEA.1group$mDMEA.results[["Log2FC"]]$compiled.results$dot.plot
 
 # visualize connectivity of leading edge genes (network graph)
-panSEA.1group$mGSEA.network[["Log2FC"]]
+panSEA.1group$mGSEA.network[["Log2FC"]]$interactive
 
 # visualize connectivity of leading edge drugs (network graph)
-panSEA.1group$mDMEA.network[["Log2FC"]]
+panSEA.1group$mDMEA.network[["Log2FC"]]$interactive
 ```

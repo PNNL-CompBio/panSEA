@@ -47,7 +47,7 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
 \value{List of data frames containing differential expression results 
   after using limma::eBayes for each data frame in the input data.list. The 
   last column of each output data frame 'Log2Transformed' describes if the 
-  corresponding input data was log2-transformed to normalize the distribution.}
+  corresponding input data was log2-transformed to normalize the distribution.
 }
 
 \author{Belinda B. Garana

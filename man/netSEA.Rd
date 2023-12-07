@@ -68,6 +68,7 @@ n.network.sets = 2*length(inputs))
 
 \note{To save static output, generate plot and then use dev.print. 
 To save interactive output as HTML file, use visNetwork::visSave.
+}
 
 \seealso{
   \link[netSEA]{mGSEA}

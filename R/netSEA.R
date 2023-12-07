@@ -15,6 +15,7 @@ netSEA <- function(inputs, outputs,
   if (nrow(sig.outputs) == 0) {
     warning("No enrichments passed significance thresholds for network graph")
     netPlot <- NA
+    intPlot <- NA
   } else {
     # identify top significantly enriched sets
     if (nrow(sig.outputs) > n.network.sets) {

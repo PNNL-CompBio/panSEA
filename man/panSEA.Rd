@@ -201,5 +201,5 @@ paste0("https://raw.githubusercontent.com/BelindaBGarana/",
 
 ## Step 2: run multi-omic enrichment analyses
 panSEA.test <- panSEA::panSEA(inputs, types, 
-group.names = "Sensitive_vs_resistant_to_inhibitor", group.samples = list(1))
+group.names = "Sensitive_vs_resistant_to_inhibitor", group.samples = list(2))
 }

@@ -199,7 +199,7 @@ paste0("https://raw.githubusercontent.com/BelindaBGarana/",
 2. Run panSEA and examine enrichment results visually
 ```{r}
 panSEA.1group <- panSEA::panSEA(data.list, types, 
-group.names = "Sensitive_vs_resistant_to_EGFRi", group.samples = list(1))
+group.names = "Sensitive_vs_resistant_to_EGFRi", group.samples = list(2))
 
 # visualize enrichment of gene sets (dot plot)
 panSEA.1group$mGSEA.results[["Log2FC"]]$compiled.results$dot.plot

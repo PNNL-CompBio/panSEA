@@ -95,8 +95,12 @@ netSEA <- function(inputs, outputs,
     # make color palette where blue = positive, red = negative mean rank
     color.pal <- c("blue", "red") # all the avg ranks should be nonzero
     node.df$carac <- NA
-    node.df[node.df$AvgRank > 0, ]$carac <- "Positive"
-    node.df[node.df$AvgRank < 0, ]$carac <- "Negative"
+    if (nrow(node.df[node.df$AvgRank > 0, ]) > 0) {
+      node.df[node.df$AvgRank > 0, ]$carac <- "Positive"
+    }
+    if (nrow(node.df[node.df$AvgRank < 0, ]) > 0) {
+      node.df[node.df$AvgRank < 0, ]$carac <- "Negative"
+    }
     levels(node.df$carac) <- c("Positive", "Negative")
 
     # turn data frame into igraph object

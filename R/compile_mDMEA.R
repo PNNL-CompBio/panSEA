@@ -35,9 +35,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
                               types = paste0(type, collapse = ", "),
                               N_types = length(unique(type)))
   mean.DMEA.df$adj_Fisher_p <- qvalue::qvalue(mean.DMEA.df$Fisher_p, pi0=1)$qvalues
-  mean.DMEA.df <- dplyr::arrange(
-    mean.DMEA.df[mean.DMEA.df$Drug_set %in% top.DMEA.df$Drug_set, ], 
-    desc(mean_NES))
+  mean.DMEA.df <- dplyr::arrange(mean.DMEA.df, desc(mean_NES))
 
   # set theme
   bg.theme <- ggplot2::theme(
@@ -70,7 +68,8 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
     )
   ) +
     ggplot2::geom_point() +
-    ggplot2::scale_y_discrete(limits = mean.DMEA.df$Drug_set) +
+    ggplot2::scale_y_discrete(limits = mean.DMEA.df[
+      mean.DMEA.df$Drug_set %in% top.DMEA.df$Drug_set, ]$Drug_set) +
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(

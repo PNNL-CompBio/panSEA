@@ -34,9 +34,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
                               types = paste0(type, collapse = ", "),
                               N_types = length(unique(type)))
   mean.GSEA.df$adj_Fisher_p <- qvalue::qvalue(mean.GSEA.df$Fisher_p, pi0=1)$qvalues
-  mean.GSEA.df <- dplyr::arrange(
-    mean.GSEA.df[mean.GSEA.df$Feature_set %in% top.GSEA.df$Feature_set, ], 
-    desc(mean_NES))
+  mean.GSEA.df <- dplyr::arrange(mean.GSEA.df, desc(mean_NES))
 
   # set theme
   bg.theme <- ggplot2::theme(
@@ -69,7 +67,8 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
     )
   ) +
     ggplot2::geom_point() +
-    ggplot2::scale_y_discrete(limits = mean.GSEA.df$Feature_set) +
+    ggplot2::scale_y_discrete(limits = mean.GSEA.df[
+      mean.GSEA.df$Feature_set %in% top.GSEA.df$Feature_set, ]$Feature_set) +
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(

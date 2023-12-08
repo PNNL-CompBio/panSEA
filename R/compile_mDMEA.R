@@ -34,7 +34,12 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
                               Fisher_p = as.numeric(metap::sumlog(p_value)$p),
                               types = paste0(type, collapse = ", "),
                               N_types = length(unique(type)))
-  mean.DMEA.df$adj_Fisher_p <- qvalue::qvalue(mean.DMEA.df$Fisher_p, pi0=1)$qvalues
+  if (length(unique(DMEA.df$type)) > 1) {
+    mean.DMEA.df$adj_Fisher_p <- 
+      qvalue::qvalue(mean.DMEA.df$Fisher_p, pi0=1)$qvalues
+  } else {
+    mean.DMEA.df$adj_Fisher_p <- NA
+  }
   mean.DMEA.df <- dplyr::arrange(mean.DMEA.df, desc(mean_NES))
 
   # set theme

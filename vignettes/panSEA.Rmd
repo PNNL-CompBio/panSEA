@@ -6,7 +6,7 @@ package: panSEA
 output:
   BiocStyle::html_document:
   vignette: >
-    %\VignetteIndexEntry{Drug Mechanism Enrichment Analysis}
+    %\VignetteIndexEntry{Multi-omic Set Enrichment Analysis}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteIEncoding{UTF-8}
       toc_float: true

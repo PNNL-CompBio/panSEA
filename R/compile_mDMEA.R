@@ -29,9 +29,13 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
 
   ## create dot plot
   # set order of drug sets (decreasing by mean NES)
-  mean.DMEA.df <- plyr::ddply(top.DMEA.df, .(Drug_set), summarize,
-                              mean.NES = mean(NES))
-  mean.DMEA.df <- dplyr::arrange(mean.DMEA.df, desc(mean.NES))
+  mean.DMEA.df <- plyr::ddply(top.DMEA.df, .(Feature_set), summarize,
+                              mean_NES = mean(NES),
+                              Fisher_p = as.numeric(metap::sumlog(p_value)$p),
+                              types = paste0(type, collapse = ", "),
+                              N_types = length(unique(type)))
+  mean.DMEA.df$adj_Fisher_p <- qvalue::qvalue(mean.DMEA.df$Fisher_p, pi0=1)
+  mean.DMEA.df <- dplyr::arrange(mean.DMEA.df, desc(mean_NES))
 
   # set theme
   bg.theme <- ggplot2::theme(
@@ -95,6 +99,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
   ## compile outputs
   outputs <- list(
     results = DMEA.df,
+    mean.results = mean.DMEA.df,
     NES.df = NES.df,
     minusLogFDR.df = minusLogFDR.df,
     dot.plot = dot.plot,

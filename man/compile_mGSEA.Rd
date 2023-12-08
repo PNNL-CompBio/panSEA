@@ -32,6 +32,9 @@ compile_mGSEA(ssGSEA.list, p=0.05, FDR=0.25, n.dot.sets=10)
 \value{
   \item{results}{Data frame of compiled enrichment results.}
   
+  \item{mean.results}{Data frame of averaged enrichment results with Fisher 
+  combined p-values adjusted with the Benjamini-Hochberg procedure.}
+  
   \item{NES.df}{Data frame of compiled normalized enrichment scores (NES).}
   
   \item{minusLogFDR.df}{Data frame of compiled -log(FDR) values.}

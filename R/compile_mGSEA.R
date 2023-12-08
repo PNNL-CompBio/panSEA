@@ -29,8 +29,12 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   ## create dot plot
   # set order of drug sets (decreasing by NES)
   mean.GSEA.df <- plyr::ddply(top.GSEA.df, .(Feature_set), summarize,
-                              mean.NES = mean(NES))
-  mean.GSEA.df <- dplyr::arrange(mean.GSEA.df, desc(mean.NES))
+                              mean_NES = mean(NES),
+                              Fisher_p = as.numeric(metap::sumlog(p_value)$p),
+                              types = paste0(type, collapse = ", "),
+                              N_types = length(unique(type)))
+  mean.GSEA.df$adj_Fisher_p <- qvalue::qvalue(mean.GSEA.df$Fisher_p, pi0=1)
+  mean.GSEA.df <- dplyr::arrange(mean.GSEA.df, desc(mean_NES))
 
   # set theme
   bg.theme <- ggplot2::theme(
@@ -94,6 +98,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   ## compile outputs
   outputs <- list(
     results = GSEA.df,
+    mean.results = mean.GSEA.df,
     NES.df = NES.df,
     minusLogFDR.df = minusLogFDR.df,
     dot.plot = dot.plot,

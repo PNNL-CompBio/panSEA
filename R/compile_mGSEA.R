@@ -33,7 +33,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
                               Fisher_p = as.numeric(metap::sumlog(p_value)$p),
                               types = paste0(type, collapse = ", "),
                               N_types = length(unique(type)))
-  if (length(unique(GSEA.df$type)) > 1) {
+  if (length(unique(mean.GSEA.df$Fisher_p)) > 1) {
     mean.GSEA.df$adj_Fisher_p <- 
       qvalue::qvalue(mean.GSEA.df$Fisher_p, pi0=1)$qvalues
   } else {

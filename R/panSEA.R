@@ -33,8 +33,8 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
   if (length(group.names) > 2 | length(group.names) < 1) {
     stop("Only 1 or 2 group.names are allowed")
   } else if (length(group.names) == 2) {
-    DEGs <- panSEA::mDEG(data.list, types, group.names,
-                         group.samples, feature.names)
+    DEGs <- panSEA::mDEG(data.list, types, group.names, group.samples,
+                         feature.names, p, FDR, n.dot.sets)
   } else if (length(group.names) == 1) {
     DEGs <- NA
   }

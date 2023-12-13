@@ -44,6 +44,19 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
   gene symbols) in each corresponding data frame in the input data.list. 
   Default: rep("Gene", length(inputs)).
   }
+  
+  \item{p}{P-value cut-off for significant differential expression. Default: 
+  0.05.
+  }
+  
+  \item{FDR}{False discovery rate cut-off value for significant differential 
+  expression. Default: 0.25.
+  }
+
+  \item{n.dot.sets}{Number of features from differential expression analyses to 
+  be represented in the dot plots. The top significant features will be 
+  selected based on abs(Log2FC) and p & FDR cutoff values. Default: 10.
+  }
 }
 
 \value{ 

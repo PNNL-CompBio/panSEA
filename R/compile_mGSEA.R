@@ -11,8 +11,8 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   GSEA.df <- data.table::rbindlist(GSEA.df, use.names = TRUE, idcol = "type")
   GSEA.df$minusLogP <- -log(GSEA.df$p_value, base = 10)
   GSEA.df$minusLogFDR <- -log(GSEA.df$FDR_q_value, base = 10)
-  DMEA.df$sig <- FALSE
-  DMEA.df[DMEA.df$p_value < p & DMEA.df$FDR_q_value < FDR, ]$sig <- TRUE
+  GSEA.df$sig <- FALSE
+  GSEA.df[GSEA.df$p_value < p & GSEA.df$FDR_q_value < FDR, ]$sig <- TRUE
 
   # reduce plot data down to top results
   sig.GSEA.df <- GSEA.df[GSEA.df$p_value < p &

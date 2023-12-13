@@ -11,8 +11,8 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   DEG.df <- data.table::rbindlist(DEGs, use.names = TRUE, idcol = "type")
   DEG.df$minusLogP <- -log(DEG.df$P.Value, base = 10)
   DEG.df$minusLogFDR <- -log(DEG.df$adj.P.Val, base = 10)
-  DMEA.df$sig <- FALSE
-  DMEA.df[DMEA.df$P.Value < p & DMEA.df$adj.P.Val < FDR, ]$sig <- TRUE
+  DEG.df$sig <- FALSE
+  DEG.df[DEG.df$P.Value < p & DEG.df$adj.P.Val < FDR, ]$sig <- TRUE
 
   # reduce plot data down to top results
   sig.DEG.df <- DEG.df[DEG.df$p_value < p &

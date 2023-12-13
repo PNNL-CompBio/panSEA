@@ -1,4 +1,5 @@
-compile_mDEG <- function(DEGs, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
+compile_mDEG <- function(DEGs, p = 0.05, FDR.features = 0.05, 
+                         n.dot.features = 10) {
   ## create heatmap data frames
   # extract feature names for each omics type
   types <- names(DEGs)

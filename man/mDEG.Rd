@@ -14,7 +14,8 @@ transformation is performed prior to analysis.
 mDEG(data.list, types, group.names=c("Diseased", "Healthy"), 
   group.samples=list(2:(0.5 * (ncol(data.list[[1]]) + 1)),
   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])), 
-  feature.names=rep("Gene", length(types)))
+  feature.names=rep("Gene", length(types)), 
+  p=0.05, FDR.features=0.05, n.dot.features=10)
 }
 
 \arguments{
@@ -49,13 +50,13 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
   0.05.
   }
   
-  \item{FDR}{False discovery rate cut-off value for significant differential 
-  expression. Default: 0.25.
+  \item{FDR.features}{False discovery rate cut-off value for significant 
+  differential expression. Default: 0.05.
   }
 
-  \item{n.dot.sets}{Number of features from differential expression analyses to 
-  be represented in the dot plots. The top significant features will be 
-  selected based on abs(Log2FC) and p & FDR cutoff values. Default: 10.
+  \item{n.dot.features}{Number of features from differential expression 
+  analyses to be represented in the dot plots. The top significant features 
+  will be selected based on abs(Log2FC) and p & FDR cutoff values. Default: 10.
   }
 }
 

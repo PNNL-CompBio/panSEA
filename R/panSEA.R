@@ -10,10 +10,11 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                      "msigdb_Homo sapiens_C2_CP:KEGG",
                      length(types)
                    )),
-                   gmt.drugs = "PRISM", p = 0.05, FDR = 0.25,
-                   num.permutations = 1000, stat.type = "Weighted",
-                   min.per.set = 6, scatter.plots = TRUE,
-                   scatter.plot.type = "pearson", drug.sensitivity = "PRISM",
+                   gmt.drugs = "PRISM", p = 0.05, FDR = 0.25, 
+                   FDR.features = 0.05, num.permutations = 1000, 
+                   stat.type = "Weighted", min.per.set = 6, 
+                   scatter.plots = TRUE, scatter.plot.type = "pearson", 
+                   drug.sensitivity = "PRISM",
                    expression = as.list(rep("adherent CCLE", length(types))),
                    n.network.sets = 2*length(types), n.dot.sets = 10) {
   #### Step 1. Check if formats are correct ####
@@ -34,7 +35,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
     stop("Only 1 or 2 group.names are allowed")
   } else if (length(group.names) == 2) {
     DEGs <- panSEA::mDEG(data.list, types, group.names, group.samples,
-                         feature.names, p, FDR, n.dot.sets)
+                         feature.names, p, FDR.features, n.dot.sets)
   } else if (length(group.names) == 1) {
     DEGs <- NA
   }

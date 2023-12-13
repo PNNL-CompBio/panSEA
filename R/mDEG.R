@@ -3,7 +3,7 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
                    2:(0.5 * (ncol(data.list[[1]]) + 1)),
                    (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])
                  ), feature.names = rep("Gene", length(types)),
-                 p = 0.05, FDR = 0.25, n.dot.sets = 10) {
+                 p = 0.05, FDR.features = 0.25, n.dot.features = 10) {
   #### Step 1. Check if formats are correct ####
   # check that there are as many types as data.list inputs
   if (length(types) != length(data.list)) {

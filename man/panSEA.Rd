@@ -19,7 +19,8 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   group.samples=list(2:(0.5 * (ncol(data.list[[1]]) + 1)),
   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])), 
   gmt.features=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))), 
-  gmt.drugs="PRISM", p=0.05, FDR=0.25, min.per.set=6, drug.sensitivity="PRISM", 
+  gmt.drugs="PRISM", p=0.05, FDR=0.25, FDR.features=0.05, min.per.set=6, 
+  drug.sensitivity="PRISM", 
   expression=as.list(rep("adherent CCLE", length(types))), 
   n.network.sets=2*length(types), n.dot.sets=10)
 }
@@ -85,6 +86,10 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   Default: 0.25.
   }
   
+  \item{FDR.features}{False discovery rate cut-off value for significant 
+  differential expression. Default: 0.05.
+  }
+  
   \item{num.permutations}{Number of permutations to perform for enrichment
   analysis. Default: 1000.
   }
@@ -123,9 +128,10 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   based on abs(NES) and p & FDR cutoff values. Default: 2*length(inputs).
   }
   
-  \item{n.dot.sets}{Number of sets from enrichment analyses to be represented 
-  in the dot plots. The top significant sets will be selected based on 
-  abs(NES) and p & FDR cutoff values. Default: 10.
+  \item{n.dot.sets}{Number of sets from enrichment analyses or features from 
+  differential expression analyses to be represented in the dot plots. The top 
+  significant results will be selected based on abs(NES) for sets and 
+  abs(Log2FC) for features as well as p & FDR cutoff values. Default: 10.
   }
 }
 

@@ -9,7 +9,7 @@
 }
 
 \usage{
-compile_mDEG(DEGs, p=0.05, FDR=0.25, n.dot.sets=10)
+compile_mDEG(DEGs, p=0.05, FDR.features=0.05, n.dot.features=10)
 }
 
 \arguments{
@@ -22,13 +22,13 @@ compile_mDEG(DEGs, p=0.05, FDR=0.25, n.dot.sets=10)
   0.05.
   }
 
-  \item{FDR}{False discovery rate cut-off value for significant differential 
-  expression. Default: 0.25.
+  \item{FDR.features}{False discovery rate cut-off value for significant 
+  differential expression. Default: 0.05.
   }
   
-  \item{n.dot.sets}{Number of features from differential expression analyses to 
-  be represented in the dot plots. The top significant features will be 
-  selected based on abs(Log2FC) and p & FDR cutoff values. Default: 10.
+  \item{n.dot.features}{Number of features from differential expression 
+  analyses to be represented in the dot plots. The top significant features 
+  will be selected based on abs(Log2FC) and p & FDR cutoff values. Default: 10.
   }
 }
 

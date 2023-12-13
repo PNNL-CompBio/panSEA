@@ -32,9 +32,9 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
   }
   
   \item{group.samples}{List of column numbers or names corresponding to the 
-  group names. For example, if columns 1:3 correspond to the first group (e.g., 
-  "Diseased") and columns 4:6 correspond to the second group (e.g., "Healthy"), 
-  then group.samples would be list(1:3, 4:6). The order of samples must be the 
+  group names. For example, if columns 2:4 correspond to the first group (e.g., 
+  "Diseased") and columns 5:7 correspond to the second group (e.g., "Healthy"), 
+  then group.samples would be list(2:4, 5:7). The order of samples must be the 
   same across all data frames in the input data.list. Default: 
   list(2:(0.5 * (ncol(data.list[[1]]) + 1)), 
   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])).

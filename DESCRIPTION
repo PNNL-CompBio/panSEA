@@ -14,13 +14,14 @@ URL: https://github.com/BelindaBGarana/panSEA
 BugReports: https://github.com/BelindaBGarana/panSEA/issues
 Encoding: UTF-8
 Imports:
-	ggplot2, DMEA, plyr, dplyr, Biobase, data.table, ggcorrplot, GSA, igraph, 
+	ggplot2, DMEA, plyr, dplyr, Biobase, data.table, ggcorrplot, ggvenn, GSA, igraph, 
 	limma, metap, msigdbr, qvalue, reshape2, stats, stringr, viridis, visNetwork, utils
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
 Collate:
 	'mDEG.R'
 	'ssGSEA.R'
+	'compile_mDEG.R'
 	'compile_mGSEA.R'
 	'compile_mDMEA.R'
 	'mGSEA.R'

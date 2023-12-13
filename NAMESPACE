@@ -1,5 +1,6 @@
 export(mDEG)
 export(ssGSEA)
+export(compile_mDEG)
 export(compile_mGSEA)
 export(compile_mDMEA)
 export(mGSEA)

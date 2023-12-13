@@ -1,6 +1,6 @@
 compile_mDEG <- function(DEGs, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   ## create heatmap data frames
-  # extract DEG results for each omics type
+  # extract feature names for each omics type
   types <- names(DEGs)
   for (i in 1:length(types)) {
     DEGs[[types[i]]]$feature_name <- colnames(DEGs[[types[i]]])[[1]]
@@ -15,8 +15,8 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   DEG.df[DEG.df$P.Value < p & DEG.df$adj.P.Val < FDR, ]$sig <- TRUE
 
   # reduce plot data down to top results
-  sig.DEG.df <- DEG.df[DEG.df$p_value < p &
-    DEG.df$FDR_q_value < FDR, ]
+  sig.DEG.df <- DEG.df[DEG.df$P.Value < p &
+    DEG.df$adj.P.Val < FDR, ]
   
   if (nrow(sig.DEG.df) > 0) {
     top.sig.DEG.df <- 
@@ -43,7 +43,7 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   # set order of drug sets (decreasing by Log2FC)
   mean.DEG.df <- plyr::ddply(DEG.df, .(feature), summarize,
                               mean_Log2FC = mean(Log2FC),
-                              Fisher_p = as.numeric(metap::sumlog(p_value)$p),
+                              Fisher_p = as.numeric(metap::sumlog(P.Value)$p),
                               types = paste0(type, collapse = ", "),
                               N_types = length(unique(type)),
                               N_sig = length(sig == TRUE))
@@ -82,7 +82,7 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
     top.DEG.df,
     ggplot2::aes(
       x = type, y = feature, color = Log2FC,
-      size = -log10(FDR_q_value)
+      size = -log10(adj.P.Val)
     )
   ) +
     ggplot2::geom_point() +

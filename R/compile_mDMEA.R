@@ -34,7 +34,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
   venn.list <- list()
   for (i in 1:length(types)) {
     venn.list[[types[i]]] <- DMEA.df[DMEA.df$type == types[i] &
-                                       DMEA.df$sig, ]
+                                       DMEA.df$sig, ]$Drug_set
   }
   
   # generate venn diagram

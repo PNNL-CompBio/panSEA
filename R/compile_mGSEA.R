@@ -33,7 +33,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   venn.list <- list()
   for (i in 1:length(types)) {
     venn.list[[types[i]]] <- GSEA.df[GSEA.df$type == types[i] &
-                                       GSEA.df$sig, ]
+                                       GSEA.df$sig, ]$Feature_set
   }
   
   # generate venn diagram

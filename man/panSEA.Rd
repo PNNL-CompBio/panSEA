@@ -130,11 +130,7 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
 }
 
 \value{
-  \item{DEGs}{List of data frames containing differential expression results 
-  after using limma::eBayes for each input data frame. The 
-  last column of each output data frame 'Log2Transformed' describes if the 
-  corresponding input data was log2-transformed to normalize the distribution. 
-  NA if length(group.names) == 1.}
+  \item{DEGs}{Outputs from mDEG function. NA if length(group.names) == 1.}
   
   \item{mGSEA.results}{Outputs from mGSEA function. If 
   length(group.names) == 1, list of outputs corresponds to each sample (i.e., 

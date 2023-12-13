@@ -13,7 +13,9 @@ compile_mDEG(DEGs, p=0.05, FDR=0.25, n.dot.sets=10)
 }
 
 \arguments{
-  \item{DEGs}{Output from mDEG function (list of data frames).
+  \item{DEGs}{List of data frames containing differential expression analysis 
+  results. Each data frame must contain features in column 1 and columns named 
+  Log2FC, P.Value, and adj.P.Val.
   }
 
   \item{p}{P-value cut-off for significant differential expression. Default: 
@@ -90,5 +92,5 @@ mDEG.test <- panSEA::mDEG(list(expr, expr2),
   types = c("Transcriptomics", "Proteomics"))
 
 ## Step 4: compile mDEG results
-compile_mDEG.test <- panSEA::compile_mDEG(mDEG.test)
+compile_mDEG.test <- panSEA::compile_mDEG(mDEG.test$all.results)
 }

@@ -5,7 +5,9 @@
 \title{Multi-omic Diffential Expression Analysis
 }
 
-\description{Run differential expression analysis for each input data type.
+\description{Run differential expression analysis using limma::eBayes for each 
+input data type. If the input data is not normally distributed, Log2 
+transformation is performed prior to analysis.
 }
 
 \usage{
@@ -44,10 +46,13 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
   }
 }
 
-\value{List of data frames containing differential expression results 
-  after using limma::eBayes for each data frame in the input data.list. The 
-  last column of each output data frame 'Log2Transformed' describes if the 
-  corresponding input data was log2-transformed to normalize the distribution.
+\value{ 
+  \item{compiled.results}{Outputs from compile_mDEG function.}
+
+  \item{all.results}{List of data frames containing differential expression 
+  analysis results for each input type. The last column of each output data 
+  frame 'Log2Transformed' describes if the corresponding input data was 
+  log2-transformed to normalize the distribution}
 }
 
 \author{Belinda B. Garana

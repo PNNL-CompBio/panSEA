@@ -43,7 +43,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
   if (length(group.names) == 2) {
     ## ssGSEA & network graph
     if (!is.null(gmt.features)) {
-      ssGSEA.results <- panSEA::mGSEA(DEGs, gmt.features, types,
+      ssGSEA.results <- panSEA::mGSEA(DEGs$all.results, gmt.features, types,
         feature.names,
         p = p, FDR = FDR,
         num.permutations = num.permutations,
@@ -58,7 +58,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
       }
 
       ssGSEA.network <- panSEA::netSEA(
-        DEGs, outputs, feature.names,
+        DEGs$all.results, outputs, feature.names,
         GSEA.rank.var, p, FDR, n.network.sets
       )
     }
@@ -67,7 +67,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
     if (!is.null(drug.sensitivity) & !is.null(expression) &
       !is.null(gmt.drugs)) {
       DMEA.results <- panSEA::mDMEA(drug.sensitivity, gmt.drugs, expression,
-        DEGs, types,
+        DEGs$all.results, types,
         rank.metric = DMEA.rank.var,
         weight.values = GSEA.rank.var, p = p, FDR = FDR,
         num.permutations = num.permutations,

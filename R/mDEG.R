@@ -81,8 +81,11 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
         deg[[types[i]]]$Log2Transformed <- LogC
       }
     }
+    
+    # compile DEG results across omics types ####
+    compiled.DEGs <- panSEA::compile_mDEG(deg, p, FDR, n.dot.sets)
   }
 
-  return(deg
+  return(compiled.results = compiled.DEGs, all.results = deg
   )
 }

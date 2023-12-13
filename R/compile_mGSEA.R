@@ -11,6 +11,8 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   GSEA.df <- data.table::rbindlist(GSEA.df, use.names = TRUE, idcol = "type")
   GSEA.df$minusLogP <- -log(GSEA.df$p_value, base = 10)
   GSEA.df$minusLogFDR <- -log(GSEA.df$FDR_q_value, base = 10)
+  DMEA.df$sig <- FALSE
+  DMEA.df[DMEA.df$p_value < p & DMEA.df$FDR_q_value < FDR, ]$sig <- TRUE
 
   # reduce plot data down to top results
   sig.GSEA.df <- GSEA.df[GSEA.df$p_value < p &
@@ -26,13 +28,25 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
       GSEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
   }
 
+  ## create venn diagram
+  # compile significant results for each type in list
+  venn.list <- list()
+  for (i in 1:length(types)) {
+    venn.list[[types[i]]] <- GSEA.df[GSEA.df$type == types[i] &
+                                       GSEA.df$sig, ]
+  }
+  
+  # generate venn diagram
+  venn.plot <- ggvenn::ggvenn(venn.list)
+  
   ## create dot plot
   # set order of drug sets (decreasing by NES)
   mean.GSEA.df <- plyr::ddply(GSEA.df, .(Feature_set), summarize,
                               mean_NES = mean(NES),
                               Fisher_p = as.numeric(metap::sumlog(p_value)$p),
                               types = paste0(type, collapse = ", "),
-                              N_types = length(unique(type)))
+                              N_types = length(unique(type)),
+                              N_sig = length(sig == TRUE))
   if (length(unique(mean.GSEA.df$Fisher_p)) > 1) {
     mean.GSEA.df$adj_Fisher_p <- 
       qvalue::qvalue(mean.GSEA.df$Fisher_p, pi0=1)$qvalues
@@ -107,6 +121,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
     mean.results = mean.GSEA.df,
     NES.df = NES.df,
     minusLogFDR.df = minusLogFDR.df,
+    venn.diagram = venn.plot,
     dot.plot = dot.plot,
     corr = corr.mat,
     corr.plot = corr.mat.plot

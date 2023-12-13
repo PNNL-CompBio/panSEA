@@ -38,6 +38,10 @@ compile_mGSEA(ssGSEA.list, p=0.05, FDR=0.25, n.dot.sets=10)
   \item{NES.df}{Data frame of compiled normalized enrichment scores (NES).}
   
   \item{minusLogFDR.df}{Data frame of compiled -log(FDR) values.}
+  
+  \item{venn.diagram}{ggplot object of venn diagram displaying the number of 
+  significantly enriched sets across different inputs and percentage of the 
+  total number of significantly enriched sets belonging to each input.}
 
   \item{dot.plot}{ggplot2 object of dot plot displaying top significantly 
   enriched sets across different inputs.}

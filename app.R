@@ -346,7 +346,9 @@ server <- function(input, output) {
         )
         cat(file = stderr(), "About to make ksdb gmt", "\n")
       } else if (input[[paste0("gmtType",i)]] == "Kinase-substrate (substrate_site sets)") {
-        ksdb <- read.csv("ksdb_20231101.csv")
+        ksdb <- read.csv(paste0("https://raw.githubusercontent.com/",
+                                "BelindaBGarana/panSEA/shiny-app/data/",
+                                "ksdb_20231101.csv"))
         ksdb <- ksdb[ksdb$KIN_ORGANISM == input[[paste0("species",i)]], ]
         ksdb$SUB_SITE <- paste0(ksdb$SUBSTRATE, ksdb$SUB_MOD_RSD, collapse = "_")
         gmt.features[[i]] <- DMEA::as_gmt(ksdb, "SUB_SITE", "KINASE", min.per.set = 6, 

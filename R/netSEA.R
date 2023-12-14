@@ -83,13 +83,12 @@ netSEA <- function(inputs, outputs,
       lead.mat <- as.matrix(lead.mat)
 
       # create correlation matrix
-      cor.result <- stats::cor(lead.mat) # check format to change colnames below
-      for (i in 1:nrow(edge.df)) {
-        edge.df$importance[i] <- cor.result[
-          cor.result$var1 == edge.df$source[i] &
-            cor.result$var2 == edge.df$target[i],
-        ]$cor
-      }
+      cor.result <- as.data.frame(stats::cor(lead.mat))
+      cor.result$source <- rownames(cor.result)
+      cor.result.long <- dplyr::distinct(
+        reshape2::melt(cor.result, id.vars = "source", 
+                       variable.name = "target", value.name = "importance"))
+      edge.df <- merge(edge.df[ , 1:3], cor.result.long, all.x = TRUE)
     } else {
       edge.df$importance <- 1
     }
@@ -107,7 +106,7 @@ netSEA <- function(inputs, outputs,
 
     # turn data frame into igraph object
     network <- igraph::graph_from_data_frame(
-      d = edge.df[ , 2:4], directed = FALSE, 
+      d = edge.df[ , c("source", "target", "importance")], directed = FALSE, 
       vertices = node.df[, c("Element", "carac")]
     )
 
@@ -117,7 +116,7 @@ netSEA <- function(inputs, outputs,
                                        "blue", "red")
 
     # generate static plot
-    igraph::plot.igraph(network, edge.width = edge.df$importance)
+    igraph::plot.igraph(network, edge.width = abs(edge.df$importance))
     legend("bottomleft",
              legend = levels(node.df$carac),
              col = color.pal, bty = "n", pch = 20, pt.cex = 3, cex = 1.5,

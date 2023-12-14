@@ -17,7 +17,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   # summarize results for each Feature_set
   mean.GSEA.df <- plyr::ddply(GSEA.df, .(Feature_set), summarize,
                               mean_NES = mean(NES),
-                              Fisher_p = as.numeric(metap::sumlog(p_value)$p),
+                              Fisher_p = as.numeric(metap::sumlog(na.omit(p_value))$p),
                               types = paste0(type, collapse = ", "),
                               N_types = length(unique(type)),
                               N_sig = length(sig[sig]),

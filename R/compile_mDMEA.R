@@ -18,7 +18,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
   # summarize results for each Drug_set
   mean.DMEA.df <- plyr::ddply(top.DMEA.df, .(Drug_set), summarize,
                               mean_NES = mean(NES),
-                              Fisher_p = as.numeric(metap::sumlog(p_value)$p),
+                              Fisher_p = as.numeric(metap::sumlog(na.omit(p_value))$p),
                               types = paste0(type, collapse = ", "),
                               N_types = length(unique(type)),
                               N_sig = length(sig[sig]),

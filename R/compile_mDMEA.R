@@ -21,7 +21,8 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
                               Fisher_p = as.numeric(metap::sumlog(p_value)$p),
                               types = paste0(type, collapse = ", "),
                               N_types = length(unique(type)),
-                              N_sig = length(sig == TRUE))
+                              N_sig = length(sig[sig]),
+                              sig_types = paste0(type[sig], collapse = ", "))
   if (length(unique(mean.DMEA.df$Fisher_p)) > 1) {
     mean.DMEA.df$adj_Fisher_p <- 
       qvalue::qvalue(mean.DMEA.df$Fisher_p, pi0=1)$qvalues
@@ -35,7 +36,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
   # reduce plot data down to top results
   sig.DMEA.df <- mean.DMEA.df[mean.DMEA.df$N_sig > 0, ]
   
-  if (nrow(sig.DMEA.df) >= dot.sets) {
+  if (nrow(sig.DMEA.df) >= n.dot.sets) {
     top.DMEA.df <- 
       sig.DMEA.df %>% dplyr::slice_max(abs(mean_NES), n = n.dot.sets)
   } else {

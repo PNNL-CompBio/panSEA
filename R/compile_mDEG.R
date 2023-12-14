@@ -22,7 +22,8 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR.features = 0.05,
                              Fisher_p = metap::sumlog(P.Value)$p,
                              types = paste0(type, collapse = ", "),
                              N_types = length(unique(type)),
-                             N_sig = length(sig == TRUE))
+                             N_sig = length(sig[sig]),
+                             sig_types = paste0(type[sig], collapse = ", "))
   if (length(unique(mean.DEG.df$Fisher_p)) > 1) {
     mean.DEG.df$adj_Fisher_p <- 
       qvalue::qvalue(mean.DEG.df$Fisher_p, pi0=1)$qvalues
@@ -36,7 +37,7 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR.features = 0.05,
   # reduce plot data down to top results
   sig.DEG.df <- mean.DEG.df[mean.DEG.df$N_sig > 0, ]
   
-  if (nrow(sig.DEG.df) >= dot.features) {
+  if (nrow(sig.DEG.df) >= n.dot.features) {
     top.DEG.df <- 
       sig.DEG.df %>% dplyr::slice_max(abs(mean_Log2FC), n = n.dot.features)
   } else {

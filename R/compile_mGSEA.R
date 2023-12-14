@@ -20,7 +20,8 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
                               Fisher_p = as.numeric(metap::sumlog(p_value)$p),
                               types = paste0(type, collapse = ", "),
                               N_types = length(unique(type)),
-                              N_sig = length(sig == TRUE))
+                              N_sig = length(sig[sig]),
+                              sig_types = paste0(type[sig], collapse = ", "))
   if (length(unique(mean.GSEA.df$Fisher_p)) > 1) {
     mean.GSEA.df$adj_Fisher_p <- 
       qvalue::qvalue(mean.GSEA.df$Fisher_p, pi0=1)$qvalues
@@ -35,7 +36,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   # reduce plot data down to top results
   sig.GSEA.df <- mean.GSEA.df[mean.GSEA.df$N_sig > 0, ]
   
-  if (nrow(sig.GSEA.df) >= dot.sets) {
+  if (nrow(sig.GSEA.df) >= n.dot.sets) {
     top.GSEA.df <- 
       sig.GSEA.df %>% dplyr::slice_max(abs(mean_NES), n = n.dot.sets)
   } else {

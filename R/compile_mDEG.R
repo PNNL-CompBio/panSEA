@@ -13,21 +13,37 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR.features = 0.05,
   DEG.df$minusLogP <- -log(DEG.df$P.Value, base = 10)
   DEG.df$minusLogFDR <- -log(DEG.df$adj.P.Val, base = 10)
   DEG.df$sig <- FALSE
-  DEG.df[DEG.df$P.Value < p & DEG.df$adj.P.Val < FDR, ]$sig <- TRUE
+  DEG.df[DEG.df$P.Value < p & DEG.df$adj.P.Val < FDR.features, ]$sig <- TRUE
 
-  # reduce plot data down to top results
-  sig.DEG.df <- DEG.df[DEG.df$P.Value < p &
-    DEG.df$adj.P.Val < FDR, ]
+  # summarize results for each feature
+  mean.DEG.df <- plyr::ddply(DEG.df, .(feature), summarize,
+                             mean_Log2FC = mean(Log2FC),
+                             sd_Log2FC = sd(Log2FC),
+                             Fisher_p = metap::sumlog(P.Value)$p,
+                             types = paste0(type, collapse = ", "),
+                             N_types = length(unique(type)),
+                             N_sig = length(sig == TRUE))
+  if (length(unique(mean.DEG.df$Fisher_p)) > 1) {
+    mean.DEG.df$adj_Fisher_p <- 
+      qvalue::qvalue(mean.DEG.df$Fisher_p, pi0=1)$qvalues
+  } else {
+    mean.DEG.df$adj_Fisher_p <- NA
+  }
   
-  if (nrow(sig.DEG.df) > 0) {
-    top.sig.DEG.df <- 
-      sig.DEG.df %>% dplyr::slice_max(abs(Log2FC), n = n.dot.sets)
+  # order results by Log2FC for dot plot
+  mean.DEG.df <- dplyr::arrange(mean.DEG.df, desc(mean_Log2FC))
+  
+  # reduce plot data down to top results
+  sig.DEG.df <- mean.DEG.df[mean.DEG.df$N_sig > 0, ]
+  
+  if (nrow(sig.DEG.df) >= dot.features) {
     top.DEG.df <- 
-      DEG.df[DEG.df$feature %in% top.sig.DEG.df$feature, ]
+      sig.DEG.df %>% dplyr::slice_max(abs(mean_Log2FC), n = n.dot.features)
   } else {
     top.DEG.df <- 
-      DEG.df %>% dplyr::slice_max(abs(Log2FC), n = n.dot.sets)
+      mean.DEG.df %>% dplyr::slice_max(abs(mean_Log2FC), n = n.dot.features)
   }
+  dot.df <- DEG.df[DEG.df$feature %in% top.DEG.df$feature, ]
 
   ## create venn diagram
   # compile significant results for each type in list
@@ -38,24 +54,9 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR.features = 0.05,
   }
   
   # generate venn diagram
-  venn.plot <- ggvenn::ggvenn(venn.list)
+  venn.plot <- ggvenn::ggvenn(venn.list) # only displays first 4 types
   
   ## create dot plot
-  # set order of drug sets (decreasing by Log2FC)
-  mean.DEG.df <- plyr::ddply(DEG.df, .(feature), summarize,
-                              mean_Log2FC = mean(Log2FC),
-                              Fisher_p = as.numeric(metap::sumlog(P.Value)$p),
-                              types = paste0(type, collapse = ", "),
-                              N_types = length(unique(type)),
-                              N_sig = length(sig == TRUE))
-  if (length(unique(mean.DEG.df$Fisher_p)) > 1) {
-    mean.DEG.df$adj_Fisher_p <- 
-      qvalue::qvalue(mean.DEG.df$Fisher_p, pi0=1)$qvalues
-  } else {
-    mean.DEG.df$adj_Fisher_p <- NA
-  }
-  mean.DEG.df <- dplyr::arrange(mean.DEG.df, desc(mean_Log2FC))
-
   # set theme
   bg.theme <- ggplot2::theme(
     legend.background = element_rect(), legend.position = "top",

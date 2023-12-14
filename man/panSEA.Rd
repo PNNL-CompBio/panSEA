@@ -166,14 +166,12 @@ improves prioritization of therapeutics for repurposing. BMC Bioinformatics 24,
 \author{Belinda B. Garana
 }
 
-\note{To save network graphs (e.g., mGSEA.network and mDMEA.network outputs), 
-generate plot and then use dev.print. For example: 
+\note{To save static network graphs (e.g., mGSEA.network$static and 
+mDMEA.network$static outputs), generate plot and then use dev.print. 
 
-# Run netSEA or object in which netSEA results are stored
-#netSEA()
-
-# Save resulting plot as PDF named "Network_graph.pdf"
-dev.print(pdf, "Network_graph.pdf")
+To save 
+interactive network graphs (e.g., mGSEA.network$interactive and 
+mDMEA.network$interactive outputs) as HTML file, use visNetwork::visSave.
 }
 
 \section{Warning}{The column name for your samples must be the same in your

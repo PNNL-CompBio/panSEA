@@ -56,7 +56,8 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
 
   \item{n.dot.features}{Number of features from differential expression 
   analyses to be represented in the dot plots. The top significant features 
-  will be selected based on abs(Log2FC) and p & FDR cutoff values. Default: 10.
+  will be selected based on abs(mean_Log2FC) and p & FDR cutoff values. 
+  Default: 10.
   }
 }
 
@@ -70,6 +71,10 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
 }
 
 \author{Belinda B. Garana
+}
+
+\note{Output venn.diagram in compiled.results will only display results for 
+the first 4 data frames in the input data.list.
 }
 
 \examples{

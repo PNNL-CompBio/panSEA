@@ -15,33 +15,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
   DMEA.df$sig <- FALSE
   DMEA.df[DMEA.df$p_value < p & DMEA.df$FDR_q_value < FDR, ]$sig <- TRUE
 
-  # reduce plot data down to top results
-  sig.DMEA.df <- DMEA.df[DMEA.df$p_value < p &
-    DMEA.df$FDR_q_value < FDR, ]
-  
-  if (nrow(sig.DMEA.df) > 0) {
-    top.sig.DMEA.df <- 
-      sig.DMEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
-    top.DMEA.df <- 
-      DMEA.df[DMEA.df$Drug_set %in% top.sig.DMEA.df$Drug_set, ]
-  } else {
-    top.DMEA.df <- 
-      DMEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
-  }
-
-  ## create venn diagram
-  # compile significant results for each type in list
-  venn.list <- list()
-  for (i in 1:length(types)) {
-    venn.list[[types[i]]] <- DMEA.df[DMEA.df$type == types[i] &
-                                       DMEA.df$sig, ]$Drug_set
-  }
-  
-  # generate venn diagram
-  venn.plot <- ggvenn::ggvenn(venn.list)
-  
-  ## create dot plot
-  # set order of drug sets (decreasing by mean NES)
+  # summarize results for each Drug_set
   mean.DMEA.df <- plyr::ddply(top.DMEA.df, .(Drug_set), summarize,
                               mean_NES = mean(NES),
                               Fisher_p = as.numeric(metap::sumlog(p_value)$p),
@@ -54,8 +28,34 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
   } else {
     mean.DMEA.df$adj_Fisher_p <- NA
   }
+  
+  # order results by NES for dot plot
   mean.DMEA.df <- dplyr::arrange(mean.DMEA.df, desc(mean_NES))
+  
+  # reduce plot data down to top results
+  sig.DMEA.df <- mean.DMEA.df[mean.DMEA.df$N_sig > 0, ]
+  
+  if (nrow(sig.DMEA.df) >= dot.sets) {
+    top.DMEA.df <- 
+      sig.DMEA.df %>% dplyr::slice_max(abs(mean_NES), n = n.dot.sets)
+  } else {
+    top.DMEA.df <- 
+      mean.DMEA.df %>% dplyr::slice_max(abs(mean_NES), n = n.dot.sets)
+  }
+  dot.df <- DMEA.df[DMEA.df$Drug_set %in% top.DMEA.df$Drug_set, ]
 
+  ## create venn diagram
+  # compile significant results for each type in list
+  venn.list <- list()
+  for (i in 1:length(types)) {
+    venn.list[[types[i]]] <- DMEA.df[DMEA.df$type == types[i] &
+                                       DMEA.df$sig, ]$Drug_set
+  }
+  
+  # generate venn diagram
+  venn.plot <- ggvenn::ggvenn(venn.list) # only displays first 4 types
+  
+  ## create dot plot
   # set theme
   bg.theme <- ggplot2::theme(
     legend.background = element_rect(), legend.position = "top",

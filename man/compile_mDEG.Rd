@@ -28,7 +28,8 @@ compile_mDEG(DEGs, p=0.05, FDR.features=0.05, n.dot.features=10)
   
   \item{n.dot.features}{Number of features from differential expression 
   analyses to be represented in the dot plots. The top significant features 
-  will be selected based on abs(Log2FC) and p & FDR cutoff values. Default: 10.
+  will be selected based on abs(mean_Log2FC) and p & FDR cutoff values. 
+  Default: 10.
   }
 }
 
@@ -58,6 +59,10 @@ compile_mDEG(DEGs, p=0.05, FDR.features=0.05, n.dot.features=10)
 }
 
 \author{Belinda B. Garana
+}
+
+\note{Output venn.diagram will only display results for the first 4 data frames 
+in the input data.list.
 }
 
 \seealso{

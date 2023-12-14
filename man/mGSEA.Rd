@@ -67,7 +67,7 @@ mGSEA(data.list, gmt=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types)
   
   \item{n.dot.sets}{Number of sets from enrichment analyses to be represented 
   in the dot plot. The top significant sets will be selected based on 
-  abs(NES) and p & FDR cutoff values. Default: 10.
+  abs(mean_NES) and p & FDR cutoff values. Default: 10.
   }
 }
 
@@ -81,6 +81,10 @@ mGSEA(data.list, gmt=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types)
 }
 
 \section{Warning}{Each feature must have only one numeric, nonzero rank.
+}
+
+\note{Output venn.diagram in compiled.results will only display results for 
+the first 4 data frames in the input data.list.
 }
 
 \seealso{

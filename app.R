@@ -11,6 +11,7 @@ library(DMEA)
 library(data.table)
 library(dplyr)
 library(msigdbr)
+library(visNetwork)
 
 # set limit for upload file size
 MB.limit <- 180
@@ -123,7 +124,26 @@ ui <- fluidPage(
           )
         ),
         tabPanel(
-          "Gene Set Enrichment Analysis: Network Graph", plotOutput("GSEA.net"),
+          "Gene Set Enrichment Analysis: Interactive Network Graph", 
+          visNetworkOutput("GSEA.int.net"),
+          conditionalPanel(
+            condition = "output.msg=='Run completed'",
+            downloadButton(outputId = "GSEA.int.net.dwnld", 
+                           label = "Download network graph of GSEA results")
+          )
+        ),
+        tabPanel(
+          "Drug Mechanism Enrichment Analysis: Interactive Network Graph", 
+          visNetworkOutput("DMEA.int.net"),
+          conditionalPanel(
+            condition = "output.msg=='Run completed'",
+            downloadButton(outputId = "DMEA.int.net.dwnld", 
+                           label = "Download network graph of GSEA results")
+          )
+        ),
+        tabPanel(
+          "Gene Set Enrichment Analysis: Static Network Graph", 
+          plotOutput("GSEA.net"),
           conditionalPanel(
             condition = "output.msg=='Run completed'",
             downloadButton(outputId = "GSEA.net.dwnld", 
@@ -131,7 +151,7 @@ ui <- fluidPage(
           )
         ),
         tabPanel(
-          "Drug Mechanism Enrichment Analysis: Network Graph", 
+          "Drug Mechanism Enrichment Analysis: Static Network Graph", 
           plotOutput("DMEA.net"),
           conditionalPanel(
             condition = "output.msg=='Run completed'",
@@ -215,20 +235,25 @@ server <- function(input, output) {
              ),
              textInput(paste0("featureName",i),
                        "Column name containing feature names", "Gene"),
-             selectInput(paste0("gmtType",i),
+              selectInput(paste0("gmtType",i),
                          "Feature set annotations",
                          choices = c(
-                           "MSigDB",
+                           "MSigDB (gene sets)",
+                           "Kinase-substrate (substrate_site sets)",
                            "Other"
                          )
-             ),
+              ),
              conditionalPanel(
-               condition = paste0("input.gmtType",i," == 'MSigDB'"),
-               textInput("species1", "Species", "Homo sapiens"),
-               textInput("cat1", "Category (e.g., H, C1, C2, ..., C8)", "C2"),
-               textInput("subcat1", "Optional: sub-category (e.g., CGP, CP:KEGG, or CP:REACTOME for category C2)", "CP:KEGG"),
+               condition = paste0("input.gmtType",i," == 'MSigDB (gene sets)'"),
+               textInput(paste0("species",i), "Species", "Homo sapiens"),
+               textInput(paste0("cat",i), "Category (e.g., H, C1, C2, ..., C8)", "C2"),
+               textInput(paste0("subcat",i), "Optional: sub-category (e.g., CGP, CP:KEGG, or CP:REACTOME for category C2)", "CP:KEGG"),
                helpText("More info about MSigDB gene sets is available here: https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp")
              ),
+             conditionalPanel(
+               condition = paste0("input.gmtType",i," == 'Kinase-substrate (substrate_site sets)'"),
+               textInput(paste0("species",i), "Species", "human")
+              ),
              conditionalPanel(
                condition = paste0("input.gmtType",i," == 'Other'"),
                fileInput(paste0("gmtInfo",i),
@@ -314,11 +339,18 @@ server <- function(input, output) {
     for (i in 1:n.types){
       # reformat gmt.features
       cat(file = stderr(), "About to get info for MSigDB", "\n")
-      if (input[[paste0("gmtType",i)]] == "MSigDB") {
+      if (input[[paste0("gmtType",i)]] == "MSigDB (gene sets)") {
         gmt.features[[i]] <- paste0(
           "msigdb_", input[[paste0("species",i)]], "_",
           input[[paste0("cat",i)]], "_", input[[paste0("subcat",i)]]
         )
+        cat(file = stderr(), "About to make ksdb gmt", "\n")
+      } else if (input[[paste0("gmtType",i)]] == "Kinase-substrate (substrate_site sets)") {
+        ksdb <- read.csv("ksdb_20231101.csv")
+        ksdb <- ksdb[ksdb$KIN_ORGANISM == input[[paste0("species",i)]], ]
+        ksdb$SUB_SITE <- paste0(ksdb$SUBSTRATE, ksdb$SUB_MOD_RSD, collapse = "_")
+        gmt.features[[i]] <- DMEA::as_gmt(ksdb, "SUB_SITE", "KINASE", min.per.set = 6, 
+                            descriptions = "KIN_ACC_ID")
         cat(file = stderr(), "About to make custom gmt", "\n")
       } else if (input[[paste0("gmtType",i)]] == "Other") {
         custom.gmt.features <- read.csv(input[[paste0("gmtInfo",i)]]$datapath) 
@@ -475,24 +507,51 @@ server <- function(input, output) {
         renderPlot({
           results$mDMEA.results$compiled.results$dot.plot
         })
+      
+      output$GSEA.int.net.dwnld <- downloadHandler(
+        filename = function() {
+          paste0("GSEA_interactive_network_graph_", Sys.Date(), ".html")
+        },
+        content = function(file) {
+          visSave(results$mGSEA.network$interactive, file)
+        }
+      )
+      output$GSEA.int.net <-
+        renderVisNetwork({
+          results$mGSEA.network$interactive
+        })
+      
+      output$DMEA.int.net.dwnld <- downloadHandler(
+        filename = function() {
+          paste0("DMEA_interactive_network_graph_", Sys.Date(), ".html")
+        },
+        content = function(file) {
+          visSave(results$mDMEA.network$interactive, file)
+        }
+      )
+      output$DMEA.int.net <-
+        renderVisNetwork({
+          results$mDMEA.network$interactive
+        })
+      
 
       output$GSEA.net.dwnld <- downloadHandler(
         filename = function() {
-          paste0("GSEA_net_plot_", Sys.Date(), ".pdf")
+          paste0("GSEA_static_network_graph_", Sys.Date(), ".pdf")
         },
         content = function(file) {
-          results$mGSEA.network
+          results$mGSEA.network$static
           dev.print(pdf, file)
         }
       )
       output$GSEA.net <-
         renderPlot({
-          results$mGSEA.network
+          results$mGSEA.network$static
         })
 
       output$DMEA.net.dwnld <- downloadHandler(
         filename = function() {
-          paste0("DMEA_net_plot_", Sys.Date(), ".pdf")
+          paste0("DMEA_static_network_graph_", Sys.Date(), ".pdf")
         },
         content = function(file) {
           results$mDMEA.network
@@ -624,33 +683,46 @@ server <- function(input, output) {
         renderPlot({
           results$mDMEA.results[[1]]$compiled.results$dot.plot
         })
-
-      output$GSEA.net.dwnld <- downloadHandler(
+      
+      output$GSEA.int.net.dwnld <- downloadHandler(
         filename = function() {
-          paste0("GSEA_net_plot_", Sys.Date(), ".pdf")
+          paste0("GSEA_interactive_network_graph_", Sys.Date(), ".html")
         },
         content = function(file) {
-          results$mGSEA.network[[1]]
+          visSave(results$mGSEA.network[[1]]$interactive, file)
+        }
+      )
+      output$GSEA.int.net <-
+        renderVisNetwork({
+          results$mGSEA.network[[1]]$interactive
+        })
+
+      output$DMEA.int.net.dwnld <- downloadHandler(
+        filename = function() {
+          paste0("DMEA_interactive_network_graph_", Sys.Date(), ".html")
+        },
+        content = function(file) {
+          visSave(results$mDMEA.network[[1]]$interactive, file)
+        }
+      )
+      output$DMEA.int.net <-
+        renderVisNetwork({
+          results$mDMEA.network[[1]]$interactive
+        })
+      
+      
+      output$GSEA.net.dwnld <- downloadHandler(
+        filename = function() {
+          paste0("GSEA_static_network_graph_", Sys.Date(), ".pdf")
+        },
+        content = function(file) {
+          results$mGSEA.network[[1]]$static
           dev.print(pdf, file)
         }
       )
       output$GSEA.net <-
         renderPlot({
-          results$mGSEA.network[[1]]
-        })
-
-      output$DMEA.net.dwnld <- downloadHandler(
-        filename = function() {
-          paste0("DMEA_net_plot_", Sys.Date(), ".pdf")
-        },
-        content = function(file) {
-          results$mDMEA.network[[1]]
-          dev.print(pdf, file)
-        }
-      )
-      output$DMEA.net <-
-        renderPlot({
-          results$mDMEA.network[[1]]
+          results$mGSEA.network[[1]]$static
         })
 
       output$GSEAResults.dwnld <- downloadHandler(

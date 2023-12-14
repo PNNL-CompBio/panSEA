@@ -87,6 +87,6 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
     compiled.DEGs <- panSEA::compile_mDEG(deg, p, FDR.features, n.dot.features)
   }
 
-  return(compiled.results = compiled.DEGs, all.results = deg
-  )
+  return(list(compiled.results = compiled.DEGs, all.results = deg
+  ))
 }

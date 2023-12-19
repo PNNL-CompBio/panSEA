@@ -94,7 +94,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(
-      x = "Omics Type",
+      x = "Input Data",
       y = "Drug Mechanism of Action",
       color = "NES", size = "-log(FDR)"
     )

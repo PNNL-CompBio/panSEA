@@ -94,7 +94,7 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR.features = 0.05,
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(
-      x = "Omics Type",
+      x = "Input Data",
       y = "Feature Set",
       color = "Log2FC", size = "-log(FDR)"
     )

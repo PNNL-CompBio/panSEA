@@ -94,7 +94,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(
-      x = "Omics Type",
+      x = "Input Data",
       y = "Feature Set",
       color = "NES", size = "-log(FDR)"
     )

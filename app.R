@@ -10,6 +10,7 @@ library(panSEA)
 library(DMEA)
 library(data.table)
 library(dplyr)
+library(ggplot2)
 library(msigdbr)
 library(visNetwork)
 
@@ -214,7 +215,7 @@ ui <- fluidPage(
 server <- function(input, output) {
   url <- a("https://github.com/belindabgarana/panSEA", href = "https://github.com/belindabgarana/panSEA")
   output$info <- renderUI({
-    tagList("For more information or to contact us, please visit: ", url)
+    tagList("Please note that '0' values are < 0.001. For more information or to contact us, please visit: ", url)
   })
   output$private <- renderText({
     "No user data is stored on our secure server, so your data will remain private."
@@ -451,15 +452,15 @@ server <- function(input, output) {
                     DEG.files[1], row.names = FALSE)
           write.csv(results$mDEG.results$compiled.results$mean.results,
                     DEG.files[2], row.names = FALSE)
-          ggsave(DEG.files[3], 
+          ggplot2::ggsave(DEG.files[3], 
                  results$mDEG.results$compiled.results$venn.diagram,
                  device = "pdf"
           )
-          ggsave(DEG.files[4], 
+          ggplot2::ggsave(DEG.files[4], 
                  results$mDEG.results$compiled.results$corr.plot,
                  device = "pdf"
           )
-          ggsave(DEG.files[5], 
+          ggplot2::ggsave(DEG.files[5], 
                  results$mDEG.results$compiled.results$dot.plot,
                  device = "pdf"
           )
@@ -471,15 +472,15 @@ server <- function(input, output) {
                     GSEA.files[1], row.names = FALSE)
           write.csv(results$mGSEA.results$compiled.results$mean.results,
                     GSEA.files[2], row.names = FALSE)
-          ggsave(GSEA.files[3], 
+          ggplot2::ggsave(GSEA.files[3], 
                  results$mGSEA.results$compiled.results$venn.diagram,
                  device = "pdf"
           )
-          ggsave(GSEA.files[4], 
+          ggplot2::ggsave(GSEA.files[4], 
                  results$mGSEA.results$compiled.results$corr.plot,
                  device = "pdf"
           )
-          ggsave(GSEA.files[5], 
+          ggplot2::ggsave(GSEA.files[5], 
                  results$mGSEA.results$compiled.results$dot.plot,
                  device = "pdf"
           )
@@ -494,15 +495,15 @@ server <- function(input, output) {
                     DMEA.files[1], row.names = FALSE)
           write.csv(results$mDMEA.results$compiled.results$mean.results,
                     DMEA.files[2], row.names = FALSE)
-          ggsave(DMEA.files[3], 
+          ggplot2::ggsave(DMEA.files[3], 
                  results$mDMEA.results$compiled.results$venn.diagram,
                  device = "pdf"
           )
-          ggsave(DMEA.files[4], 
+          ggplot2::ggsave(DMEA.files[4], 
                  results$mDMEA.results$compiled.results$corr.plot,
                  device = "pdf"
           )
-          ggsave(DMEA.files[5], 
+          ggplot2::ggsave(DMEA.files[5], 
                  results$mDMEA.results$compiled.results$dot.plot,
                  device = "pdf"
           )
@@ -523,7 +524,7 @@ server <- function(input, output) {
           paste0("GSEA_dot_plot_", Sys.Date(), ".pdf")
         },
         content = function(file) {
-          ggsave(file, results$mGSEA.results$compiled.results$dot.plot, 
+          ggplot2::ggsave(file, results$mGSEA.results$compiled.results$dot.plot, 
                  device = "pdf")
         }
       )
@@ -537,7 +538,7 @@ server <- function(input, output) {
           paste0("DMEA_dot_plot_", Sys.Date(), ".pdf")
         },
         content = function(file) {
-          ggsave(file, results$mDMEA.results$compiled.results$dot.plot, 
+          ggplot2::ggsave(file, results$mDMEA.results$compiled.results$dot.plot, 
                  device = "pdf")
         }
       )
@@ -609,9 +610,14 @@ server <- function(input, output) {
           write.csv(results$mGSEA.results$compiled.results$mean.results, file)
         }
       )
-      output$GSEAResults <- 
-        results$mGSEA.results$compiled.results$mean.results %>% 
+      GSEA.results <- results$mGSEA.results$compiled.results$mean.results %>% 
         dplyr::mutate_if(is.numeric, ~round(., 3))
+      output$GSEAResults <- DT::renderDataTable({
+        DT::datatable(GSEA.results
+                      # ,
+                      # options = list(order = list(list(2, 'desc')))
+                      )
+      })
       
       output$DMEAResults.dwnld <- downloadHandler(
         filename = function() {
@@ -621,9 +627,14 @@ server <- function(input, output) {
           write.csv(results$mDMEA.results$compiled.results$mean.results, file)
         }
       )
-      output$DMEAResults <- 
-        results$mDMEA.results$compiled.results$mean.results %>% 
+      DMEA.results <- results$mDMEA.results$compiled.results$mean.results %>% 
         dplyr::mutate_if(is.numeric, ~round(., 3))
+      output$DMEAResults <- DT::renderDataTable({
+        DT::datatable(DMEA.results
+                      # ,
+                      # options = list(order = list(list(2, 'desc')))
+                      )
+      })
       
       output$msg <- renderText({
         "Run completed"
@@ -644,15 +655,15 @@ server <- function(input, output) {
                     GSEA.files[1], row.names = FALSE)
           write.csv(results$mGSEA.results[[1]]$compiled.results$mean.results,
                     GSEA.files[2], row.names = FALSE)
-          ggsave(GSEA.files[3], 
+          ggplot2::ggsave(GSEA.files[3], 
                  results$mGSEA.results[[1]]$compiled.results$venn.diagram,
                  device = "pdf"
           )
-          ggsave(GSEA.files[4], 
+          ggplot2::ggsave(GSEA.files[4], 
                  results$mGSEA.results[[1]]$compiled.results$corr.plot,
                  device = "pdf"
           )
-          ggsave(GSEA.files[5], 
+          ggplot2::ggsave(GSEA.files[5], 
                  results$mGSEA.results[[1]]$compiled.results$dot.plot,
                  device = "pdf"
           )
@@ -667,15 +678,15 @@ server <- function(input, output) {
                     DMEA.files[1], row.names = FALSE)
           write.csv(results$mDMEA.results[[1]]$compiled.results$mean.results,
                     DMEA.files[2], row.names = FALSE)
-          ggsave(DMEA.files[3], 
+          ggplot2::ggsave(DMEA.files[3], 
                  results$mDMEA.results[[1]]$compiled.results$venn.diagram,
                  device = "pdf"
           )
-          ggsave(DMEA.files[4], 
+          ggplot2::ggsave(DMEA.files[4], 
                  results$mDMEA.results[[1]]$compiled.results$corr.plot,
                  device = "pdf"
           )
-          ggsave(DMEA.files[5], 
+          ggplot2::ggsave(DMEA.files[5], 
                  results$mDMEA.results[[1]]$compiled.results$dot.plot,
                  device = "pdf"
           )
@@ -696,7 +707,7 @@ server <- function(input, output) {
           paste0("GSEA_dot_plot_", Sys.Date(), ".pdf")
         },
         content = function(file) {
-          ggsave(file, results$mGSEA.results[[1]]$compiled.results$dot.plot, 
+          ggplot2::ggsave(file, results$mGSEA.results[[1]]$compiled.results$dot.plot, 
                  device = "pdf")
         }
       )
@@ -710,7 +721,7 @@ server <- function(input, output) {
           paste0("DMEA_dot_plot_", Sys.Date(), ".pdf")
         },
         content = function(file) {
-          ggsave(file, results$mDMEA.results[[1]]$compiled.results$dot.plot, 
+          ggplot2::ggsave(file, results$mDMEA.results[[1]]$compiled.results$dot.plot, 
                  device = "pdf")
         }
       )
@@ -768,9 +779,14 @@ server <- function(input, output) {
                     file)
         }
       )
-      output$GSEAResults <- 
-        results$mGSEA.results[[1]]$compiled.results$mean.results %>% 
+      GSEA.results <- results$mGSEA.results[[1]]$compiled.results$mean.results %>% 
         dplyr::mutate_if(is.numeric, ~round(., 3))
+      output$GSEAResults <- DT::renderDataTable({
+        DT::datatable(GSEA.results
+                      # ,
+                      # options = list(order = list(list(2, 'desc')))
+                      )
+      })
       
       output$DMEAResults.dwnld <- downloadHandler(
         filename = function() {
@@ -781,9 +797,14 @@ server <- function(input, output) {
                     file)
         }
       )
-      output$DMEAResults <- 
-        results$mDMEA.results[[1]]$compiled.results$mean.results %>% 
+      DMEA.results <- results$mDMEA.results[[1]]$compiled.results$mean.results %>% 
         dplyr::mutate_if(is.numeric, ~round(., 3))
+      output$DMEAResults <- DT::renderDataTable({
+        DT::datatable(DMEA.results
+                      # ,
+                      # options = list(order = list(list(2, 'desc')))
+                      )
+      })
       
       output$msg <- renderText({
         "Run completed"

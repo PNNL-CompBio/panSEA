@@ -16,6 +16,27 @@ library(visNetwork)
 # set limit for upload file size
 MB.limit <- 180
 
+# set file names
+DEG.files <- c("Differential_expression_results.csv",
+               "Differential_expression_mean_results.csv",
+               "Differential_expression_venn_diagram.pdf",
+               "Differential_expression_correlation_matrix.pdf",
+               "Differential_expression_dot_plot.pdf")
+GSEA.files <- c("GSEA_results.csv",
+                "GSEA_mean_results.csv",
+                "GSEA_venn_diagram.pdf",
+                "GSEA_correlation_matrix.pdf",
+                "GSEA_dot_plot.pdf",
+                "GSEA_static_network_graph.pdf",
+                "GSEA_interactive_network.graph.html")
+DMEA.files <- c("DMEA_results.csv",
+                "DMEA_mean_results.csv",
+                "DMEA_venn_diagram.pdf",
+                "DMEA_correlation_matrix.pdf",
+                "DMEA_dot_plot.pdf",
+                "DMEA_static_network_graph.pdf",
+                "DMEA_interactive_network.graph.html")
+
 # Define UI for application
 ui <- fluidPage(
   # Application title
@@ -40,7 +61,7 @@ ui <- fluidPage(
       # select # of input data sets
       numericInput("Ntypes",
         "How many omics data sets would you like to process?",
-        value = 1, min = 1, max = 6
+        value = 2, min = 2
       ),
       
       # allow input of multiple data sets
@@ -141,24 +162,24 @@ ui <- fluidPage(
                            label = "Download network graph of GSEA results")
           )
         ),
-        tabPanel(
-          "Gene Set Enrichment Analysis: Static Network Graph", 
-          plotOutput("GSEA.net"),
-          conditionalPanel(
-            condition = "output.msg=='Run completed'",
-            downloadButton(outputId = "GSEA.net.dwnld", 
-                           label = "Download network graph of GSEA results")
-          )
-        ),
-        tabPanel(
-          "Drug Mechanism Enrichment Analysis: Static Network Graph", 
-          plotOutput("DMEA.net"),
-          conditionalPanel(
-            condition = "output.msg=='Run completed'",
-            downloadButton(outputId = "DMEA.net.dwnld", 
-                           label = "Download network graph of GSEA results")
-          )
-        ),
+        # tabPanel(
+        #   "Gene Set Enrichment Analysis: Static Network Graph", 
+        #   plotOutput("GSEA.net"),
+        #   conditionalPanel(
+        #     condition = "output.msg=='Run completed'",
+        #     downloadButton(outputId = "GSEA.net.dwnld", 
+        #                    label = "Download network graph of GSEA results")
+        #   )
+        # ),
+        # tabPanel(
+        #   "Drug Mechanism Enrichment Analysis: Static Network Graph", 
+        #   plotOutput("DMEA.net"),
+        #   conditionalPanel(
+        #     condition = "output.msg=='Run completed'",
+        #     downloadButton(outputId = "DMEA.net.dwnld", 
+        #                    label = "Download network graph of GSEA results")
+        #   )
+        # ),
         tabPanel(
           "Gene Set Enrichment Analysis: Averaged Results", 
           DT::dataTableOutput("GSEAResults"),
@@ -404,13 +425,12 @@ server <- function(input, output) {
     # run panSEA
     cat(file = stderr(), "About to run panSEA", "\n")
     results <- panSEA::panSEA(
-      data.list, types, feature.names,
-      GSEA.rank.var, DMEA.rank.var, group.names,
-      groupSamples, gmt.features, gmt.drugs, p,
-      FDR, min.per.set, drug.sensitivity, expression,
-      n.network.sets, n.dot.plot.sets
+      data.list, types, feature.names, GSEA.rank.var, DMEA.rank.var,
+      group.names, groupSamples, gmt.features, gmt.drugs, p, FDR, FDR.features,
+      num.permutations = 1000, stat.type = "Weighted", min.per.set,
+      scatter.plots = TRUE, scatter.plot.type = "pearson", drug.sensitivity,
+      expression, n.network.sets, n.dot.plot.sets
     )
-    deg <- data.table::rbindlist(results$DEGs, use.names = TRUE, idcol = "type")
 
     # output results
     cat(file = stderr(), "About to output results", "\n")
@@ -420,64 +440,80 @@ server <- function(input, output) {
           paste0("panSEA_results_", Sys.Date(), ".zip")
         },
         content = function(file) {
-          all.files <- c(
-            "Differential_expression_results.csv",
-            "GSEA_results.csv",
-            "Mean_GSEA_results.csv",
-            "GSEA_dot_plot.pdf",
-            "GSEA_correlation_matrix.pdf",
-            "GSEA_static_network_graph.pdf",
-            "GSEA_interactive_network.graph.html",
-            "DMEA_results.csv",
-            "Mean_DMEA_results.csv",
-            "DMEA_dot_plot.pdf",
-            "DMEA_correlation_matrix.pdf",
-            "DMEA_static_network_graph.pdf",
-            "DMEA_interactive_network.graph.html",
-            "All_panSEA_results.rds"
+          # set file names
+          all.files <- c("Differential_expression_results.zip",
+                         "GSEA_results.zip", "DMEA_results.zip",
+                         "All_panSEA_results.rds"
           )
-          write.csv(deg, all.files[1], row.names = FALSE)
-          write.csv(results$mGSEA.results[[1]]$compiled.results$results,
-                    all.files[2],
-                    row.names = FALSE
-          )
-          write.csv(results$mGSEA.results[[1]]$compiled.results$mean.results,
-                    all.files[3],
-                    row.names = FALSE
-          )
-          ggsave(all.files[4], 
-                 results$mGSEA.results[[1]]$compiled.results$dot.plot,
+          
+          # generate DEG files
+          write.csv(results$mDEG.results$compiled.results$results,
+                    DEG.files[1], row.names = FALSE)
+          write.csv(results$mDEG.results$compiled.results$mean.results,
+                    DEG.files[2], row.names = FALSE)
+          ggsave(DEG.files[3], 
+                 results$mDEG.results$compiled.results$venn.diagram,
                  device = "pdf"
           )
-          ggsave(all.files[5], 
-                 results$mGSEA.results[[1]]$compiled.results$corr.matrix,
+          ggsave(DEG.files[4], 
+                 results$mDEG.results$compiled.results$corr.plot,
                  device = "pdf"
           )
-          results$mGSEA.network[[1]]$static
-          dev.print(pdf, all.files[6])
-          visNetwork::visSave(results$mGSEA.network[[1]]$interactive, 
-                              all.files[7])
-          write.csv(results$mDMEA.results[[1]]$compiled.results$results,
-                    all.files[8],
-                    row.names = FALSE
-          )
-          write.csv(results$mDMEA.results[[1]]$compiled.results$mean.results,
-                    all.files[9],
-                    row.names = FALSE
-          )
-          ggsave(all.files[10], 
-                 results$mDMEA.results[[1]]$compiled.results$dot.plot,
+          ggsave(DEG.files[5], 
+                 results$mDEG.results$compiled.results$dot.plot,
                  device = "pdf"
           )
-          ggsave(all.files[11], 
-                 results$mDMEA.results[[1]]$compiled.results$corr.matrix,
+          zip(zipfile = all.files[1], files = DEG.files)
+ 
+          
+          # generate GSEA files
+          write.csv(results$mGSEA.results$compiled.results$results,
+                    GSEA.files[1], row.names = FALSE)
+          write.csv(results$mGSEA.results$compiled.results$mean.results,
+                    GSEA.files[2], row.names = FALSE)
+          ggsave(GSEA.files[3], 
+                 results$mGSEA.results$compiled.results$venn.diagram,
                  device = "pdf"
           )
-          results$mDMEA.network$static[[1]]
-          dev.print(pdf, all.files[12])
-          visNetwork::visSave(results$mDMEA.network[[1]]$interactive, 
-                              all.files[13])
-          saveRDS(results, all.files[14])
+          ggsave(GSEA.files[4], 
+                 results$mGSEA.results$compiled.results$corr.plot,
+                 device = "pdf"
+          )
+          ggsave(GSEA.files[5], 
+                 results$mGSEA.results$compiled.results$dot.plot,
+                 device = "pdf"
+          )
+          results$mGSEA.network$static
+          dev.print(pdf, GSEA.files[6])
+          visNetwork::visSave(results$mGSEA.network$interactive, 
+                              GSEA.files[7])
+          zip(zipfile = all.files[2], files = GSEA.files)
+          
+          # generate DMEA files
+          write.csv(results$mDMEA.results$compiled.results$results,
+                    DMEA.files[1], row.names = FALSE)
+          write.csv(results$mDMEA.results$compiled.results$mean.results,
+                    DMEA.files[2], row.names = FALSE)
+          ggsave(DMEA.files[3], 
+                 results$mDMEA.results$compiled.results$venn.diagram,
+                 device = "pdf"
+          )
+          ggsave(DMEA.files[4], 
+                 results$mDMEA.results$compiled.results$corr.plot,
+                 device = "pdf"
+          )
+          ggsave(DMEA.files[5], 
+                 results$mDMEA.results$compiled.results$dot.plot,
+                 device = "pdf"
+          )
+          results$mDMEA.network$static
+          dev.print(pdf, DMEA.files[6])
+          visNetwork::visSave(results$mDMEA.network$interactive, 
+                              DMEA.files[7])
+          zip(zipfile = all.files[3], files = DMEA.files)
+          
+          # save all results
+          saveRDS(results, all.files[4])
           zip(zipfile = file, files = all.files)
         }
       )
@@ -537,33 +573,33 @@ server <- function(input, output) {
         })
       
 
-      output$GSEA.net.dwnld <- downloadHandler(
-        filename = function() {
-          paste0("GSEA_static_network_graph_", Sys.Date(), ".pdf")
-        },
-        content = function(file) {
-          results$mGSEA.network$static
-          dev.print(pdf, file)
-        }
-      )
-      output$GSEA.net <-
-        renderPlot({
-          results$mGSEA.network$static
-        })
-
-      output$DMEA.net.dwnld <- downloadHandler(
-        filename = function() {
-          paste0("DMEA_static_network_graph_", Sys.Date(), ".pdf")
-        },
-        content = function(file) {
-          results$mDMEA.network
-          dev.print(pdf, file)
-        }
-      )
-      output$DMEA.net <-
-        renderPlot({
-          results$mDMEA.network
-        })
+      # output$GSEA.net.dwnld <- downloadHandler(
+      #   filename = function() {
+      #     paste0("GSEA_static_network_graph_", Sys.Date(), ".pdf")
+      #   },
+      #   content = function(file) {
+      #     results$mGSEA.network$static
+      #     dev.print(pdf, file)
+      #   }
+      # )
+      # output$GSEA.net <-
+      #   renderPlot({
+      #     results$mGSEA.network$static
+      #   })
+      # 
+      # output$DMEA.net.dwnld <- downloadHandler(
+      #   filename = function() {
+      #     paste0("DMEA_static_network_graph_", Sys.Date(), ".pdf")
+      #   },
+      #   content = function(file) {
+      #     results$mDMEA.network
+      #     dev.print(pdf, file)
+      #   }
+      # )
+      # output$DMEA.net <-
+      #   renderPlot({
+      #     results$mDMEA.network
+      #   })
 
       output$GSEAResults.dwnld <- downloadHandler(
         filename = function() {
@@ -598,62 +634,59 @@ server <- function(input, output) {
           paste0("panSEA_results_", Sys.Date(), ".zip")
         },
         content = function(file) {
-          all.files <- c(
-            "GSEA_results.csv",
-            "Mean_GSEA_results.csv",
-            "GSEA_dot_plot.pdf",
-            "GSEA_correlation_matrix.pdf",
-            "GSEA_static_network_graph.pdf",
-            "GSEA_interactive_network.graph.html",
-            "DMEA_results.csv",
-            "Mean_DMEA_results.csv",
-            "DMEA_dot_plot.pdf",
-            "DMEA_correlation_matrix.pdf",
-            "DMEA_static_network_graph.pdf",
-            "DMEA_interactive_network.graph.html",
-            "All_panSEA_results.rds"
+          # set file names
+          all.files <- c("GSEA_results.zip", "DMEA_results.zip",
+                         "All_panSEA_results.rds"
           )
+        
+          # generate GSEA files
           write.csv(results$mGSEA.results[[1]]$compiled.results$results,
-            all.files[1],
-            row.names = FALSE
-          )
+                    GSEA.files[1], row.names = FALSE)
           write.csv(results$mGSEA.results[[1]]$compiled.results$mean.results,
-                    all.files[2],
-                    row.names = FALSE
+                    GSEA.files[2], row.names = FALSE)
+          ggsave(GSEA.files[3], 
+                 results$mGSEA.results[[1]]$compiled.results$venn.diagram,
+                 device = "pdf"
           )
-          ggsave(all.files[3], 
+          ggsave(GSEA.files[4], 
+                 results$mGSEA.results[[1]]$compiled.results$corr.plot,
+                 device = "pdf"
+          )
+          ggsave(GSEA.files[5], 
                  results$mGSEA.results[[1]]$compiled.results$dot.plot,
-            device = "pdf"
-          )
-          ggsave(all.files[4], 
-                 results$mGSEA.results[[1]]$compiled.results$corr.matrix,
-            device = "pdf"
+                 device = "pdf"
           )
           results$mGSEA.network[[1]]$static
-          dev.print(pdf, all.files[5])
+          dev.print(pdf, GSEA.files[6])
           visNetwork::visSave(results$mGSEA.network[[1]]$interactive, 
-                              all.files[6])
+                              GSEA.files[7])
+          zip(zipfile = all.files[2], files = GSEA.files)
+          
+          # generate DMEA files
           write.csv(results$mDMEA.results[[1]]$compiled.results$results,
-            all.files[7],
-            row.names = FALSE
-          )
+                    DMEA.files[1], row.names = FALSE)
           write.csv(results$mDMEA.results[[1]]$compiled.results$mean.results,
-                    all.files[8],
-                    row.names = FALSE
+                    DMEA.files[2], row.names = FALSE)
+          ggsave(DMEA.files[3], 
+                 results$mDMEA.results[[1]]$compiled.results$venn.diagram,
+                 device = "pdf"
           )
-          ggsave(all.files[9], 
+          ggsave(DMEA.files[4], 
+                 results$mDMEA.results[[1]]$compiled.results$corr.plot,
+                 device = "pdf"
+          )
+          ggsave(DMEA.files[5], 
                  results$mDMEA.results[[1]]$compiled.results$dot.plot,
-            device = "pdf"
+                 device = "pdf"
           )
-          ggsave(all.files[10], 
-                 results$mDMEA.results[[1]]$compiled.results$corr.matrix,
-            device = "pdf"
-          )
-          results$mDMEA.network$static[[1]]
-          dev.print(pdf, all.files[11])
+          results$mDMEA.network[[1]]$static
+          dev.print(pdf, DMEA.files[6])
           visNetwork::visSave(results$mDMEA.network[[1]]$interactive, 
-                              all.files[12])
-          saveRDS(results, all.files[13])
+                              DMEA.files[7])
+          zip(zipfile = all.files[3], files = DMEA.files)
+          
+          # save all results
+          saveRDS(results, all.files[4])
           zip(zipfile = file, files = all.files)
         }
       )
@@ -712,20 +745,19 @@ server <- function(input, output) {
           results$mDMEA.network[[1]]$interactive
         })
       
-      
-      output$GSEA.net.dwnld <- downloadHandler(
-        filename = function() {
-          paste0("GSEA_static_network_graph_", Sys.Date(), ".pdf")
-        },
-        content = function(file) {
-          results$mGSEA.network[[1]]$static
-          dev.print(pdf, file)
-        }
-      )
-      output$GSEA.net <-
-        renderPlot({
-          results$mGSEA.network[[1]]$static
-        })
+      # output$GSEA.net.dwnld <- downloadHandler(
+      #   filename = function() {
+      #     paste0("GSEA_static_network_graph_", Sys.Date(), ".pdf")
+      #   },
+      #   content = function(file) {
+      #     results$mGSEA.network[[1]]$static
+      #     dev.print(pdf, file)
+      #   }
+      # )
+      # output$GSEA.net <-
+      #   renderPlot({
+      #     results$mGSEA.network[[1]]$static
+      #   })
 
       output$GSEAResults.dwnld <- downloadHandler(
         filename = function() {

@@ -82,7 +82,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
 
   # generate dot plot
   dot.plot <- ggplot2::ggplot(
-    top.GSEA.df,
+    dot.df,
     ggplot2::aes(
       x = type, y = Feature_set, color = NES,
       size = -log10(FDR_q_value)

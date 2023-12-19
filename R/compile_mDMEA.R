@@ -82,7 +82,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
 
   # generate dot plot
   dot.plot <- ggplot2::ggplot(
-    top.DMEA.df,
+    dot.df,
     ggplot2::aes(
       x = type, y = Drug_set, color = NES,
       size = -log10(FDR_q_value)

@@ -82,7 +82,7 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR.features = 0.05,
 
   # generate dot plot
   dot.plot <- ggplot2::ggplot(
-    top.DEG.df,
+    dot.df,
     ggplot2::aes(
       x = type, y = feature, color = Log2FC,
       size = -log10(adj.P.Val)

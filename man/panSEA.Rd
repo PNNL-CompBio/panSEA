@@ -136,7 +136,8 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
 }
 
 \value{
-  \item{DEGs}{Outputs from mDEG function. NA if length(group.names) == 1.}
+  \item{mDEG.results}{Outputs from mDEG function. NA if length(group.names) == 
+  1.}
   
   \item{mGSEA.results}{Outputs from mGSEA function. If 
   length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
@@ -188,14 +189,15 @@ drug sensitivity data frame as in your expression data frame.
 \examples{
 ### example of 1 group: signatures of sensitivity to RAF or EGFR inhibitors
 ## Step 1: get inputs & format
-types <- c("GSE66539_SKCM_sensitive_vs_resistant_to_vemurafenib",
+examples <- c("GSE66539_SKCM_sensitive_vs_resistant_to_vemurafenib",
 "GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib")
+types <- c("GSE66539", "GSE31625") # short names for inputs for plots
 
 inputs <- list()
-for (i in 1:length(types)) {
-inputs[[types[i]]] <- read.csv(
+for (i in 1:length(examples)) {
+inputs[[examples[i]]] <- read.csv(
 paste0("https://raw.githubusercontent.com/BelindaBGarana/", 
-"DMEA/shiny-app/Examples/Gene_signature/", types[i], 
+"DMEA/shiny-app/Examples/Gene_signature/", examples[i], 
 "/Filtered_gene_signature_no_duplicates.csv"))
 }
 

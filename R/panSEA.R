@@ -178,7 +178,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
   }
 
   return(list(
-    DEGs = DEGs,
+    mDEG.results = DEGs,
     mGSEA.results = ssGSEA.results, mDMEA.results = DMEA.results,
     mGSEA.network = ssGSEA.network, mDMEA.network = DMEA.network
   ))

@@ -49,7 +49,7 @@ compile_mDMEA(DMEA.list, p=0.05, FDR=0.25, n.dot.sets=10)
   \item{corr}{Data frame of correlation results between NES values of 
   different inputs.}
   
-  \item{corr.plot}{Tile plot of correlation results between NES values of 
+  \item{corr.matrix}{Tile plot of correlation results between NES values of 
   different inputs.}
 }
 

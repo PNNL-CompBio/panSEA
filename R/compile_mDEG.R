@@ -127,7 +127,7 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR.features = 0.05,
     venn.diagram = venn.plot,
     dot.plot = dot.plot,
     corr = corr.mat,
-    corr.plot = corr.mat.plot
+    corr.matrix = corr.mat.plot
   )
   return(outputs)
 }

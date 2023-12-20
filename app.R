@@ -457,7 +457,7 @@ server <- function(input, output) {
                  device = "pdf"
           )
           ggplot2::ggsave(DEG.files[4], 
-                 results$mDEG.results$compiled.results$corr.plot,
+                 results$mDEG.results$compiled.results$corr.matrix,
                  device = "pdf"
           )
           ggplot2::ggsave(DEG.files[5], 
@@ -477,7 +477,7 @@ server <- function(input, output) {
                  device = "pdf"
           )
           ggplot2::ggsave(GSEA.files[4], 
-                 results$mGSEA.results$compiled.results$corr.plot,
+                 results$mGSEA.results$compiled.results$corr.matrix,
                  device = "pdf"
           )
           ggplot2::ggsave(GSEA.files[5], 
@@ -500,7 +500,7 @@ server <- function(input, output) {
                  device = "pdf"
           )
           ggplot2::ggsave(DMEA.files[4], 
-                 results$mDMEA.results$compiled.results$corr.plot,
+                 results$mDMEA.results$compiled.results$corr.matrix,
                  device = "pdf"
           )
           ggplot2::ggsave(DMEA.files[5], 
@@ -660,7 +660,7 @@ server <- function(input, output) {
                  device = "pdf"
           )
           ggplot2::ggsave(GSEA.files[4], 
-                 results$mGSEA.results[[1]]$compiled.results$corr.plot,
+                 results$mGSEA.results[[1]]$compiled.results$corr.matrix,
                  device = "pdf"
           )
           ggplot2::ggsave(GSEA.files[5], 
@@ -683,7 +683,7 @@ server <- function(input, output) {
                  device = "pdf"
           )
           ggplot2::ggsave(DMEA.files[4], 
-                 results$mDMEA.results[[1]]$compiled.results$corr.plot,
+                 results$mDMEA.results[[1]]$compiled.results$corr.matrix,
                  device = "pdf"
           )
           ggplot2::ggsave(DMEA.files[5], 

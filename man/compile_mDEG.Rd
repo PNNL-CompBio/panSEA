@@ -54,7 +54,7 @@ compile_mDEG(DEGs, p=0.05, FDR.features=0.05, n.dot.features=10)
   \item{corr}{Data frame of correlation results between Log2FC values of 
   different inputs.}
   
-  \item{corr.plot}{Tile plot of correlation results between Log2FC values of 
+  \item{corr.matrix}{Tile plot of correlation results between Log2FC values of 
   different inputs.}
 }
 

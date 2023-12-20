@@ -127,7 +127,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
     venn.diagram = venn.plot,
     dot.plot = dot.plot,
     corr = corr.mat,
-    corr.plot = corr.mat.plot
+    corr.matrix = corr.mat.plot
   )
   return(outputs)
 }

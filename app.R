@@ -262,6 +262,8 @@ server <- function(input, output) {
                          choices = c(
                            "MSigDB (gene sets)",
                            "Kinase-substrate (substrate_site sets)",
+                           "HMDB (human metabolite sets)",
+                           "Lipid classes",
                            "Other"
                          )
               ),
@@ -372,11 +374,37 @@ server <- function(input, output) {
                                 "BelindaBGarana/panSEA/shiny-app/data/",
                                 "ksdb_20231101.csv"))
         ksdb <- ksdb[ksdb$KIN_ORGANISM == input[[paste0("species",i)]], ]
-        ksdb$SUB_SITE <- paste0(ksdb$SUBSTRATE, ksdb$SUB_MOD_RSD, collapse = "_")
-        gmt.features[[i]] <- DMEA::as_gmt(ksdb, "SUB_SITE", "KINASE", min.per.set = 6, 
-                            descriptions = "KIN_ACC_ID")
+        ksdb$SUB_SITE <- paste0(ksdb$SUBSTRATE, ksdb$SUB_MOD_RSD, 
+                                collapse = "_")
+        gmt.features[[i]] <- DMEA::as_gmt(ksdb, "SUB_SITE", "KINASE", 
+                                          min.per.set = 6, 
+                                          descriptions = "KIN_ACC_ID")
+        cat(file = stderr(), "About to make metabolite gmt", "\n")
+      } else if (input[[paste0("gmtType",i)]] == "HMDB (human metabolite sets)") {
+        # based on hmdb v5.0 downloaded 20231220: https://hmdb.ca/downloads 
+        hmdb <- read.csv(paste0("https://raw.githubusercontent.com/",
+                                "BelindaBGarana/panSEA/shiny-app/data/",
+                                "ksdb_20231101.csv"))
+        gmt.features[[i]] <- 
+          DMEA::as_gmt(hmdb, "name", "direct_parent", min.per.set)
+        cat(file = stderr(), "About to make lipid gmt", "\n")
+      } else if (input[[paste0("gmtType",i)]] == "Lipid classes") {
+        # based on lipid MiniOn https://github.com/PNNL-Comp-Mass-Spec/Rodin/blob/master/R/02_lipid_miner.R
+        # https://pubmed.ncbi.nlm.nih.gov/30977807/
+        FattyAcyls<-c("EA", "carnitine","FAHFA", "WE" )
+        Prenol<- c("CoQ")
+        Sterol<- c("Cholesterol","CE")
+        Sphingolipids<- c("Cer","CerP","HexCer","SM","GM3","GD","PE-Cer","PI-Cer","Sulfatide","GM1","GM2","LacCer","GalCer","GD1", "GD3","GlcCer", "MIP2C","MIPC","GT3")
+        Glycerophospholipids<-c("PE", "PC", "PS", "PI", "PG", "PA", "CL","PIP","PIP2", "PIP3")
+        Glycerolipids<- c("TG","DG","MG","DGDG","MGDG","SQMG", "SQDG", "DGTS/A")
+        lipid.info <- data.frame(FattyAcyls, Prenol, Sterol, Sphingolipids, 
+                                 Glycerophospholipids, Glycerolipids)
+        lipid.info <- reshape2::melt(lipid.info, value.name = "lipid")
+        gmt.features[[i]] <- 
+          DMEA::as_gmt(lipid.info, "lipid", colnames(lipid.info)[1], 
+                       min.per.set)
         cat(file = stderr(), "About to make custom gmt", "\n")
-      } else if (input[[paste0("gmtType",i)]] == "Other") {
+      }else if (input[[paste0("gmtType",i)]] == "Other") {
         custom.gmt.features <- read.csv(input[[paste0("gmtInfo",i)]]$datapath) 
         gmt.features[[i]] <- 
           DMEA::as_gmt(custom.gmt.features, 

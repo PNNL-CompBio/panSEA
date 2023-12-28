@@ -6,9 +6,9 @@
 # To recreate: press run through the whole script
 # Overview
 # 1 - import CCLE data
-# 2 - import Coldren et al. data
-# 3 - import GSE31625 data
-# 4 - import GSE12790 data
+# 2 - import Coldren et al. data & run differential expression analysis
+# 3 - import GSE31625 data & run differential expression analysis
+# 4 - import GSE12790 data & run differential expression analysis
 # 5 - run panSEA
 
 rm(list=ls(all=TRUE))
@@ -60,6 +60,7 @@ samples = allsamples|>
 
 # merge prot.df with genes, samples to stop using improve IDs
 prot.df <- merge(prot.df, genes)
+prot.df <- merge(prot.df, samples)
 
 #### metabolomics (CCLE)
 met.df <- read.csv(paste0("~/OneDrive - PNNL/Documents/GitHub/panSEA/Examples/",
@@ -221,23 +222,43 @@ sml <- sml[sel]
 # IMPORTANT: each group must have the same # & position of samples across data sets
 # e.g. "Sensitive" samples must be in the same columns across input data.list
 # but "Resistant" could have different # as "Sensitive" hypothetically
-group.names = c("Sensitive", "Resistant")
+group.names <- "Sensitive vs. Resistant"
+group.samples <- 2
+
+# get gene set info
+msigdb.info <- msigdbr::msigdbr("Homo sapiens", "C2", "CP:KEGG")
+
+# extract necessary info into data frame
+msigdb.info <- as.data.frame(msigdb.info[, c(
+  "gene_symbol",
+  "gs_name",
+  "gs_description"
+)])
+
+gene.gmt <- DMEA::as_gmt(
+  msigdb.info, "gene_symbol", "gs_name", min.per.set = 6,
+  descriptions = "gs_description")
+
+# get metabolite set info
+# based on hmdb v5.0 downloaded 20231220: https://hmdb.ca/downloads 
+hmdb <- read.csv(paste0("https://raw.githubusercontent.com/",
+                        "BelindaBGarana/panSEA/shiny-app/data/",
+                        "ksdb_20231101.csv"))
+met.gmt <- DMEA::as_gmt(hmdb, "name", "direct_parent", min.per.set)
+
 #### Step 5a: Fig2: 3 transcriptomic signatures of EGFRi sensitivity ####
 types <- c("GSE12790", "GSE31625", "Coldren et al")
-data.list <- list()
-group.samples <- list()
+data.list <- list(GSE12790, GSE31625, Coldren.transcr)
+gmt.features <- list(gene.gmt, gene.gmt, gene.gmt)
 
 Fig2.panSEA <- panSEA::panSEA(data.list, types, group.names = group.names,
                               group.samples = group.samples)
 
 #### Step 5b: Fig3: transcriptomics, proteomics, and metabolomics signatures ####
 types <- c("transcriptomics", "proteomics", "metabolomics")
-data.list <- list()
+data.list <- list(Coldren.transcr, Coldren.prot, Coldren.met)
 feature.names <- c("Gene", "Gene", "Metabolite")
-group.samples <- list()
-gmt.features <- list("msigdb_Homo sapiens_C2_CP:KEGG",
-                     "msigdb_Homo sapiens_C2_CP:KEGG",
-                     "hmdb")
+gmt.features <- list(gene.gmt, gene.gmt, met.gmt)
 
 Fig3.panSEA <- panSEA::panSEA(data.list, types, feature.names, 
                               group.names = group.names,

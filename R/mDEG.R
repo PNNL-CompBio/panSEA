@@ -83,15 +83,17 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
       }
     }
     
-    # compile DEG results across omics types ####
+    # compile DEG results across omics types
     if (length(types) > 1) {
       compiled.DEGs <- panSEA::compile_mDEG(deg, p, FDR.features, 
                                             n.dot.features)
     } else {
       compiled.DEGS <- NA
     }
-  }
 
   return(list(compiled.results = compiled.DEGs, all.results = deg
   ))
+  }
 }
+
+

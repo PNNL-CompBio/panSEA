@@ -2,8 +2,8 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
                  group.samples = list(
                    2:(0.5 * (ncol(data.list[[1]]) + 1)),
                    (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])
-                 ), feature.names = rep("Gene", length(types)),
-                 p = 0.05, FDR.features = 0.05, n.dot.features = 10) {
+                 ), feature.names = rep("Gene", length(types)), p = 0.05, 
+                 FDR.features = 0.05, n.dot.features = 10) {
   #### Step 1. Check if formats are correct ####
   # check that there are as many types as data.list inputs
   if (length(types) != length(data.list)) {
@@ -84,7 +84,12 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
     }
     
     # compile DEG results across omics types ####
-    compiled.DEGs <- panSEA::compile_mDEG(deg, p, FDR.features, n.dot.features)
+    if (length(types) > 1) {
+      compiled.DEGs <- panSEA::compile_mDEG(deg, p, FDR.features, 
+                                            n.dot.features)
+    } else {
+      compiled.DEGS <- NA
+    }
   }
 
   return(list(compiled.results = compiled.DEGs, all.results = deg

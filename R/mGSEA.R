@@ -21,7 +21,12 @@ mGSEA <- function(data.list, gmt = as.list(rep(
   }
 
   #### Step 2. Compile ssGSEA results across omics types ####
-  compiled.GSEA <- panSEA::compile_mGSEA(ssGSEA.list, p, FDR, n.dot.sets)
+  if (length(types) > 1) {
+    compiled.GSEA <- panSEA::compile_mGSEA(ssGSEA.list, p, FDR, n.dot.sets)
+  } else {
+    compiled.GSEA <- NA
+  }
+  
 
   return(list(
     compiled.results = compiled.GSEA,

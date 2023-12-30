@@ -466,8 +466,10 @@ hmdb <- dplyr::distinct(na.omit(hmdb[ , c("name", "class")])) # 145937 metabolit
 met.gmt <- DMEA::as_gmt(hmdb, "name", "class", min.per.set = 6)
 saveRDS(met.gmt, "gmt_HMDB.rds")
 
-hmdb.CCLE <- hmdb[hmdb$name %in% met.df$Metabolite, ]
+hmdb.CCLE <- hmdb[tolower(hmdb$name) %in% colnames(met.df)[2:ncol(met.df)], ] # 46 / 225
+hmdb.CCLE$name <- lapply(hmdb.CCLE$name, tolower)
 met.gmt <- DMEA::as_gmt(hmdb.CCLE, "name", "class", min.per.set = 6)
+saveRDS(met.gmt, "gmt_HMDB_in_CCLE.rds")
 
 #### Step 5a: Fig2: 3 transcriptomic signatures of EGFRi sensitivity ####
 types <- c("GSE12790", "GSE31625", "Coldren et al")

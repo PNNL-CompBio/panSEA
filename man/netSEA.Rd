@@ -12,7 +12,7 @@ from top significant enrichments
 \usage{
 netSEA(inputs, outputs, element.names = rep("Gene", length(inputs)), 
 rank.var = rep("Log2FC", length(inputs)), p = 0.05, FDR = 0.25,
-n.network.sets = 2*length(inputs))
+n.network.sets = 2*length(inputs), scale = 5)
 }
 
 \arguments{
@@ -48,6 +48,10 @@ n.network.sets = 2*length(inputs))
   \item{n.network.sets}{Number of sets from enrichment analyses to be 
   represented in the network graph. The top significant sets will be selected 
   based on abs(NES) and p & FDR cutoff values. Default: 2*length(inputs).
+  }
+  
+  \item{scale}{Numeric value to multiply by rank.var value to size vertices on 
+  network graph for visibility. Default: 5.
   }
 }
 

@@ -16,7 +16,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                    scatter.plots = TRUE, scatter.plot.type = "pearson", 
                    drug.sensitivity = "PRISM",
                    expression = as.list(rep("adherent CCLE", length(types))),
-                   n.network.sets = 2*length(types), n.dot.sets = 10) {
+                   n.network.sets = 2*length(types), n.dot.sets = 10, scale = 5) {
   #### Step 1. Check if formats are correct ####
   # make sure that there are as many types as other inputs
   if (length(types) != length(gmt.features) |
@@ -60,7 +60,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
 
       ssGSEA.network <- panSEA::netSEA(
         DEGs$all.results, outputs, feature.names,
-        GSEA.rank.var, p, FDR, n.network.sets
+        GSEA.rank.var, p, FDR, n.network.sets, scale
       )
     }
 
@@ -89,7 +89,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
 
       DMEA.network <- panSEA::netSEA(
         inputs, outputs, rep("Drug", length(inputs)),
-        DMEA.rank.var, p, FDR, n.network.sets
+        DMEA.rank.var, p, FDR, n.network.sets, scale
       )
     }
   } else if (length(group.names) == 1) {
@@ -137,7 +137,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
         ssGSEA.network[[colnames(data.list[[1]])[j]]] <-
           panSEA::netSEA(
             temp.data, outputs, feature.names,
-            GSEA.rank.var, p, FDR, n.network.sets
+            GSEA.rank.var, p, FDR, n.network.sets, scale
           )
       }
 
@@ -169,7 +169,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
         DMEA.network[[colnames(data.list[[1]])[j]]] <-
           panSEA::netSEA(
             inputs, outputs, rep("Drug", length(inputs)),
-            DMEA.rank.var, p, FDR, n.network.sets
+            DMEA.rank.var, p, FDR, n.network.sets, scale
           )
       }
     }

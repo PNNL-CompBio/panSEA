@@ -22,7 +22,7 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   gmt.drugs="PRISM", p=0.05, FDR=0.25, FDR.features=0.05, min.per.set=6, 
   drug.sensitivity="PRISM", 
   expression=as.list(rep("adherent CCLE", length(types))), 
-  n.network.sets=2*length(types), n.dot.sets=10)
+  n.network.sets=2*length(types), n.dot.sets=10, scale=5)
 }
 
 \arguments{
@@ -132,6 +132,10 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   differential expression analyses to be represented in the dot plots. The top 
   significant results will be selected based on abs(NES) for sets and 
   abs(Log2FC) for features as well as p & FDR cutoff values. Default: 10.
+  }
+  
+  \item{scale}{Numeric value to multiply by rank.var value to size vertices on 
+  network graphs for visibility. Default: 5.
   }
 }
 

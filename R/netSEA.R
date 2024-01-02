@@ -1,7 +1,8 @@
 netSEA <- function(inputs, outputs,
                    element.names = rep("Gene", length(inputs)),
                    rank.var = rep("Log2FC", length(inputs)),
-                   p = 0.05, FDR = 0.25, n.network.sets = 2 * length(inputs)) {
+                   p = 0.05, FDR = 0.25, n.network.sets = 2 * length(inputs),
+                   scale = 5) {
   message("Generating network graph...")
 
   #### Step 1. Identify significantly enriched sets across all types ####
@@ -116,15 +117,15 @@ netSEA <- function(inputs, outputs,
     )
 
     # assign node size, color based on degree of connectivity, mean rank
-    igraph::V(network)$size <- abs(node.df$AvgRank)
+    igraph::V(network)$size <- abs(scale)*abs(node.df$AvgRank)
     igraph::V(network)$color <- ifelse(node.df$carac == "Positive",
       "blue", "red"
     )
 
     # generate static plot
     igraph::plot.igraph(network, edge.width = abs(edge.df$importance))
-    vertex.value.min <- floor(min(node.df$AvgRank))
-    vertex.value.max <- ceiling(max(node.df$AvgRank))
+    vertex.value.min <- abs(scale)*floor(min(node.df$AvgRank))
+    vertex.value.max <- abs(scale)*ceiling(max(node.df$AvgRank))
     vertex.value.abs.max <- max(abs(vertex.value.min), abs(vertex.value.max))
     vertex.value.neg.range <- seq(-vertex.value.abs.max, 0, length.out = 3)
     vertex.value.pos.range <- seq(0, vertex.value.abs.max, length.out = 3)

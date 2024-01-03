@@ -7,8 +7,7 @@ netSEA <- function(inputs, outputs,
 
   #### Step 1. Identify significantly enriched sets across all types ####
   outputs <- data.table::rbindlist(outputs,
-    use.names = TRUE,
-    idcol = "type"
+    use.names = TRUE, idcol = "type", fill = TRUE
   )
   sig.outputs <- outputs[outputs$p_value < p & outputs$FDR_q_value < FDR, ]
 

@@ -69,9 +69,9 @@ netSEA <- function(inputs, outputs,
     lead.inputs <- inputs[inputs$Element %in% leads, ]
 
     # compile node info
-    node.df <- plyr::ddply(lead.inputs, .(Element), summarize,
+    node.df <- na.omit(plyr::ddply(lead.inputs, .(Element), summarize,
       AvgRank = mean(Rank)
-    )
+    ))
 
     ## run correlations between nodes for edge thickness if relevant
     if (length(unique(lead.inputs$type)) >= 3) {

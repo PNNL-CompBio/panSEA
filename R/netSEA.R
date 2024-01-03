@@ -62,8 +62,7 @@ netSEA <- function(inputs, outputs,
     # compile inputs based on rank.var
     names(inputs) <- types
     inputs <- data.table::rbindlist(inputs,
-      use.names = TRUE,
-      idcol = "type"
+      use.names = TRUE, idcol = "type", fill = TRUE
     )
 
     # get data for nodes (leading edge elements)

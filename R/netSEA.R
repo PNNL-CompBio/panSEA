@@ -72,6 +72,10 @@ netSEA <- function(inputs, outputs,
     node.df <- na.omit(plyr::ddply(lead.inputs, .(Element), summarize,
       AvgRank = mean(Rank)
     ))
+    
+    # revise lead inputs in case any were removed with na.omit
+    # to make sure all vertex names in edge list are in vertex data frame
+    lead.inputs <- lead.inputs[lead.inputs$Element %in% node.df$Element, ]
 
     ## run correlations between nodes for edge thickness if relevant
     if (length(unique(lead.inputs$type)) >= 3) {

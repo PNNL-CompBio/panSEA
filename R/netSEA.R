@@ -114,7 +114,9 @@ netSEA <- function(inputs, outputs,
 
     # turn data frame into igraph object
     network <- igraph::graph_from_data_frame(
-      d = edge.df[, c("source", "target", "importance")], directed = FALSE,
+      d = edge.df[edge.df$source %in% node.df$Element & 
+                    edge.df$target %in% node.df$Element, 
+                  c("source", "target", "importance")], directed = FALSE,
       vertices = node.df[, c("Element", "carac")]
     )
 

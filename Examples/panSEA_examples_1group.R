@@ -13,6 +13,8 @@
 
 rm(list=ls(all=TRUE))
 library(plyr);library(dplyr);library(GSA);library(panSEA);library(GEOquery)
+base.path <- "~/OneDrive - PNNL/Documents/GitHub/panSEA/Examples/"
+setwd(paste0(base.path, "Inputs"))
 
 # function to save results
 savePanSEA <- function(panSEA.results, fig.folder) {
@@ -82,13 +84,6 @@ savePanSEA <- function(panSEA.results, fig.folder) {
 cell.line.info <- read.csv(file="https://raw.github.com/BelindaBGarana/DMEA/shiny-app/Inputs/CCLE_sample_info.csv")
 cell.line.info$X <- NULL
 
-#### drug sensitivity (PRISM AUC) for 481 cancer cell lines
-# AUC.df <- read.csv(file="https://raw.github.com/BelindaBGarana/DMEA/shiny-app/Inputs/PRISM_drug_mean_AUC_6-23-21.csv")
-# AUC.df$X <- NULL
-
-# #### drug sets (PRISM moa)
-# gmt <- GSA.read.gmt(file="https://raw.github.com/BelindaBGarana/DMEA/shiny-app/Inputs/MOA_gmt_file_n6_no_special_chars.gmt")
-
 #### RNAseq (CCLE 19Q4) for 327 adherent cancer cell lines
 download.file("https://raw.github.com/BelindaBGarana/DMEA/shiny-app/Inputs/Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_1-200.Rbin", 
               destfile = paste0(getwd(),"/Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_1-200.Rbin"))
@@ -131,6 +126,7 @@ met.df <- read.csv(paste0("~/OneDrive - PNNL/Documents/GitHub/panSEA/Examples/",
 met.df$DepMap_ID <- NULL
 
 Sys.setenv("VROOM_CONNECTION_SIZE"=300000) # increase connection buffer size
+setwd(base.path)
 ##### Step 2: Coldren et al (EGFR inhibitor ) #####
 ### Identify sensitive (SENS) or resistant (RES) cells
 ### based on Coldren et al, 2006 paper
@@ -264,11 +260,14 @@ group.samples <- list(prot.df$CCLE_ID[prot.df$CCLE_ID %in%
 Coldren.prot.DEGs <- panSEA::mDEG(list(Coldren.prot), types = "Proteomics",
                                      group.names = c("Sensitive", "Resistant"),
                                      group.samples, "Gene")$all.results[[1]]
-Coldren.prot.DEGs <- plyr::ddply(Coldren.prot.DEGs, .(Gene), summarise,
-                                     Log2FC = mean(Log2FC, na.rm=TRUE)) #prevent duplicate gene names
-write.csv(Coldren.prot.DEGs, "Coldren_proteomics_DEGs.csv", 
+write.csv(Coldren.prot.DEGs, "Coldren_proteomics_DEGs_before_avg.csv", 
           row.names = FALSE)
-Coldren.prot.DEGs <- read.csv("Coldren_proteomics_DEGs.csv")
+Coldren.prot.DEGs <- read.csv("Coldren_proteomics_DEGs_before_avg.csv")
+Coldren.prot <- plyr::ddply(Coldren.prot.DEGs, .(Gene), summarise,
+                                     Log2FC = mean(Log2FC, na.rm=TRUE)) #prevent duplicate gene names
+write.csv(Coldren.prot, "Coldren_proteomics_DEGs.csv", 
+          row.names = FALSE)
+Coldren.prot <- read.csv("Coldren_proteomics_DEGs.csv")
 
 ## metabolomics
 group.samples <- list(met.df$CCLE_ID[met.df$CCLE_ID %in% 
@@ -278,11 +277,14 @@ group.samples <- list(met.df$CCLE_ID[met.df$CCLE_ID %in%
 Coldren.met.DEGs <- panSEA::mDEG(list(Coldren.met), types = "Metabolomics",
                                      group.names = c("Sensitive", "Resistant"),
                                      group.samples, "Metabolite")$all.results[[1]]
-Coldren.met.DEGs <- plyr::ddply(Coldren.met.DEGs, .(Metabolite), summarise,
-                                 Log2FC = mean(Log2FC, na.rm=TRUE)) #prevent duplicate gene names
-write.csv(Coldren.met.DEGs, "Coldren_metabolomics_DEGs.csv", 
+write.csv(Coldren.met.DEGs, "Coldren_metabolomics_DEGs_before_avg.csv", 
           row.names = FALSE)
-Coldren.met.DEGs <- read.csv("Coldren_metabolomics_DEGs.csv")
+Coldren.met.DEGs <- read.csv("Coldren_metabolomics_DEGs_before_avg.csv")
+Coldren.met <- plyr::ddply(Coldren.met.DEGs, .(Metabolite), summarise,
+                                 Log2FC = mean(Log2FC, na.rm=TRUE)) #prevent duplicate gene names
+write.csv(Coldren.met, "Coldren_metabolomics_DEGs.csv", 
+          row.names = FALSE)
+Coldren.met <- read.csv("Coldren_metabolomics_DEGs.csv")
 
 ##### Step 3: GSE31625 (EGFR inhibitor) #####
 # load series and platform data from GEO
@@ -439,6 +441,7 @@ gene.gmt <- DMEA::as_gmt(
   msigdb.info, "gene_symbol", "gs_name", min.per.set = 6,
   descriptions = "gs_description")
 saveRDS(gene.gmt, "gmt_MSigDB_Homo-sapiens_C2_CP:KEGG.rds")
+gene.gmt <- readRDS("Inputs/gmt_MSigDB_Homo-sapiens_C2_CP:KEGG.rds")
 
 # get metabolite set info
 # based on hmdb v5.0 downloaded 20231220: https://hmdb.ca/downloads 
@@ -461,15 +464,31 @@ hmdb[is.na(hmdb$class), ]$class <-
     "belongs to the class of chemical entities known as\\s*(.*?)\\s*\\. ")[ , 2]
 #unclassified.hmdb <- hmdb[is.na(hmdb$class), ] # 71983 / 217920
 saveRDS(hmdb, "hmdb_metabolites_dataframe_with_class.rds")
+hmdb <- readRDS("hmdb_metabolites_dataframe_with_class.rds")
 hmdb <- dplyr::distinct(na.omit(hmdb[ , c("name", "class")])) # 145937 metabolites
 
 met.gmt <- DMEA::as_gmt(hmdb, "name", "class", min.per.set = 6)
 saveRDS(met.gmt, "gmt_HMDB.rds")
 
+hmdb <- readRDS("hmdb_metabolites_dataframe_with_class.rds")
+hmdb <- dplyr::distinct(na.omit(hmdb[ , c("name", "class")])) # 145937 metabolites
+# hmdb.wide <- reshape2::dcast(hmdb, class ~ name)
+# hmdb.match <- colnames(hmdb.wide)[tolower(colnames(hmdb.wide)) %in% colnames(met.df)[2:ncol(met.df)]] # 46 / 225
 hmdb.CCLE <- hmdb[tolower(hmdb$name) %in% colnames(met.df)[2:ncol(met.df)], ] # 46 / 225
 hmdb.CCLE$name <- lapply(hmdb.CCLE$name, tolower)
 met.gmt <- DMEA::as_gmt(hmdb.CCLE, "name", "class", min.per.set = 6)
 saveRDS(met.gmt, "gmt_HMDB_in_CCLE.rds")
+hmdb <- NULL
+met.gmt <- readRDS("gmt_HMDB_in_CCLE.rds")
+
+# increase # of groups with 6+ metabolites
+hmdb.CCLE[grep("alpha", hmdb.CCLE$class), ]$class <- "alpha amino acids"
+met.gmt <- DMEA::as_gmt(hmdb.CCLE, "name", "class", min.per.set = 6)
+saveRDS(met.gmt, "gmt_HMDB_in_CCLE_2sets.rds")
+met.gmt <- readRDS("Inputs/gmt_HMDB_in_CCLE_2sets.rds")
+
+# met.gmt <- DMEA::as_gmt(hmdb.CCLE, "name", "class", min.per.set = 4)
+# saveRDS(met.gmt, "gmt_HMDB_in_CCLE_4minperset.rds")
 
 #### Step 5a: Fig2: 3 transcriptomic signatures of EGFRi sensitivity ####
 types <- c("GSE12790", "GSE31625", "Coldren et al")
@@ -490,7 +509,7 @@ Fig2.panSEA <- NULL # make space to process next analysis
 
 #### Step 5b: Fig3: transcriptomics, proteomics, and metabolomics signatures ####
 types <- c("transcriptomics", "proteomics", "metabolomics")
-data.list <- list(Coldren.transcr.DEGs, Coldren.prot.DEGs, Coldren.met.DEGs)
+data.list <- list(Coldren.transcr, Coldren.prot, Coldren.met)
 feature.names <- c("Gene", "Gene", "Metabolite")
 gmt.features <- list(gene.gmt, gene.gmt, met.gmt)
 expression <- list(RNA.df, prot.df, met.df)
@@ -498,7 +517,8 @@ expression <- list(RNA.df, prot.df, met.df)
 Fig3.panSEA <- panSEA::panSEA(data.list, types, feature.names, 
                               group.names = group.names,
                               group.samples = group.samples,
-                              gmt.features = gmt.features)
+                              gmt.features = gmt.features,
+                              expression = expression)
 
 # save results
 savePanSEA(Fig3.panSEA, "Fig3")
@@ -507,8 +527,8 @@ Fig3.panSEA <- NULL # make space to process next analysis
 #### Step 5c: Fig4: Fig3 but only querying non-small cell lung cancer cell line data ####
 NSCLC.samples <- cell.line.info[cell.line.info$lineage_subtype == "NSCLC", ] # 158 CCLE
 NSCLC.RNA.df <- RNA.df[RNA.df$CCLE_ID %in% NSCLC.samples$CCLE_Name, ] # 51 CCLE
-NSCLC.prot.df <- prot.df[prot.df$CCLE_ID %in% NSCLC.samples$CCLE_Name, ] # 51 CCLE
-NSCLC.met.df <- met.df[met.df$CCLE_ID %in% NSCLC.samples$CCLE_Name, ] # 51 CCLE
+NSCLC.prot.df <- prot.df[prot.df$CCLE_ID %in% NSCLC.samples$CCLE_Name, ] # 63 CCLE
+NSCLC.met.df <- met.df[met.df$CCLE_ID %in% NSCLC.samples$CCLE_Name, ] # 122 CCLE
 expression <- list(NSCLC.RNA.df, NSCLC.prot.df, NSCLC.met.df)
 
 Fig4.panSEA <- panSEA::panSEA(data.list, types, feature.names, 

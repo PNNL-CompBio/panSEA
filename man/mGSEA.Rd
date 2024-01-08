@@ -10,9 +10,10 @@
 
 \usage{
 mGSEA(data.list, gmt=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))), 
-  types, feature.names=rep("Gene", length(types)), direction.adjust=NULL, 
-  p=0.05, FDR=0.25, num.permutations=1000, stat.type="Weighted", 
-  min.per.set=6, n.dot.sets=10)
+  types, feature.names=rep("Gene", length(types)), 
+  rank.var=rep("Log2FC", length(types)), direction.adjust=NULL, p=0.05, 
+  FDR=0.25, num.permutations=1000, stat.type="Weighted", min.per.set=6, 
+  n.dot.sets=10)
 }
 
 \arguments{

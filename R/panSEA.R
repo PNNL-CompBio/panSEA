@@ -45,9 +45,9 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
     ## ssGSEA & network graph
     if (!is.null(gmt.features)) {
       ssGSEA.results <- panSEA::mGSEA(DEGs$all.results, gmt.features, types,
-        feature.names, p = p, FDR = FDR, num.permutations = num.permutations,
-        stat.type = stat.type, min.per.set = min.per.set,
-        n.dot.sets = n.dot.sets
+        feature.names, GSEA.rank.var, p = p, FDR = FDR, 
+        num.permutations = num.permutations, stat.type = stat.type, 
+        min.per.set = min.per.set, n.dot.sets = n.dot.sets
       )
 
       # compile inputs & results for network graph
@@ -119,9 +119,10 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
       if (!is.null(gmt.features)) {
         ssGSEA.results[[colnames(data.list[[1]])[j]]] <-
           panSEA::mGSEA(temp.data, gmt.features, types, feature.names,
-            p = p, FDR = FDR, num.permutations = num.permutations,
-            stat.type = stat.type, min.per.set = min.per.set,
-            n.dot.sets = n.dot.sets
+                        GSEA.rank.var, p = p, FDR = FDR, 
+                        num.permutations = num.permutations, 
+                        stat.type = stat.type, min.per.set = min.per.set,
+                        n.dot.sets = n.dot.sets
           )
 
         # compile inputs & outputs for network graph

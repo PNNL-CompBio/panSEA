@@ -1,0 +1,250 @@
+"type","Rank_metric","Drug_set","ES","NES","p_value","Position_at_max","FDR_q_value","Leading_edge","minusLogP","minusLogFDR","sig"
+"transcriptomics","Pearson.est","EGFR inhibitor",-0.65533,-1.71,0.0258,1232,0.333,"GW.583340, BIBX.1382, lapatinib, tucatinib, tyrphostin.AG.1478, rociletinib, TAK.285, BIBU.1361, neratinib, XL.647, BMS.690514, PD.168393, PD.153035, ARRY.334543, icotinib, WZ8040, dacomitinib, osimertinib, poziotinib, erlotinib, afatinib, AZD8931, pelitinib, canertinib, gefitinib",1.58838029403677,0.47755576649368,FALSE
+"transcriptomics","Pearson.est","Abl kinase inhibitor",0.32026,0.813,0.684,326,0.753,"GZD824, KW.2449, ponatinib, nilotinib, flumatinib",0.164943898279884,0.123205023799299,FALSE
+"transcriptomics","Pearson.est","acetylcholine receptor agonist",0.68226,1.71,0.0257,320,0.378,"oxiracetam, pilocarpine, tremorine, xanomeline",1.59006687666871,0.422508200162775,FALSE
+"transcriptomics","Pearson.est","acetylcholine receptor antagonist",-0.5322,-1.39,0.129,1021,0.508,"dicycloverine, darifenacin, diphemanil",0.889410289700751,0.294136287716081,FALSE
+"transcriptomics","Pearson.est","adenosine receptor antagonist",-0.68287,-1.78,0.0229,1442,0.331,"MRS.1220, CGS.15943",1.64016451766011,0.480172006224281,FALSE
+"transcriptomics","Pearson.est","adrenergic receptor agonist",-0.16807,-0.442,0.993,1390,0.993,"A61603",0.00305075150461883,0.00305075150461883,FALSE
+"transcriptomics","Pearson.est","adrenergic receptor antagonist",-0.19743,-0.502,0.975,1195,1,"metoprolol, atenolol...., RS.17053, pindolol",0.0109953843014632,0,FALSE
+"transcriptomics","Pearson.est","AKT inhibitor",-0.40618,-1.06,0.397,1036,0.744,"uprosertib, MK.2206, AZD5363, GDC.0068, CCT128930, A.674563, triciribine, GSK2110183",0.401209493236885,0.128427064454121,FALSE
+"transcriptomics","Pearson.est","ALK tyrosine kinase receptor inhibitor",-0.35397,-0.92,0.519,1158,0.839,"CEP.37440, GW.788388, lorlatinib, NVP.TAE684, AP26113",0.284832642151542,0.0762380391712997,FALSE
+"transcriptomics","Pearson.est","androgen receptor antagonist",0.51325,1.33,0.156,403,0.74,"RU.58841, bicalutamide, nilutamide",0.806875401645538,0.130768280269024,FALSE
+"transcriptomics","Pearson.est","antioxidant",0.35423,0.888,0.563,190,0.674,"mesna, trolox",0.249491605148654,0.17134010346468,FALSE
+"transcriptomics","Pearson.est","AP inhibitor",-0.43104,-1.12,0.296,968,0.728,"LCL.161, embelin, GDC.0152, tanshinone.i, birinapant",0.528708288941061,0.137868620686963,FALSE
+"transcriptomics","Pearson.est","ATPase inhibitor",0.38535,0.976,0.468,409,0.687,"evodiamine, ouabain, omeprazole, oligomycin.a, digitoxigenin, digitoxin",0.329754146925876,0.16304326294045,FALSE
+"transcriptomics","Pearson.est","Aurora kinase inhibitor",0.39912,1.05,0.39,400,0.661,"ENMD.2076, GSK1070916, PHA.680632, KW.2449, AMG900, barasertib, CCT137690, danusertib, AT.9283",0.408935392973501,0.17979854051436,FALSE
+"transcriptomics","Pearson.est","bacterial 50S ribosomal subunit inhibitor",0.57175,1.47,0.0938,280,0.74,"valnemulin, radezolid, azalomycin.b",1.02779716162094,0.130768280269024,FALSE
+"transcriptomics","Pearson.est","bacterial DNA gyrase inhibitor",0.45254,1.17,0.28,289,0.647,"novobiocin, nadifloxacin, norfloxacin, finafloxacin",0.552841968657781,0.1890957193313,FALSE
+"transcriptomics","Pearson.est","BCL inhibitor",0.42122,1.06,0.383,283,0.69,"venetoclax, TW.37, navitoclax",0.416801226031377,0.161150909262745,FALSE
+"transcriptomics","Pearson.est","Bcr.Abl kinase inhibitor",0.28362,0.734,0.787,326,0.805,"GZD824, ponatinib, nilotinib, flumatinib",0.104025267640935,0.0942041196321315,FALSE
+"transcriptomics","Pearson.est","benzodiazepine receptor agonist",-0.28516,-0.73,0.754,975,0.895,"CGS.20625, nefiracetam, bentazepam, indiplon, temazepam, lorazepam, gamma.aminobutyric.acid",0.122628654130226,0.048176964684088,FALSE
+"transcriptomics","Pearson.est","bromodomain inhibitor",0.46718,1.18,0.268,387,0.656,"I.BET.762, PFI.1, bromosporine",0.571865205971211,0.18309616062434,FALSE
+"transcriptomics","Pearson.est","calcium channel blocker",0.44995,1.15,0.276,224,0.605,"carboxyamidotriazole, cinnarazine, efonidipine.monoethanolate",0.559090917934782,0.218244625347531,FALSE
+"transcriptomics","Pearson.est","CC chemokine receptor antagonist",0.49081,1.26,0.198,515,0.66,"RS.504393, UNBS.5162, PF.04136309, ZK811752, SB.225002",0.703334809738469,0.180456064458131,FALSE
+"transcriptomics","Pearson.est","CDK inhibitor",0.20715,0.534,0.974,257,0.963,"PHA.848125, BMS.265246, ribociclib, R547, indisulam",0.0114410431213845,0.0163737128754655,FALSE
+"transcriptomics","Pearson.est","CHK inhibitor",-0.69447,-1.8,0.0199,1067,0.574,"LY2603618, AZD7762, SCH.900776, LY2606368, CHIR.124",1.70114692359029,0.241088107602027,FALSE
+"transcriptomics","Pearson.est","cyclooxygenase inhibitor",-0.36632,-0.935,0.512,1319,0.857,"tryptanthrin, phenylbutazone, pterostilbene, FR.122047, FK.3311, naproxen",0.290730039024169,0.0670191780768018,FALSE
+"transcriptomics","Pearson.est","cytochrome P450 inhibitor",-0.35354,-0.912,0.547,1221,0.813,"itraconazole, morin",0.262012673666569,0.0899094544059319,FALSE
+"transcriptomics","Pearson.est","DNA alkylating agent",0.36203,0.927,0.52,144,0.678,"carboplatin, temozolomide, carmustine, cyclophosphamide",0.283996656365201,0.168770306132937,FALSE
+"transcriptomics","Pearson.est","DNA inhibitor",0.51362,1.29,0.186,469,0.728,"valrubicin, carboplatin, carmustine, teroxirone, tirapazamine, mechlorethamine, pibenzimol, bendamustine, sangivamycin, metronidazole, nimorazole, oxaliplatin",0.730487055782084,0.137868620686963,FALSE
+"transcriptomics","Pearson.est","DNA methyltransferase inhibitor",0.38659,0.98,0.45,163,0.7,"decitabine, disulfiram",0.346787486224656,0.154901959985743,FALSE
+"transcriptomics","Pearson.est","DNA polymerase inhibitor",0.38116,0.97,0.461,270,0.678,"trifluridine, idoxuridine, foscarnet",0.336299074610352,0.168770306132937,FALSE
+"transcriptomics","Pearson.est","DNA synthesis inhibitor",-0.29226,-0.748,0.76,1419,0.942,"estramustine.phosphate, altretamine",0.119186407719209,0.0259490972071227,FALSE
+"transcriptomics","Pearson.est","dopamine receptor antagonist",0.3723,0.944,0.472,88,0.704,"thioproperazine, paliperidone, raclopride",0.326058001365912,0.152427340857888,FALSE
+"transcriptomics","Pearson.est","estrogen receptor agonist",0.5063,1.3,0.181,244,0.759,"ethinyl.estradiol, estrone, levonorgestrel",0.742321425130815,0.11975822410452,FALSE
+"transcriptomics","Pearson.est","estrogen receptor antagonist",0.29531,0.755,0.741,527,0.807,"danazol, clomifene, tamoxifen",0.130181792020672,0.0931264652779296,FALSE
+"transcriptomics","Pearson.est","FGFR inhibitor",0.51738,1.35,0.157,97,0.749,"regorafenib, dovitinib, nintedanib",0.804100347590766,0.125518182300534,FALSE
+"transcriptomics","Pearson.est","FLT3 inhibitor",0.50275,1.28,0.203,272,0.659,"sorafenib, dovitinib, TG.101348, ENMD.2076, KW.2449, ponatinib, tyrphostin.AG.1296",0.692503962086787,0.18111458540599,FALSE
+"transcriptomics","Pearson.est","glucocorticoid receptor agonist",0.41693,1.05,0.382,612,0.661,"fluticasone.propionate, triamcinolone, halobetasol.propionate, desonide, dexamethasone.acetate, prednisolone.hemisuccinate, beclomethasone.dipropionate, rimexolone, prednisolone, ciclesonide, difluprednate, methylprednisolone, fludroxycortide, halcinonide, prednisolone.acetate, fluocinolone.acetonide",0.417936637088291,0.17979854051436,FALSE
+"transcriptomics","Pearson.est","glutamate receptor antagonist",-0.40723,-1.03,0.393,1041,0.756,"CPP, ACDPP, SIB.1757, JNJ.16259685, LY456236, kynurenic.acid",0.405607449624573,0.121478204498793,FALSE
+"transcriptomics","Pearson.est","glycogen synthase kinase inhibitor",-0.4128,-1.07,0.36,1365,0.776,"indirubin, GSK.3.inhibitor.IX",0.443697499232713,0.110138278741812,FALSE
+"transcriptomics","Pearson.est","growth factor receptor inhibitor",0.38081,0.943,0.489,39,0.687,"PHA.848125",0.31069114087638,0.16304326294045,FALSE
+"transcriptomics","Pearson.est","HCV inhibitor",0.59647,1.53,0.0789,133,0.799,"narlaprevir, mericitabine",1.10292299679058,0.0974532206860086,FALSE
+"transcriptomics","Pearson.est","HDAC inhibitor",-0.64554,-1.7,0.0287,1274,0.263,"PCI.24781, M.344, panobinostat, romidepsin, tacedinaline, SB.939, JNJ.26481585, mocetinostat, nexturastat.a",1.54211810326601,0.580044251510242,FALSE
+"transcriptomics","Pearson.est","histamine receptor antagonist",-0.29307,-0.764,0.737,1131,0.955,"BF2.649, astemizole, lafutidine, famotidine, chloropyramine",0.132532512140949,0.0199966284162537,FALSE
+"transcriptomics","Pearson.est","HMGCR inhibitor",0.68253,1.73,0.0143,284,0.445,"fluvastatin, pitavastatin, mevastatin, atorvastatin, lovastatin",1.84466396253494,0.351639989019068,FALSE
+"transcriptomics","Pearson.est","HSP inhibitor",-0.22397,-0.591,0.92,1415,0.99,"KW.2478",0.0362121726544447,0.00436480540245009,FALSE
+"transcriptomics","Pearson.est","JAK inhibitor",0.45899,1.16,0.287,183,0.612,"AZD1480, TG.101348, WHI.P154, AZ960, baricitinib, filgotinib",0.542118103266008,0.213248577854439,FALSE
+"transcriptomics","Pearson.est","KIT inhibitor",0.47392,1.23,0.237,184,0.649,"sorafenib, regorafenib, masitinib, OSI.930, pazopanib",0.625251653989896,0.187755303199631,FALSE
+"transcriptomics","Pearson.est","MDM inhibitor",0.5324,1.38,0.144,57,0.819,"idasanutlin, nutlin.3",0.84163750790475,0.0867160982395816,FALSE
+"transcriptomics","Pearson.est","MEK inhibitor",-0.36084,-0.941,0.492,1384,0.894,"PD.98059, BIX.02188",0.30803489723264,0.0486624812040823,FALSE
+"transcriptomics","Pearson.est","MET inhibitor",-0.49285,-1.3,0.197,1427,0.497,"INC.280",0.705533773838407,0.303643611266668,FALSE
+"transcriptomics","Pearson.est","microtubule inhibitor",-0.33844,-0.887,0.579,1335,0.819,"colchicine, estramustine.phosphate",0.237321436272564,0.0867160982395816,FALSE
+"transcriptomics","Pearson.est","mTOR inhibitor",0.39799,1.01,0.426,507,0.668,"ku.0063794, voxtalisib, torin.1, AZD2014, MLN0128, NVP.BEZ235, WYE.354, XL388, LY303511, PF.04691502, GSK2126458, everolimus, AZD8055, SB.2343, WYE.125132",0.370590400897281,0.175223537524454,FALSE
+"transcriptomics","Pearson.est","NFkB pathway inhibitor",-0.2821,-0.732,0.758,867,0.927,"BAY.11.7082, parthenolide, parthenolide...., BAY.11.7085, Ro.106.9920, tyloxapol, bindarit, IKK.2.inhibitor.V",0.120330794367946,0.0329202658555029,FALSE
+"transcriptomics","Pearson.est","opioid receptor agonist",0.56438,1.43,0.136,123,0.762,"trimebutine, salvinorin.a",0.866461091629782,0.1180450286604,FALSE
+"transcriptomics","Pearson.est","p38 MAPK inhibitor",-0.32354,-0.834,0.652,1191,0.876,"SB.239063, TAK.715, CMPD.1",0.18575240426808,0.0574958938319193,FALSE
+"transcriptomics","Pearson.est","PARP inhibitor",0.49539,1.28,0.19,415,0.659,"olaparib, PJ.34, talazoparib, niraparib",0.721246399047171,0.18111458540599,FALSE
+"transcriptomics","Pearson.est","PDGFR tyrosine kinase receptor inhibitor",0.53283,1.37,0.147,199,0.766,"sorafenib, regorafenib, dovitinib, linifanib, masitinib, nintedanib, axitinib, crenolanib, pazopanib, CP.673451",0.832682665251824,0.115771230367396,FALSE
+"transcriptomics","Pearson.est","phosphatase inhibitor",-0.51672,-1.34,0.175,1375,0.481,"mycophenolate.mofetil, BVT.948",0.756961951313706,0.317854923626168,FALSE
+"transcriptomics","Pearson.est","phosphodiesterase inhibitor",-0.56107,-1.47,0.118,1297,0.434,"enoximone, zardaverine, cilostamide, GSK256066",0.928117992693875,0.362510270487489,FALSE
+"transcriptomics","Pearson.est","PI3K inhibitor",0.29742,0.753,0.754,446,0.794,"GDC.0941, voxtalisib, NVP.BEZ235, ZSTK.474, LY303511, TG.100713, PI3K.IN.2, PF.04691502, alpelisib, CH5132799, GSK2126458, taselisib",0.122628654130226,0.100179497572904,FALSE
+"transcriptomics","Pearson.est","PLK inhibitor",0.79215,2.06,0.00378,253,0.0743,"volasertib, NMS.1286937, GW.843682X, rigosertib, BI.2536, GSK461364",2.42250820016277,1.12901118623942,TRUE
+"transcriptomics","Pearson.est","potassium channel blocker",0.34794,0.89,0.567,43,0.687,"ML133",0.246416941107093,0.16304326294045,FALSE
+"transcriptomics","Pearson.est","PPAR receptor agonist",-0.51347,-1.34,0.165,1010,0.481,"S26948, clofibrate, oleoylethanolamide, GW.501516, pterostilbene",0.782516055786094,0.317854923626168,FALSE
+"transcriptomics","Pearson.est","progesterone receptor agonist",0.40307,1.02,0.412,339,0.672,"nomegestrol.acetate, danazol, levonorgestrel, melengestrol.acetate, tanaproget",0.385102783966865,0.172630726946175,FALSE
+"transcriptomics","Pearson.est","proteasome inhibitor",-0.63601,-1.64,0.0527,1283,0.244,"oprozomib, ONX.0914, ixazomib.citrate",1.27818938478745,0.612610173661271,FALSE
+"transcriptomics","Pearson.est","protein synthesis inhibitor",0.25163,0.629,0.882,219,0.909,"anguidine, harringtonine, mercaptopurine",0.0545314148681803,0.0414361167780325,FALSE
+"transcriptomics","Pearson.est","protein tyrosine kinase inhibitor",-0.26517,-0.685,0.851,1153,0.922,"CP.724714, rheochrysidin, NVP.TAE226",0.0700704399154121,0.0352690789463706,FALSE
+"transcriptomics","Pearson.est","RAF inhibitor",0.36988,0.938,0.52,28,0.679,"sorafenib, regorafenib",0.283996656365201,0.168130225719498,FALSE
+"transcriptomics","Pearson.est","RET tyrosine kinase inhibitor",0.68916,1.76,0.0232,28,0.546,"sorafenib, regorafenib",1.6345120151091,0.262807357295263,FALSE
+"transcriptomics","Pearson.est","retinoid receptor agonist",0.35153,0.899,0.535,33,0.69,"bexarotene",0.271646217978772,0.161150909262745,FALSE
+"transcriptomics","Pearson.est","ribonucleotide reductase inhibitor",0.47463,1.23,0.238,518,0.649,"cladribine, fludarabine.phosphate, cytarabine, triapine, pentostatin",0.623423042943488,0.187755303199631,FALSE
+"transcriptomics","Pearson.est","serotonin receptor agonist",0.59318,1.51,0.0709,454,0.732,"zolmitriptan, NAN.190, SR.57227A, ipsapirone, aripiprazole",1.14935376481693,0.135488918941608,FALSE
+"transcriptomics","Pearson.est","serotonin receptor antagonist",0.48277,1.22,0.247,77,0.636,"SB.216641, SB.200646, paliperidone",0.607303046740334,0.196542884351586,FALSE
+"transcriptomics","Pearson.est","sodium channel blocker",-0.48589,-1.29,0.192,1358,0.47,"lappaconite, benzethonium, cibenzoline",0.71669877129645,0.327902142064283,FALSE
+"transcriptomics","Pearson.est","src inhibitor",0.30204,0.772,0.723,86,0.799,"KX2.391, masitinib",0.140861702705469,0.0974532206860086,FALSE
+"transcriptomics","Pearson.est","sterol demethylase inhibitor",0.46208,1.16,0.3,358,0.612,"lanoconazole, chlormidazole, sulconazole, ketoconazole, posaconazole",0.522878745280338,0.213248577854439,FALSE
+"transcriptomics","Pearson.est","TGF beta receptor inhibitor",0.35971,0.921,0.536,142,0.672,"adaprev",0.27083521030723,0.172630726946175,FALSE
+"transcriptomics","Pearson.est","thymidylate synthase inhibitor",0.46289,1.18,0.275,154,0.656,"trifluridine, carmofur",0.560667306169737,0.18309616062434,FALSE
+"transcriptomics","Pearson.est","topoisomerase inhibitor",0.44261,1.13,0.315,221,0.593,"idarubicin, valrubicin, mitoxantrone, etoposide.phosphate, amonafide, TAS.103, amsacrine, topotecan, dexrazoxane",0.501689446210399,0.226945306635737,FALSE
+"transcriptomics","Pearson.est","tubulin polymerization inhibitor",0.32697,0.831,0.655,569,0.742,"verubulin, KX2.391, docetaxel, mebendazole, vinblastine, taltobulin, flubendazole, BNC105, vindesine, oxibendazole, dolastatin.10, fosbretabulin, epothilone.b, CYT.997",0.183758700008217,0.129596094720973,FALSE
+"transcriptomics","Pearson.est","tyrosine kinase inhibitor",0.40748,1.04,0.391,65,0.659,"sorafenib, regorafenib, hypericin, mubritinib",0.407823242604133,0.18111458540599,FALSE
+"transcriptomics","Pearson.est","VEGFR inhibitor",0.44483,1.13,0.296,184,0.593,"sorafenib, tivozanib, regorafenib, dovitinib, ENMD.2076, linifanib, nintedanib, axitinib, foretinib, OSI.930, pazopanib",0.528708288941061,0.226945306635737,FALSE
+"transcriptomics","Pearson.est","vitamin D receptor agonist",-0.65046,-1.66,0.0295,1262,0.264,"maxacalcitol, calcitriol, paricalcitol",1.53017798402184,0.578396073130169,FALSE
+"proteomics","Pearson.est","EGFR inhibitor",-0.72318,-1.96,0.0125,1243,0.193,"AEE788, tucatinib, lapatinib, poziotinib, TAK.285, CP.724714, PD.153035, neratinib, XL.647, ARRY.334543, rociletinib, OSI.420, AZD8931, icotinib, BIBU.1361, BMS.690514, vandetanib, dacomitinib, PD.168393, erlotinib, gefitinib, afatinib, canertinib, osimertinib, WZ8040, pelitinib",1.90308998699194,0.714442690992226,TRUE
+"proteomics","Pearson.est","Abl kinase inhibitor",-0.26364,-0.683,0.825,1241,1,"metatinib, bosutinib",0.0835460514500749,0,FALSE
+"proteomics","Pearson.est","acetylcholine receptor agonist",0.61565,1.59,0.0524,281,0.636,"xanomeline, nicotine, pilocarpine",1.28066871301627,0.196542884351586,FALSE
+"proteomics","Pearson.est","acetylcholine receptor antagonist",-0.34241,-0.911,0.517,1394,1,"dicycloverine",0.286509456906058,0,FALSE
+"proteomics","Pearson.est","adenosine receptor antagonist",-0.64824,-1.69,0.0209,1379,0.468,"MRS.1220, CGS.15943",1.67985371388895,0.329754146925876,FALSE
+"proteomics","Pearson.est","adrenergic receptor agonist",-0.25882,-0.684,0.827,1070,1,"isoetharine, A61603, oxymetazoline, methyldopa, isoxsuprine",0.0824944904474534,0,FALSE
+"proteomics","Pearson.est","adrenergic receptor antagonist",0.24817,0.65,0.875,89,0.961,"dihydroergocristine, atipamezole, naftidrofuryl",0.0579919469776868,0.0172766123314547,FALSE
+"proteomics","Pearson.est","AKT inhibitor",-0.40623,-1.03,0.384,904,0.785,"uprosertib, MK.2206, ONC201, GSK2110183, AZD5363, triciribine, CCT128930, palomid.529",0.415668775632469,0.105130343254747,FALSE
+"proteomics","Pearson.est","ALK tyrosine kinase receptor inhibitor",-0.40527,-1.08,0.339,1084,0.767,"AZD3463, GW.788388, NVP.TAE684, AP26113, CEP.37440",0.469800301796918,0.115204636051019,FALSE
+"proteomics","Pearson.est","androgen receptor antagonist",-0.22465,-0.592,0.934,807,0.925,"enzalutamide, nilutamide, bicalutamide, flutamide, cyproterone.acetate",0.0296531237699066,0.0338582672609674,FALSE
+"proteomics","Pearson.est","antioxidant",0.39183,1.03,0.405,226,1,"trolox, mesna",0.392544976785331,0,FALSE
+"proteomics","Pearson.est","AP inhibitor",-0.52133,-1.38,0.138,988,0.459,"LCL.161, GDC.0152, birinapant, tanshinone.i, embelin",0.860120913598763,0.338187314462739,FALSE
+"proteomics","Pearson.est","ATPase inhibitor",0.75519,1.93,0.00192,172,0.15,"k.strophanthidin, oligomycin.a, digoxin, NMS.873, evodiamine, digitoxigenin, rabeprazole",2.71669877129645,0.823908740944319,TRUE
+"proteomics","Pearson.est","Aurora kinase inhibitor",0.5415,1.4,0.112,203,0.94,"danusertib, ENMD.2076, barasertib, barasertib.HQPA, AMG900, PHA.680632, CCT137690, SNS.314, AT.9283, MK.5108",0.950781977329818,0.0268721464003014,FALSE
+"proteomics","Pearson.est","bacterial 50S ribosomal subunit inhibitor",0.32274,0.822,0.669,341,0.968,"radezolid, josamycin",0.174573882232177,0.0141246426916063,FALSE
+"proteomics","Pearson.est","bacterial DNA gyrase inhibitor",-0.25046,-0.649,0.883,1206,1,"trovafloxacin, sparfloxacin",0.0540392964224314,0,FALSE
+"proteomics","Pearson.est","BCL inhibitor",0.19468,0.504,0.969,398,0.977,"TW.37, gossypol, venetoclax",0.0136762229492347,0.0101054362812269,FALSE
+"proteomics","Pearson.est","Bcr.Abl kinase inhibitor",-0.33146,-0.849,0.628,1241,1,"metatinib, bosutinib",0.202040356262804,0,FALSE
+"proteomics","Pearson.est","benzodiazepine receptor agonist",-0.28223,-0.753,0.741,405,1,"bentazepam, eprinomectin, ivermectin, piperazine, gamma.aminobutyric.acid, CL.218872, ZK.93423, lorazepam, nefiracetam, zaleplon, indiplon, temazepam, CGS.20625",0.130181792020672,0,FALSE
+"proteomics","Pearson.est","bromodomain inhibitor",0.38558,1.01,0.446,892,0.99,"PFI.1, OTX015, I.BET151, JQ1...., bromosporine, I.BET.762",0.350665141287858,0.00436480540245009,FALSE
+"proteomics","Pearson.est","calcium channel blocker",0.254,0.651,0.863,37,0.984,"carboxyamidotriazole",0.0639892042847904,0.00700490156865849,FALSE
+"proteomics","Pearson.est","CC chemokine receptor antagonist",0.47512,1.28,0.175,219,0.782,"UNBS.5162, SB.225002, ZK811752",0.756961951313706,0.106793246940152,FALSE
+"proteomics","Pearson.est","CDK inhibitor",-0.23141,-0.601,0.9,1038,0.942,"P276.00, dinaciclib, TG.02, BMS.387032, kenpaullone, alvocidib, arcyriaflavin.a, indirubin, CR8..R.",0.0457574905606751,0.0259490972071227,FALSE
+"proteomics","Pearson.est","CHK inhibitor",-0.58219,-1.51,0.105,1005,0.482,"CHIR.124, AZD7762, LY2606368, SCH.900776, LY2603618",0.978810700930062,0.31695296176115,FALSE
+"proteomics","Pearson.est","cyclooxygenase inhibitor",0.19906,0.519,0.971,128,0.993,"sulfasalazine, tepoxalin, phenazone",0.0127807700919951,0.00305075150461883,FALSE
+"proteomics","Pearson.est","cytochrome P450 inhibitor",-0.23454,-0.617,0.906,1026,0.98,"itraconazole, clotrimazole, cobicistat",0.0428718023231869,0.00877392430750515,FALSE
+"proteomics","Pearson.est","DNA alkylating agent",-0.27402,-0.731,0.785,1365,1,"ifosfamide, dacarbazine",0.105130343254747,0,FALSE
+"proteomics","Pearson.est","DNA inhibitor",0.53842,1.39,0.121,306,0.729,"carboplatin, teroxirone, mechlorethamine, tirapazamine, sangivamycin, metronidazole, pibenzimol, chlorambucil, oxaliplatin, carmustine, valrubicin",0.91721462968355,0.137272471682025,FALSE
+"proteomics","Pearson.est","DNA methyltransferase inhibitor",-0.57468,-1.47,0.0808,1290,0.493,"fdcyd, RG108, azacitidine",1.09258863922541,0.30715308072277,FALSE
+"proteomics","Pearson.est","DNA polymerase inhibitor",-0.24801,-0.63,0.895,925,0.994,"famciclovir, adefovir.dipivoxil, menadione, cephalomannine, cidofovir",0.048176964684088,0.00261361560268669,FALSE
+"proteomics","Pearson.est","DNA synthesis inhibitor",0.20875,0.538,0.969,40,1,"artesunate",0.0136762229492347,0,FALSE
+"proteomics","Pearson.est","dopamine receptor antagonist",0.25594,0.651,0.883,218,0.984,"thioproperazine, UH.232...., domperidone",0.0540392964224314,0.00700490156865849,FALSE
+"proteomics","Pearson.est","estrogen receptor agonist",0.35064,0.9,0.557,277,1,"estrone, erteberel, levonorgestrel, estradiol.cypionate",0.254144804826271,0,FALSE
+"proteomics","Pearson.est","estrogen receptor antagonist",0.47827,1.22,0.234,513,0.798,"fulvestrant, tamoxifen, toremifene, danazol",0.630784142589857,0.0979971086492706,FALSE
+"proteomics","Pearson.est","FGFR inhibitor",0.44698,1.15,0.292,317,0.913,"nintedanib, lenvatinib, dovitinib, regorafenib, AZD4547, erdafitinib",0.534617148551582,0.039529222465701,FALSE
+"proteomics","Pearson.est","FLT3 inhibitor",0.27741,0.716,0.814,385,1,"tyrphostin.AG.1296, ENMD.2076, dovitinib, TG.101348, sorafenib, ponatinib",0.0893755951107988,0,FALSE
+"proteomics","Pearson.est","glucocorticoid receptor agonist",0.40297,1.02,0.418,531,1,"beclomethasone.dipropionate, fluticasone.propionate, desonide, triamcinolone, dexamethasone.acetate, halcinonide, ciclesonide, hydrocortisone, clobetasol.propionate, fluocinolone.acetonide, prednisolone, rimexolone, methylprednisolone, halobetasol.propionate",0.378823718224965,0,FALSE
+"proteomics","Pearson.est","glutamate receptor antagonist",-0.54008,-1.41,0.135,1123,0.449,"CPP, MTPG, diazooxonorleucine, SIB.1757, ACDPP, latrepirdine, LY456236",0.869666231504994,0.347753658996677,FALSE
+"proteomics","Pearson.est","glycogen synthase kinase inhibitor",-0.59978,-1.56,0.0687,1180,0.541,"LY2090314, kenpaullone, AZD2858, indirubin, GSK.3.inhibitor.IX",1.16304326294045,0.266802734893431,FALSE
+"proteomics","Pearson.est","growth factor receptor inhibitor",0.60653,1.53,0.0798,83,0.675,"PHA.848125, danusertib",1.09799710864927,0.170696227168975,FALSE
+"proteomics","Pearson.est","HCV inhibitor",-0.56959,-1.46,0.131,1262,0.456,"PSI.7976, embelin, Ro.9187",0.882728704344236,0.341035157335565,FALSE
+"proteomics","Pearson.est","HDAC inhibitor",-0.55487,-1.42,0.12,1125,0.477,"M.344, pyroxamide, vorinostat, givinostat, tacedinaline, mocetinostat, PCI.24781, entinostat, romidepsin, nexturastat.a, panobinostat, SB.939, JNJ.26481585",0.920818753952375,0.321481620959886,FALSE
+"proteomics","Pearson.est","histamine receptor antagonist",-0.51244,-1.32,0.176,1016,0.481,"cimetidine, cyproheptadine, tiotidine, levocetirizine, zolantidine, ICI.162846, terfenadine, ebastine, tecastemizole, chloropyramine",0.75448733218585,0.317854923626168,FALSE
+"proteomics","Pearson.est","HMGCR inhibitor",-0.45228,-1.19,0.25,1088,0.672,"mevastatin, simvastatin",0.602059991327962,0.172630726946175,FALSE
+"proteomics","Pearson.est","HSP inhibitor",-0.52866,-1.35,0.172,1097,0.467,"NVP.AUY922, SNX.5422, XL888, tanespimycin, KW.2478, guanidine, VER.49009, alvespimycin",0.764471553092451,0.330683119433888,FALSE
+"proteomics","Pearson.est","JAK inhibitor",-0.2933,-0.734,0.775,1373,1,"atiprimod, pacritinib, LY2784544",0.11069829749369,0,FALSE
+"proteomics","Pearson.est","KIT inhibitor",0.32207,0.838,0.636,343,0.969,"masitinib, lenvatinib, pazopanib, regorafenib, OSI.930, sorafenib",0.196542884351586,0.0136762229492347,FALSE
+"proteomics","Pearson.est","MDM inhibitor",0.53955,1.39,0.141,229,0.729,"idasanutlin, AMG.232, nutlin.3",0.85078088734462,0.137272471682025,FALSE
+"proteomics","Pearson.est","MEK inhibitor",-0.30621,-0.804,0.697,1428,1,"BIX.02188, nobiletin",0.156767221901991,0,FALSE
+"proteomics","Pearson.est","MET inhibitor",-0.27462,-0.714,0.8,396,1,"PHA.665752, PF.04217903, NVP.BVU972, LY2801653, INC.280, AMG458",0.0969100130080564,0,FALSE
+"proteomics","Pearson.est","microtubule inhibitor",0.37806,0.97,0.475,348,1,"vinblastine, vinflunine, D.64131",0.323306390375133,0,FALSE
+"proteomics","Pearson.est","mTOR inhibitor",0.36001,0.913,0.538,404,1,"AZD2014, MLN0128, voxtalisib, ku.0063794, WYE.125132, XL388, torin.1, PF.04691502, PP242, SB.2343, GSK2126458, NVP.BEZ235, GDC.0980",0.269217724333611,0,FALSE
+"proteomics","Pearson.est","NFkB pathway inhibitor",0.29021,0.773,0.703,4,0.994,"EVP4593",0.153044674980176,0.00261361560268669,FALSE
+"proteomics","Pearson.est","opioid receptor agonist",0.32692,0.864,0.607,338,1,"BW.180C, trimebutine, spiradoline",0.216811308924742,0,FALSE
+"proteomics","Pearson.est","p38 MAPK inhibitor",-0.33949,-0.89,0.537,983,1,"CMPD.1, SB.239063, VX.702, TAK.715",0.270025714300444,0,FALSE
+"proteomics","Pearson.est","PARP inhibitor",-0.22874,-0.608,0.935,984,0.962,"E7449, endo.IWR.1, PJ.34",0.0291883891274822,0.0168249279621871,FALSE
+"proteomics","Pearson.est","PDGFR tyrosine kinase receptor inhibitor",0.41356,1.08,0.352,195,0.977,"nintedanib, masitinib, linifanib, axitinib, lenvatinib, pazopanib, dovitinib, regorafenib",0.453457336521869,0.0101054362812269,FALSE
+"proteomics","Pearson.est","phosphatase inhibitor",0.25763,0.659,0.848,182,1,"GSK2830371, bis.maltolato.oxovanadium.IV.",0.0716041477432862,0,FALSE
+"proteomics","Pearson.est","phosphodiesterase inhibitor",-0.61329,-1.58,0.0552,1007,0.615,"papaverine, enoximone, cilostamide, avanafil, anagrelide, zardaverine, GSK256066, YM.976",1.2580609222708,0.211124884224583,FALSE
+"proteomics","Pearson.est","PI3K inhibitor",0.36,0.94,0.507,419,1,"idelalisib, GDC.0941, voxtalisib, ZSTK.474, buparlisib, PF.04691502, SB.2343, GSK2126458, NVP.BEZ235, GDC.0980, PI3K.IN.2",0.294992040666664,0,FALSE
+"proteomics","Pearson.est","PLK inhibitor",0.79112,2.02,0.00195,308,0.129,"volasertib, NMS.1286937, GW.843682X, HMN.214, rigosertib, GSK461364, BI.2536",2.70996538863748,0.889410289700751,TRUE
+"proteomics","Pearson.est","potassium channel blocker",0.25659,0.661,0.877,1078,1,"ML133, ibutilide, mepivacaine, meglitinide, oleoylethanolamide, dofetilide",0.0570004066339595,0,FALSE
+"proteomics","Pearson.est","PPAR receptor agonist",0.30023,0.771,0.715,184,0.967,"clofibrate, fenofibrate",0.145693958198919,0.0145735259169983,FALSE
+"proteomics","Pearson.est","progesterone receptor agonist",0.50904,1.31,0.177,216,0.777,"tanaproget, nomegestrol.acetate, levonorgestrel",0.752026733638193,0.109578981199086,FALSE
+"proteomics","Pearson.est","proteasome inhibitor",-0.65054,-1.7,0.0343,1131,0.661,"ixazomib, ONX.0914, carfilzomib, bortezomib, ixazomib.citrate",1.46470587995723,0.17979854051436,FALSE
+"proteomics","Pearson.est","protein synthesis inhibitor",0.47636,1.23,0.229,276,0.838,"harringtonine, anguidine, cycloheximide, clofoctol, mercaptopurine, bruceantin, clindamycin.phosphate, chloramphenicol.palmitate",0.640164517660112,0.0767559813697235,FALSE
+"proteomics","Pearson.est","protein tyrosine kinase inhibitor",0.32762,0.861,0.611,6,0.99,"mubritinib",0.213958789757446,0.00436480540245009,FALSE
+"proteomics","Pearson.est","RAF inhibitor",-0.40671,-1.04,0.391,1276,0.807,"CEP.32496, vemurafenib, dabrafenib",0.407823242604133,0.0931264652779296,FALSE
+"proteomics","Pearson.est","RET tyrosine kinase inhibitor",-0.42082,-1.1,0.32,1259,0.816,"apatinib, vandetanib",0.494850021680094,0.0883098412461389,FALSE
+"proteomics","Pearson.est","retinoid receptor agonist",0.34224,0.891,0.54,307,1,"adapalene, fenretinide, LE.135, bexarotene",0.267606240177031,0,FALSE
+"proteomics","Pearson.est","ribonucleotide reductase inhibitor",0.21365,0.544,0.962,464,1,"hydroxyurea, pentostatin, triapine, fludarabine.phosphate, LY2334737",0.0168249279621871,0,FALSE
+"proteomics","Pearson.est","serotonin receptor agonist",0.34747,0.9,0.566,314,1,"zolmitriptan, NAN.190",0.247183568811729,0,FALSE
+"proteomics","Pearson.est","serotonin receptor antagonist",0.31056,0.808,0.659,147,0.962,"SB.200646, pirenperone",0.18111458540599,0.0168249279621871,FALSE
+"proteomics","Pearson.est","sodium channel blocker",-0.4194,-1.08,0.329,1341,0.767,"lappaconite, triamterene, mexiletine",0.482804102050026,0.115204636051019,FALSE
+"proteomics","Pearson.est","src inhibitor",-0.31014,-0.804,0.692,1189,1,"PP.2, bosutinib, saracatinib",0.159893905543242,0,FALSE
+"proteomics","Pearson.est","sterol demethylase inhibitor",0.64713,1.63,0.0449,159,0.691,"chlormidazole, sulconazole, posaconazole",1.34775365899668,0.160521952625802,FALSE
+"proteomics","Pearson.est","TGF beta receptor inhibitor",-0.58093,-1.52,0.0869,1183,0.539,"SB.431542, D.4476, repsox, LY2109761",1.06098022355133,0.268411234813261,FALSE
+"proteomics","Pearson.est","thymidylate synthase inhibitor",0.33058,0.854,0.625,34,0.97,"ftorafur",0.204119982655925,0.0132282657337552,FALSE
+"proteomics","Pearson.est","topoisomerase inhibitor",0.42309,1.09,0.32,306,1,"mitoxantrone, idarubicin, etoposide.phosphate, epirubicin, dexrazoxane, doxorubicin, TAS.103, amsacrine, topotecan, voreloxin, valrubicin",0.494850021680094,0,FALSE
+"proteomics","Pearson.est","tubulin polymerization inhibitor",0.5097,1.32,0.158,555,0.835,"verubulin, BNC105, vinblastine, fenbendazole, vindesine, KX2.391, mebendazole, taltobulin, oxibendazole, paclitaxel, docetaxel, ABT.751, epothilone.b, indibulin, nocodazole, dolastatin.10, CYT.997, albendazole, fosbretabulin",0.801342913045577,0.0783135245163979,FALSE
+"proteomics","Pearson.est","tyrosine kinase inhibitor",-0.27733,-0.717,0.787,1249,1,"AV.412, apatinib, CP.724714, rheochrysidin, vandetanib",0.104025267640935,0,FALSE
+"proteomics","Pearson.est","VEGFR inhibitor",0.25686,0.659,0.866,195,1,"nintedanib, SAR131675, linifanib, ENMD.2076, axitinib, lenvatinib, pazopanib, dovitinib, regorafenib",0.0624821079826534,0,FALSE
+"proteomics","Pearson.est","vitamin D receptor agonist",-0.25293,-0.653,0.859,917,1,"ercalcitriol, tacalcitol, paricalcitol, maxacalcitol, calcitriol",0.0660068361687577,0,FALSE
+"metabolomics","Pearson.est","EGFR inhibitor",-0.31798,-0.841,0.637,1024,0.798,"FERb.033, BMS.599626, BIBU.1361, BMS.690514, salvianolic.acid.B, tucatinib, canertinib, PD.168393, neratinib, pelitinib, TAK.285, vandetanib, afatinib, OSI.420, AEE788, brigatinib, osimertinib, PD.153035",0.19586056766465,0.0979971086492706,FALSE
+"metabolomics","Pearson.est","Abl kinase inhibitor",-0.63565,-1.66,0.0583,1039,0.258,"flumatinib, bosutinib, imatinib, GZD824, bafetinib, nilotinib, metatinib, dasatinib, ponatinib",1.23433144524099,0.58838029403677,FALSE
+"metabolomics","Pearson.est","acetylcholine receptor agonist",0.42151,1.1,0.344,240,0.657,"pilocarpine, oxiracetam, nefiracetam",0.46344155742847,0.182434630440219,FALSE
+"metabolomics","Pearson.est","acetylcholine receptor antagonist",0.22648,0.586,0.944,466,0.978,"diphemanil, methscopolamine, iododexetimide",0.025028005701931,0.00966114521239857,FALSE
+"metabolomics","Pearson.est","adenosine receptor antagonist",0.37014,0.943,0.522,275,0.638,"SCH.58261, sulmazole",0.282329496997738,0.195179321278838,FALSE
+"metabolomics","Pearson.est","adrenergic receptor agonist",-0.36429,-0.971,0.455,1141,0.646,"isoetharine, metaraminol, clenbuterol, A61603, epinephrine, terbutaline",0.341988603342888,0.189767482004916,FALSE
+"metabolomics","Pearson.est","adrenergic receptor antagonist",0.368,0.959,0.496,248,0.656,"atenolol......, prazosin, propranolol, oxprenolol, naftidrofuryl",0.304518323509803,0.18309616062434,FALSE
+"metabolomics","Pearson.est","AKT inhibitor",0.21193,0.542,0.961,539,0.983,"AT7867, ONC201, GDC.0068, CCT128930, uprosertib",0.0172766123314547,0.00744648216786438,FALSE
+"metabolomics","Pearson.est","ALK tyrosine kinase receptor inhibitor",-0.53809,-1.41,0.135,1247,0.365,"GW.788388, brigatinib, CEP.37440, AP26113",0.869666231504994,0.437707135543525,FALSE
+"metabolomics","Pearson.est","androgen receptor antagonist",0.65925,1.72,0.0255,378,0.209,"bicalutamide, nilutamide, RU.58841, enzalutamide",1.59345981956604,0.679853713888946,TRUE
+"metabolomics","Pearson.est","antioxidant",0.28363,0.73,0.776,1039,0.845,"trolox, mesna, benfotiamine, chlorogenic.acid, taurine, rutin",0.110138278741812,0.0731432910503077,FALSE
+"metabolomics","Pearson.est","AP inhibitor",-0.32039,-0.836,0.642,462,0.784,"birinapant, tanshinone.i, GDC.0152, idronoxil, embelin, LCL.161",0.192464971931147,0.105683937315562,FALSE
+"metabolomics","Pearson.est","ATPase inhibitor",0.42817,1.07,0.368,354,0.651,"rabeprazole, oligomycin.a, evodiamine, digitoxigenin, digitoxin, k.strophanthidin",0.434152181326482,0.186419011431808,FALSE
+"metabolomics","Pearson.est","Aurora kinase inhibitor",0.44069,1.13,0.291,395,0.711,"CCT129202, PHA.680632, barasertib, danusertib, AMG900, GSK1070916, AT.9283, barasertib.HQPA, SNS.314, CCT137690",0.536107011014093,0.148130399270234,FALSE
+"metabolomics","Pearson.est","bacterial 50S ribosomal subunit inhibitor",-0.40441,-1.07,0.367,1301,0.549,"dirithromycin, tedizolid",0.435333935747911,0.260427655549908,FALSE
+"metabolomics","Pearson.est","bacterial DNA gyrase inhibitor",0.33267,0.843,0.604,109,0.729,"norfloxacin, finafloxacin",0.218963061378868,0.137272471682025,FALSE
+"metabolomics","Pearson.est","BCL inhibitor",-0.41158,-1.07,0.373,1187,0.549,"gossypol, HA14.1, navitoclax, oridonin",0.428291168191312,0.260427655549908,FALSE
+"metabolomics","Pearson.est","Bcr.Abl kinase inhibitor",-0.68734,-1.78,0.0186,1039,0.235,"flumatinib, bosutinib, imatinib, GZD824, bafetinib, nilotinib, metatinib, dasatinib, ponatinib",1.73048705578208,0.628932137728264,TRUE
+"metabolomics","Pearson.est","benzodiazepine receptor agonist",0.40418,1.03,0.422,37,0.613,"eprinomectin, bentazepam",0.374687549038326,0.212539525481585,FALSE
+"metabolomics","Pearson.est","bromodomain inhibitor",-0.47947,-1.24,0.23,1045,0.51,"bromosporine, PFI.1, OTX015",0.638272163982407,0.292429823902064,FALSE
+"metabolomics","Pearson.est","calcium channel blocker",-0.25875,-0.669,0.852,1197,0.939,"penfluridol, tetrandrine, SKF.96365",0.0695604052332999,0.0273344077338891,FALSE
+"metabolomics","Pearson.est","CC chemokine receptor antagonist",-0.36725,-0.968,0.483,1113,0.631,"RS.504393, UNBS.5162, navarixin",0.316052869248488,0.199970640755866,FALSE
+"metabolomics","Pearson.est","CDK inhibitor",-0.40931,-1.06,0.344,996,0.545,"arcyriaflavin.a, NU6027, kenpaullone, JNJ.7706621, palbociclib, aminopurvalanol.a, AT.7519, ribociclib, P276.00, abemaciclib",0.46344155742847,0.263603497723358,FALSE
+"metabolomics","Pearson.est","CHK inhibitor",-0.72589,-1.89,0.0146,1225,0.431,"LY2603618, AZD7762, LY2606368, SCH.900776",1.83564714421556,0.365522729839268,FALSE
+"metabolomics","Pearson.est","cyclooxygenase inhibitor",-0.22301,-0.583,0.94,1233,0.978,"tryptanthrin, acetylsalicylsalicylic.acid, suxibuzone, FR.122047, indoprofen",0.0268721464003014,0.00966114521239857,FALSE
+"metabolomics","Pearson.est","cytochrome P450 inhibitor",-0.45847,-1.18,0.273,1356,0.506,"itraconazole",0.563837352959244,0.295849483160201,FALSE
+"metabolomics","Pearson.est","DNA alkylating agent",-0.46038,-1.17,0.29,1423,0.499,"cisplatin, ifosfamide, estramustine",0.537602002101044,0.30189945437661,FALSE
+"metabolomics","Pearson.est","DNA inhibitor",0.4887,1.25,0.224,335,0.599,"carboplatin, mechlorethamine, bendamustine, tirapazamine, teroxirone, oxaliplatin, metronidazole",0.649751981665837,0.222573177610689,FALSE
+"metabolomics","Pearson.est","DNA methyltransferase inhibitor",-0.58817,-1.51,0.0788,1041,0.409,"SGI.1027, RG108, fdcyd, decitabine, azacitidine",1.10347378251044,0.388276691992658,FALSE
+"metabolomics","Pearson.est","DNA polymerase inhibitor",0.4081,1.07,0.362,176,0.651,"famciclovir, cephalomannine, foscarnet",0.441291429466834,0.186419011431808,FALSE
+"metabolomics","Pearson.est","DNA synthesis inhibitor",-0.31726,-0.814,0.67,1268,0.797,"capecitabine, enocitabine, cisplatin",0.173925197299174,0.0985416786038876,FALSE
+"metabolomics","Pearson.est","dopamine receptor antagonist",0.5606,1.46,0.0984,208,0.506,"thioproperazine, clebopride, lurasidone, raclopride, remoxipride, isofloxythepin",1.00700490156866,0.295849483160201,FALSE
+"metabolomics","Pearson.est","estrogen receptor agonist",0.44832,1.17,0.272,213,0.67,"estrone, ethinyl.estradiol, erteberel, levonorgestrel",0.565431095965801,0.173925197299174,FALSE
+"metabolomics","Pearson.est","estrogen receptor antagonist",0.404,1.04,0.373,242,0.648,"raloxifene, clomifene",0.428291168191312,0.188424994129407,FALSE
+"metabolomics","Pearson.est","FGFR inhibitor",-0.41963,-1.11,0.34,1082,0.529,"MK.2461, nintedanib, erdafitinib, lucitanib",0.468521082957745,0.276544327964814,FALSE
+"metabolomics","Pearson.est","FLT3 inhibitor",-0.28822,-0.739,0.785,1321,0.891,"midostaurin, ponatinib, gilteritinib",0.105130343254747,0.0501222959631252,FALSE
+"metabolomics","Pearson.est","glucocorticoid receptor agonist",0.69184,1.79,0.00735,314,0.166,"hydrocortisone, prednisolone, desonide, methylprednisolone, fluticasone.propionate, ciclesonide, halcinonide, triamcinolone.acetonide, dexamethasone.acetate, rimexolone, fluocinolone.acetonide, prednisolone.acetate, triamcinolone, betamethasone, flumethasone.pivalate, difluprednate, piretanide",2.13371266091581,0.779891911959945,TRUE
+"metabolomics","Pearson.est","glutamate receptor antagonist",0.36763,0.939,0.525,151,0.624,"tiletamine, latrepirdine, MTPG",0.279840696594043,0.204815410317576,FALSE
+"metabolomics","Pearson.est","glycogen synthase kinase inhibitor",-0.36358,-0.945,0.486,1003,0.649,"AZD2858, kenpaullone, LY2090314, tideglusib, GSK.3.inhibitor.IX",0.313363730737707,0.187755303199631,FALSE
+"metabolomics","Pearson.est","growth factor receptor inhibitor",0.4,1.03,0.417,377,0.613,"danusertib, GW.441756, PHA.848125, GSK1904529A",0.379863945026242,0.212539525481585,FALSE
+"metabolomics","Pearson.est","HCV inhibitor",0.65894,1.7,0.0229,31,0.198,"PSI.7976, narlaprevir",1.64016451766011,0.703334809738469,TRUE
+"metabolomics","Pearson.est","HDAC inhibitor",-0.57246,-1.45,0.111,1099,0.392,"nexturastat.a, AR.42, PCI.24781, mocetinostat, belinostat, M.344, entinostat, SB.939, dacinostat, resminostat, givinostat, panobinostat, R306465, RG2833, JNJ.26481585",0.954677021213343,0.406713932979543,FALSE
+"metabolomics","Pearson.est","histamine receptor antagonist",0.4019,1.05,0.367,407,0.659,"ranitidine, famotidine, terfenadine, epinastine, zolantidine, nizatidine, ICI.162846, tecastemizole",0.435333935747911,0.18111458540599,FALSE
+"metabolomics","Pearson.est","HMGCR inhibitor",0.45254,1.18,0.27,10,0.692,"fluvastatin",0.568636235841013,0.159893905543242,FALSE
+"metabolomics","Pearson.est","HSP inhibitor",-0.18606,-0.475,0.986,267,0.986,"NMS.E973, tanespimycin, PU.H71, XL888, SNX.2112, alvespimycin, guanidine, KW.2478, ganetespib, VER.49009, NVP.AUY922, BIIB021, SNX.5422",0.0061230850587888,0.0061230850587888,FALSE
+"metabolomics","Pearson.est","JAK inhibitor",0.43162,1.12,0.326,294,0.654,"TG.101348, WHI.P154, CEP.33779, AZD1480, filgotinib, AT.9283",0.486782399932061,0.184422251675733,FALSE
+"metabolomics","Pearson.est","KIT inhibitor",-0.60624,-1.54,0.0784,1066,0.4,"imatinib, vatalanib, sorafenib, sunitinib, telatinib, dasatinib, midostaurin, pazopanib, motesanib, KI.8751",1.10568393731556,0.397940008672038,FALSE
+"metabolomics","Pearson.est","MDM inhibitor",0.8318,2.13,0.00188,145,0.0299,"idasanutlin, CGM097, AMG.232, nutlin.3, RITA",2.72584215073632,1.52432881167557,TRUE
+"metabolomics","Pearson.est","MEK inhibitor",-0.56535,-1.49,0.0833,1131,0.361,"AS.703026, arctigenin, PD.184352, AZD8330, selumetinib, TAK.733, nobiletin, trametinib, BIX.02188, cobimetinib",1.07935499859321,0.442492798094342,FALSE
+"metabolomics","Pearson.est","MET inhibitor",-0.69421,-1.82,0.0179,1143,0.243,"PHA.665752, PF.04217903, LY2801653, INC.280, NVP.BVU972",1.74714696902011,0.614393726401688,TRUE
+"metabolomics","Pearson.est","microtubule inhibitor",0.3641,0.952,0.495,336,0.645,"vinblastine, cabazitaxel, colchicine, triclabendazole",0.305394801066431,0.190440285364732,FALSE
+"metabolomics","Pearson.est","mTOR inhibitor",0.2953,0.763,0.758,300,0.823,"torin.1, AZD8055, SB.2343, ku.0063794, WYE.125132, PP242, voxtalisib, PF.04691502, OSI.027",0.120330794367946,0.0846001647877302,FALSE
+"metabolomics","Pearson.est","NFkB pathway inhibitor",0.38396,0.985,0.452,105,0.66,"parthenolide...., EVP4593, tyloxapol",0.344861565188618,0.180456064458131,FALSE
+"metabolomics","Pearson.est","opioid receptor agonist",0.34303,0.87,0.619,363,0.708,"salvinorin.a, spiradoline, ADL5859",0.208309350979882,0.149966742310231,FALSE
+"metabolomics","Pearson.est","p38 MAPK inhibitor",0.56967,1.45,0.129,245,0.467,"talmapimod, SB.242235, skepinone.l",0.889410289700751,0.330683119433888,FALSE
+"metabolomics","Pearson.est","PARP inhibitor",0.57127,1.44,0.099,267,0.399,"AG.14361, niraparib, olaparib",1.00436480540245,0.399027104313252,FALSE
+"metabolomics","Pearson.est","PDGFR tyrosine kinase receptor inhibitor",-0.51612,-1.34,0.144,1066,0.412,"imatinib, vatalanib, nintedanib, sorafenib, CP.673451, sunitinib, telatinib, dasatinib, pazopanib, SU014813, ponatinib, motesanib, KI.8751",0.84163750790475,0.385102783966865,FALSE
+"metabolomics","Pearson.est","phosphatase inhibitor",-0.25312,-0.648,0.855,1287,0.94,"BVT.948, AS.1949490",0.0680338852718274,0.0268721464003014,FALSE
+"metabolomics","Pearson.est","phosphodiesterase inhibitor",-0.47393,-1.22,0.235,1174,0.491,"GSK256066, zardaverine, trequinsin, YM.976",0.628932137728264,0.308918507877032,FALSE
+"metabolomics","Pearson.est","PI3K inhibitor",0.18031,0.469,0.985,321,0.987,"AZD6482, SB.2343, voxtalisib, PF.04691502, YM.201636, idelalisib",0.00656376950238827,0.00568284733036327,FALSE
+"metabolomics","Pearson.est","PLK inhibitor",0.51495,1.33,0.157,204,0.537,"NMS.1286937, HMN.214",0.804100347590766,0.270025714300444,FALSE
+"metabolomics","Pearson.est","potassium channel blocker",-0.4473,-1.15,0.283,1238,0.51,"mepivacaine, dofetilide",0.54821356447571,0.292429823902064,FALSE
+"metabolomics","Pearson.est","PPAR receptor agonist",0.69707,1.85,0.0139,409,0.137,"clofibrate, fenofibrate, pterostilbene, S26948",1.8569851997459,0.863279432843593,TRUE
+"metabolomics","Pearson.est","progesterone receptor agonist",0.49075,1.25,0.223,384,0.599,"norethindrone, levonorgestrel, norgestrel, tanaproget",0.651695136951839,0.222573177610689,FALSE
+"metabolomics","Pearson.est","proteasome inhibitor",-0.67717,-1.71,0.026,1313,0.232,"bortezomib, ixazomib.citrate, carfilzomib",1.58502665202918,0.6345120151091,TRUE
+"metabolomics","Pearson.est","protein synthesis inhibitor",0.43741,1.12,0.312,305,0.654,"mercaptopurine, bruceantin, anguidine, chloramphenicol.palmitate, clofoctol, cycloheximide, harringtonine, tedizolid.phosphate",0.505845405981557,0.184422251675733,FALSE
+"metabolomics","Pearson.est","protein tyrosine kinase inhibitor",-0.39131,-1.03,0.387,1048,0.57,"BMS.599626, NVP.TAE226, AV.412, tyrphostin.A9, rheochrysidin",0.412289034981089,0.244125144327509,FALSE
+"metabolomics","Pearson.est","RAF inhibitor",-0.72224,-1.85,0.0142,1106,0.286,"CEP.32496, SB.590885, sorafenib, GDC.0879, LGX818, RAF265, AZ.628, TAK.632, dabrafenib, vemurafenib",1.84771165561694,0.543633966870957,FALSE
+"metabolomics","Pearson.est","RET tyrosine kinase inhibitor",-0.66466,-1.71,0.0394,1010,0.232,"apatinib, sorafenib, sunitinib, vandetanib",1.40450377817443,0.6345120151091,TRUE
+"metabolomics","Pearson.est","retinoid receptor agonist",-0.42578,-1.12,0.305,1142,0.535,"fenretinide, LE.135, CD.437, tamibarotene, adarotene",0.515700160653214,0.271646217978772,FALSE
+"metabolomics","Pearson.est","ribonucleotide reductase inhibitor",-0.46168,-1.22,0.219,1084,0.491,"cladribine, LY2334737, fludarabine, triapine, hydroxyurea, clofarabine",0.659555885159882,0.308918507877032,FALSE
+"metabolomics","Pearson.est","serotonin receptor agonist",0.62103,1.59,0.0396,3,0.322,"aripiprazole",1.40230481407449,0.492144128304169,FALSE
+"metabolomics","Pearson.est","serotonin receptor antagonist",0.3806,0.976,0.467,141,0.651,"aripiprazole, lurasidone, pirenperone",0.330683119433888,0.186419011431808,FALSE
+"metabolomics","Pearson.est","sodium channel blocker",-0.19096,-0.498,0.991,949,1,"triamterene, quinidine, oxcarbazepine, lappaconite, benzethonium, mexiletine, mepivacaine",0.00392634551472468,0,FALSE
+"metabolomics","Pearson.est","src inhibitor",-0.56198,-1.49,0.097,1245,0.361,"PP.1, dasatinib, saracatinib, TG.100572",1.01322826573376,0.442492798094342,FALSE
+"metabolomics","Pearson.est","sterol demethylase inhibitor",0.7524,1.92,0,259,0.116,"terconazole, posaconazole, ketoconazole, chlormidazole",Inf,0.935542010773082,TRUE
+"metabolomics","Pearson.est","TGF beta receptor inhibitor",-0.27115,-0.713,0.791,391,0.907,"adaprev, SB.525334, SB.431542, D.4476, LY2109761, repsox",0.101823516502323,0.0423927129399047,FALSE
+"metabolomics","Pearson.est","thymidylate synthase inhibitor",-0.48402,-1.26,0.214,1031,0.506,"raltitrexed, trifluridine, doxifluridine, capecitabine",0.669586226650809,0.295849483160201,FALSE
+"metabolomics","Pearson.est","topoisomerase inhibitor",-0.5355,-1.42,0.102,1070,0.378,"licochalcone.a, SN.38, beta.lapachone, genz.644282, doxorubicin, teniposide, exatecan.mesylate, fleroxacin, rubitecan, daunorubicin, camptothecin, etoposide, irinotecan",0.991399828238082,0.422508200162775,FALSE
+"metabolomics","Pearson.est","tubulin polymerization inhibitor",0.57189,1.44,0.106,483,0.399,"BNC105, epothilone.b, vinorelbine, flubendazole, vinblastine, dolastatin.10, mebendazole, taltobulin, nocodazole, indibulin, KX2.391, oxibendazole, fosbretabulin, verubulin, CYT.997, epothilone.d, ABT.751, vincristine",0.97469413473523,0.399027104313252,FALSE
+"metabolomics","Pearson.est","tyrosine kinase inhibitor",-0.45948,-1.2,0.247,1126,0.496,"sorafenib, NVP.TAE226, AV.412, aminopurvalanol.a, tyrphostin.A9, sunitinib, bafetinib, rheochrysidin, vandetanib, tivantinib, dasatinib, hypericin",0.607303046740334,0.304518323509803,FALSE
+"metabolomics","Pearson.est","VEGFR inhibitor",-0.53789,-1.42,0.11,1081,0.378,"BMS.690514, MK.2461, vatalanib, MGCD.265, nintedanib, sorafenib, sunitinib, vandetanib, RAF265, telatinib, AEE788, pazopanib, SU014813, golvatinib, lucitanib, TG.100572, motesanib, foretinib, KI.8751",0.958607314841775,0.422508200162775,FALSE
+"metabolomics","Pearson.est","vitamin D receptor agonist",-0.51774,-1.34,0.172,1013,0.412,"ercalcitriol, tacalcitol, calcitriol",0.764471553092451,0.385102783966865,FALSE

@@ -512,15 +512,21 @@ types <- c("transcriptomics", "proteomics", "metabolomics")
 data.list <- list(Coldren.transcr, Coldren.prot, Coldren.met)
 feature.names <- c("Gene", "Gene", "Metabolite")
 gmt.features <- list(gene.gmt, gene.gmt, met.gmt)
-expression <- list(RNA.df, prot.df, met.df)
+prot.df.noNA <- prot.df[, colSums(is.na(prot.df)) == 0] # 5466 gene names
+expression <- list(RNA.df, prot.df.noNA, met.df)
 
 Fig3.panSEA <- panSEA::panSEA(data.list, types, feature.names, 
                               group.names = group.names,
                               group.samples = group.samples,
                               gmt.features = gmt.features,
                               expression = expression)
+# proteomics: CCLE prot doesn't contain any of the gene symbols provided (?)
+# had to skip line 15 (na.omit for expr) of DMEA::WV
+# but then had: Error: id variables not found in data: WV
+# it's because the CCLE need to have full coverage of the input gene names
 
 # save results
+setwd(base.path)
 savePanSEA(Fig3.panSEA, "Fig3")
 Fig3.panSEA <- NULL # make space to process next analysis
 
@@ -529,7 +535,8 @@ NSCLC.samples <- cell.line.info[cell.line.info$lineage_subtype == "NSCLC", ] # 1
 NSCLC.RNA.df <- RNA.df[RNA.df$CCLE_ID %in% NSCLC.samples$CCLE_Name, ] # 51 CCLE
 NSCLC.prot.df <- prot.df[prot.df$CCLE_ID %in% NSCLC.samples$CCLE_Name, ] # 63 CCLE
 NSCLC.met.df <- met.df[met.df$CCLE_ID %in% NSCLC.samples$CCLE_Name, ] # 122 CCLE
-expression <- list(NSCLC.RNA.df, NSCLC.prot.df, NSCLC.met.df)
+NSCLC.prot.df.noNA <- NSCLC.prot.df[, colSums(is.na(NSCLC.prot.df)) == 0] # 5729 gene names
+expression <- list(NSCLC.RNA.df, NSCLC.prot.df.noNA, NSCLC.met.df)
 
 Fig4.panSEA <- panSEA::panSEA(data.list, types, feature.names, 
                               group.names = group.names,
@@ -538,5 +545,25 @@ Fig4.panSEA <- panSEA::panSEA(data.list, types, feature.names,
                               expression = expression)
 
 # save results
+setwd(base.path)
 savePanSEA(Fig4.panSEA, "Fig4")
 Fig4.panSEA <- NULL # make space to process next analysis
+
+#### Step 5d: Fig5: Fig3 but only querying lung cancer cell line data ####
+lung.samples <- cell.line.info[cell.line.info$lineage == "lung", ] # 273 CCLE
+lung.RNA.df <- RNA.df[RNA.df$CCLE_ID %in% lung.samples$CCLE_Name, ] # 63 CCLE
+lung.prot.df <- prot.df[prot.df$CCLE_ID %in% lung.samples$CCLE_Name, ] # 78 CCLE
+lung.met.df <- met.df[met.df$CCLE_ID %in% lung.samples$CCLE_Name, ] # 182 CCLE
+lung.prot.df.noNA <- lung.prot.df[, colSums(is.na(lung.prot.df)) == 0] # 5565 gene names
+expression <- list(lung.RNA.df, lung.prot.df.noNA, lung.met.df)
+
+Fig5.panSEA <- panSEA::panSEA(data.list, types, feature.names, 
+                              group.names = group.names,
+                              group.samples = group.samples,
+                              gmt.features = gmt.features,
+                              expression = expression)
+
+# save results
+setwd(base.path)
+savePanSEA(Fig5.panSEA, "Fig5")
+Fig5.panSEA <- NULL # make space to process next analysis

@@ -11,36 +11,53 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   GSEA.df <- data.table::rbindlist(GSEA.df, use.names = TRUE, idcol = "type")
   GSEA.df$minusLogP <- -log(GSEA.df$p_value, base = 10)
   GSEA.df$minusLogFDR <- -log(GSEA.df$FDR_q_value, base = 10)
-
-  # reduce plot data down to top results
-  sig.GSEA.df <- GSEA.df[GSEA.df$p_value < p &
-    GSEA.df$FDR_q_value < FDR, ]
+  GSEA.df$sig <- FALSE
+  GSEA.df[GSEA.df$p_value < p & GSEA.df$FDR_q_value < FDR, ]$sig <- TRUE
   
-  if (nrow(sig.GSEA.df) > 0) {
-    top.sig.GSEA.df <- 
-      sig.GSEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
-    top.GSEA.df <- 
-      GSEA.df[GSEA.df$Feature_set %in% top.sig.GSEA.df$Feature_set, ]
-  } else {
-    top.GSEA.df <- 
-      GSEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
-  }
-
-  ## create dot plot
-  # set order of drug sets (decreasing by NES)
+  # summarize results for each Feature_set
   mean.GSEA.df <- plyr::ddply(GSEA.df, .(Feature_set), summarize,
                               mean_NES = mean(NES),
-                              Fisher_p = as.numeric(metap::sumlog(p_value)$p),
+                              sd_NES = sd(NES),
+                              Fisher_p = as.numeric(metap::sumlog(na.omit(p_value))$p),
                               types = paste0(type, collapse = ", "),
-                              N_types = length(unique(type)))
+                              N_types = length(unique(type)),
+                              N_sig = length(sig[sig]),
+                              sig_types = paste0(type[sig], collapse = ", "))
   if (length(unique(mean.GSEA.df$Fisher_p)) > 1) {
     mean.GSEA.df$adj_Fisher_p <- 
       qvalue::qvalue(mean.GSEA.df$Fisher_p, pi0=1)$qvalues
   } else {
     mean.GSEA.df$adj_Fisher_p <- NA
   }
+  
+  # order results by NES for dot plot
   mean.GSEA.df <- dplyr::arrange(mean.GSEA.df, desc(mean_NES))
+  
+  
+  # reduce plot data down to top results
+  sig.GSEA.df <- mean.GSEA.df[mean.GSEA.df$N_sig > 0, ]
+  
+  if (nrow(sig.GSEA.df) >= n.dot.sets) {
+    top.GSEA.df <- 
+      sig.GSEA.df %>% dplyr::slice_max(abs(mean_NES), n = n.dot.sets)
+  } else {
+    top.GSEA.df <- 
+      mean.GSEA.df %>% dplyr::slice_max(abs(mean_NES), n = n.dot.sets)
+  }
+  dot.df <- GSEA.df[GSEA.df$Feature_set %in% top.GSEA.df$Feature_set, ]
 
+  ## create venn diagram
+  # compile significant results for each type in list
+  venn.list <- list()
+  for (i in 1:length(types)) {
+    venn.list[[types[i]]] <- GSEA.df[GSEA.df$type == types[i] &
+                                       GSEA.df$sig, ]$Feature_set
+  }
+  
+  # generate venn diagram
+  venn.plot <- ggvenn::ggvenn(venn.list) # only displays first 4 types
+  
+  ## create dot plot
   # set theme
   bg.theme <- ggplot2::theme(
     legend.background = element_rect(), legend.position = "top",
@@ -65,7 +82,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
 
   # generate dot plot
   dot.plot <- ggplot2::ggplot(
-    top.GSEA.df,
+    dot.df,
     ggplot2::aes(
       x = type, y = Feature_set, color = NES,
       size = -log10(FDR_q_value)
@@ -77,7 +94,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(
-      x = "Omics Type",
+      x = "Input Data",
       y = "Feature Set",
       color = "NES", size = "-log(FDR)"
     )
@@ -107,9 +124,10 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
     mean.results = mean.GSEA.df,
     NES.df = NES.df,
     minusLogFDR.df = minusLogFDR.df,
+    venn.diagram = venn.plot,
     dot.plot = dot.plot,
     corr = corr.mat,
-    corr.plot = corr.mat.plot
+    corr.matrix = corr.mat.plot
   )
   return(outputs)
 }

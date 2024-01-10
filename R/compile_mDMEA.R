@@ -1,6 +1,6 @@
 compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
                           n.dot.sets = 10) {
-  ## create heatmap data frames
+  ## compile data
   # extract DMEA results for each omics type
   types <- names(mDMEA.results)
   DMEA.df <- list()
@@ -12,36 +12,52 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
   DMEA.df <- data.table::rbindlist(DMEA.df, use.names = TRUE, idcol = "type")
   DMEA.df$minusLogP <- -log(DMEA.df$p_value, base = 10)
   DMEA.df$minusLogFDR <- -log(DMEA.df$FDR_q_value, base = 10)
+  DMEA.df$sig <- FALSE
+  DMEA.df[DMEA.df$p_value < p & DMEA.df$FDR_q_value < FDR, ]$sig <- TRUE
 
-  # reduce plot data down to top results
-  sig.DMEA.df <- DMEA.df[DMEA.df$p_value < p &
-    DMEA.df$FDR_q_value < FDR, ]
-  
-  if (nrow(sig.DMEA.df) > 0) {
-    top.sig.DMEA.df <- 
-      sig.DMEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
-    top.DMEA.df <- 
-      DMEA.df[DMEA.df$Drug_set %in% top.sig.DMEA.df$Drug_set, ]
-  } else {
-    top.DMEA.df <- 
-      DMEA.df %>% dplyr::slice_max(abs(NES), n = n.dot.sets)
-  }
-
-  ## create dot plot
-  # set order of drug sets (decreasing by mean NES)
-  mean.DMEA.df <- plyr::ddply(top.DMEA.df, .(Drug_set), summarize,
+  # summarize results for each Drug_set
+  mean.DMEA.df <- plyr::ddply(DMEA.df, .(Drug_set), summarize,
                               mean_NES = mean(NES),
-                              Fisher_p = as.numeric(metap::sumlog(p_value)$p),
+                              sd_NES = sd(NES),
+                              Fisher_p = as.numeric(metap::sumlog(na.omit(p_value))$p),
                               types = paste0(type, collapse = ", "),
-                              N_types = length(unique(type)))
+                              N_types = length(unique(type)),
+                              N_sig = length(sig[sig]),
+                              sig_types = paste0(type[sig], collapse = ", "))
   if (length(unique(mean.DMEA.df$Fisher_p)) > 1) {
     mean.DMEA.df$adj_Fisher_p <- 
       qvalue::qvalue(mean.DMEA.df$Fisher_p, pi0=1)$qvalues
   } else {
     mean.DMEA.df$adj_Fisher_p <- NA
   }
+  
+  # order results by NES for dot plot
   mean.DMEA.df <- dplyr::arrange(mean.DMEA.df, desc(mean_NES))
+  
+  # reduce plot data down to top results
+  sig.DMEA.df <- mean.DMEA.df[mean.DMEA.df$N_sig > 0, ]
+  
+  if (nrow(sig.DMEA.df) >= n.dot.sets) {
+    top.DMEA.df <- 
+      sig.DMEA.df %>% dplyr::slice_max(abs(mean_NES), n = n.dot.sets)
+  } else {
+    top.DMEA.df <- 
+      mean.DMEA.df %>% dplyr::slice_max(abs(mean_NES), n = n.dot.sets)
+  }
+  dot.df <- DMEA.df[DMEA.df$Drug_set %in% top.DMEA.df$Drug_set, ]
 
+  ## create venn diagram
+  # compile significant results for each type in list
+  venn.list <- list()
+  for (i in 1:length(types)) {
+    venn.list[[types[i]]] <- DMEA.df[DMEA.df$type == types[i] &
+                                       DMEA.df$sig, ]$Drug_set
+  }
+  
+  # generate venn diagram
+  venn.plot <- ggvenn::ggvenn(venn.list) # only displays first 4 types
+  
+  ## create dot plot
   # set theme
   bg.theme <- ggplot2::theme(
     legend.background = element_rect(), legend.position = "top",
@@ -66,7 +82,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
 
   # generate dot plot
   dot.plot <- ggplot2::ggplot(
-    top.DMEA.df,
+    dot.df,
     ggplot2::aes(
       x = type, y = Drug_set, color = NES,
       size = -log10(FDR_q_value)
@@ -78,7 +94,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(
-      x = "Omics Type",
+      x = "Input Data",
       y = "Drug Mechanism of Action",
       color = "NES", size = "-log(FDR)"
     )
@@ -108,6 +124,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
     mean.results = mean.DMEA.df,
     NES.df = NES.df,
     minusLogFDR.df = minusLogFDR.df,
+    venn.diagram = venn.plot,
     dot.plot = dot.plot,
     corr = corr.mat,
     corr.matrix = corr.mat.plot

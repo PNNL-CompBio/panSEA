@@ -1,13 +1,13 @@
 netSEA <- function(inputs, outputs,
                    element.names = rep("Gene", length(inputs)),
                    rank.var = rep("Log2FC", length(inputs)),
-                   p = 0.05, FDR = 0.25, n.network.sets = 2*length(inputs)) {
+                   p = 0.05, FDR = 0.25, n.network.sets = 2 * length(inputs),
+                   scale = 5) {
   message("Generating network graph...")
 
   #### Step 1. Identify significantly enriched sets across all types ####
   outputs <- data.table::rbindlist(outputs,
-    use.names = TRUE,
-    idcol = "type"
+    use.names = TRUE, idcol = "type", fill = TRUE
   )
   sig.outputs <- outputs[outputs$p_value < p & outputs$FDR_q_value < FDR, ]
 
@@ -19,12 +19,13 @@ netSEA <- function(inputs, outputs,
   } else {
     # identify top significantly enriched sets
     if (nrow(sig.outputs) > n.network.sets) {
-      top.outputs <- sig.outputs %>% dplyr::slice_max(abs(NES), 
-                                                      n = n.network.sets)
+      top.outputs <- sig.outputs %>% dplyr::slice_max(abs(NES),
+        n = n.network.sets
+      )
     } else {
       top.outputs <- sig.outputs
     }
-    
+
     pairs <- c()
     leads <- c()
     for (i in 1:nrow(top.outputs)) {
@@ -61,35 +62,41 @@ netSEA <- function(inputs, outputs,
     # compile inputs based on rank.var
     names(inputs) <- types
     inputs <- data.table::rbindlist(inputs,
-      use.names = TRUE,
-      idcol = "type"
+      use.names = TRUE, idcol = "type", fill = TRUE
     )
 
     # get data for nodes (leading edge elements)
     lead.inputs <- inputs[inputs$Element %in% leads, ]
 
     # compile node info
-    node.df <- plyr::ddply(lead.inputs, .(Element), summarize,
+    node.df <- na.omit(plyr::ddply(lead.inputs, .(Element), summarize,
       AvgRank = mean(Rank)
-    )
+    ))
+    
+    # revise lead inputs in case any were removed with na.omit
+    # to make sure all vertex names in edge list are in vertex data frame
+    lead.inputs <- lead.inputs[lead.inputs$Element %in% node.df$Element, ]
 
     ## run correlations between nodes for edge thickness if relevant
     if (length(unique(lead.inputs$type)) >= 3) {
       # create matrix for correlations
       lead.mat <- reshape2::dcast(lead.inputs, type ~ Element,
-                                  value.var = "Rank")
+        value.var = "Rank"
+      )
       rownames(lead.mat) <- lead.mat$type
       lead.mat$type <- NULL
       lead.mat <- as.matrix(lead.mat)
 
       # create correlation matrix
-      cor.result <- stats::cor(lead.mat) # check format to change colnames below
-      for (i in 1:nrow(edge.df)) {
-        edge.df$importance[i] <- cor.result[
-          cor.result$var1 == edge.df$source[i] &
-            cor.result$var2 == edge.df$target[i],
-        ]$cor
-      }
+      cor.result <- as.data.frame(stats::cor(lead.mat))
+      cor.result$source <- rownames(cor.result)
+      cor.result.long <- dplyr::distinct(
+        reshape2::melt(cor.result,
+          id.vars = "source",
+          variable.name = "target", value.name = "importance"
+        )
+      )
+      edge.df <- merge(edge.df[, 1:3], cor.result.long, all.x = TRUE)
     } else {
       edge.df$importance <- 1
     }
@@ -107,25 +114,52 @@ netSEA <- function(inputs, outputs,
 
     # turn data frame into igraph object
     network <- igraph::graph_from_data_frame(
-      d = edge.df[ , 2:4], directed = FALSE, 
+      d = edge.df[edge.df$source %in% node.df$Element & 
+                    edge.df$target %in% node.df$Element, 
+                  c("source", "target", "importance")], directed = FALSE,
       vertices = node.df[, c("Element", "carac")]
     )
 
     # assign node size, color based on degree of connectivity, mean rank
-    igraph::V(network)$size <- abs(node.df$AvgRank)
-    igraph::V(network)$color <- ifelse(node.df$carac == "Positive", 
-                                       "blue", "red")
+    igraph::V(network)$size <- abs(scale)*abs(node.df$AvgRank)
+    igraph::V(network)$color <- ifelse(node.df$carac == "Positive",
+      "blue", "red"
+    )
 
     # generate static plot
-    igraph::plot.igraph(network, edge.width = edge.df$importance)
-    legend("bottomleft",
-             legend = levels(node.df$carac),
-             col = color.pal, bty = "n", pch = 20, pt.cex = 3, cex = 1.5,
-             text.col = color.pal, horiz = FALSE, inset = c(0.1, 0.1))
+    igraph::plot.igraph(network, edge.width = abs(edge.df$importance))
+    vertex.value.min <- abs(scale)*floor(min(node.df$AvgRank))
+    vertex.value.max <- abs(scale)*ceiling(max(node.df$AvgRank))
+    vertex.value.abs.max <- max(abs(vertex.value.min), abs(vertex.value.max))
+    vertex.value.neg.range <- seq(-vertex.value.abs.max, 0, length.out = 3)
+    vertex.value.pos.range <- seq(0, vertex.value.abs.max, length.out = 3)
+    vertex.value.range <- unique(c(
+      vertex.value.neg.range,
+      vertex.value.pos.range
+    ))
+    vertex.color.range <- c(rep("red", 2), "white", rep("blue", 2))
+    plot.rank.name <- ifelse(length(unique(element.names)) == 1,
+      rank.var[1], "Rank"
+    )
+    legend.title <- paste("Mean", plot.rank.name)
+    legend("topleft",
+      legend = vertex.value.range,
+      pt.cex = abs(vertex.value.range) / 5,
+      pch = rep(21, length(vertex.value.range)),
+      pt.bg = vertex.color.range, title = legend.title
+    )
     netPlot <- recordPlot()
-    
+
     # generate interactive plot
-    intPlot <- visNetwork::visIgraph(network)
+    vis.legend <- data.frame(
+      label = c(legend.title, "> 0", "< 0"),
+      color.background = c("white", "blue", "red"),
+      color.border = c("white", "black", "black"),
+      shape = c("dot", "dot", "dot")
+    )
+    intPlot <- visNetwork::visIgraph(network) %>%
+      visNetwork::visEdges(color = list(color = "grey", highlight = "black")) %>%
+      visNetwork::visLegend(addNodes = vis.legend, useGroups = FALSE)
   }
   return(list(static = netPlot, interactive = intPlot))
 }

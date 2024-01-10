@@ -19,9 +19,10 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   group.samples=list(2:(0.5 * (ncol(data.list[[1]]) + 1)),
   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])), 
   gmt.features=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))), 
-  gmt.drugs="PRISM", p=0.05, FDR=0.25, min.per.set=6, drug.sensitivity="PRISM", 
+  gmt.drugs="PRISM", p=0.05, FDR=0.25, FDR.features=0.05, min.per.set=6, 
+  drug.sensitivity="PRISM", 
   expression=as.list(rep("adherent CCLE", length(types))), 
-  n.network.sets=2*length(types), n.dot.sets=10)
+  n.network.sets=2*length(types), n.dot.sets=10, scale=5)
 }
 
 \arguments{
@@ -58,9 +59,9 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   }
   
   \item{group.samples}{List of column numbers or names corresponding to the 
-  group names. For example, if columns 1:3 correspond to the first group (e.g., 
-  "Diseased") and columns 4:6 correspond to the second group (e.g., "Healthy"), 
-  then group.samples would be list(1:3, 4:6). The order of samples must be the 
+  group names. For example, if columns 2:4 correspond to the first group (e.g., 
+  "Diseased") and columns 5:7 correspond to the second group (e.g., "Healthy"), 
+  then group.samples would be list(2:4, 5:7). The order of samples must be the 
   same across all data frames in the input data.list. Default: 
   list(2:(0.5 * (ncol(data.list[[1]]) + 1)),
   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])).
@@ -83,6 +84,10 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
 
   \item{FDR}{False discovery rate cut-off value for significant enrichments. 
   Default: 0.25.
+  }
+  
+  \item{FDR.features}{False discovery rate cut-off value for significant 
+  differential expression. Default: 0.05.
   }
   
   \item{num.permutations}{Number of permutations to perform for enrichment
@@ -123,18 +128,20 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   based on abs(NES) and p & FDR cutoff values. Default: 2*length(inputs).
   }
   
-  \item{n.dot.sets}{Number of sets from enrichment analyses to be represented 
-  in the dot plots. The top significant sets will be selected based on 
-  abs(NES) and p & FDR cutoff values. Default: 10.
+  \item{n.dot.sets}{Number of sets from enrichment analyses or features from 
+  differential expression analyses to be represented in the dot plots. The top 
+  significant results will be selected based on abs(NES) for sets and 
+  abs(Log2FC) for features as well as p & FDR cutoff values. Default: 10.
+  }
+  
+  \item{scale}{Numeric value to multiply by rank.var value to size vertices on 
+  network graphs for visibility. Default: 5.
   }
 }
 
 \value{
-  \item{DEGs}{List of data frames containing differential expression results 
-  after using limma::eBayes for each input data frame. The 
-  last column of each output data frame 'Log2Transformed' describes if the 
-  corresponding input data was log2-transformed to normalize the distribution. 
-  NA if length(group.names) == 1.}
+  \item{mDEG.results}{Outputs from mDEG function. NA if length(group.names) == 
+  1.}
   
   \item{mGSEA.results}{Outputs from mGSEA function. If 
   length(group.names) == 1, list of outputs corresponds to each sample (i.e., 
@@ -164,14 +171,12 @@ improves prioritization of therapeutics for repurposing. BMC Bioinformatics 24,
 \author{Belinda B. Garana
 }
 
-\note{To save network graphs (e.g., mGSEA.network and mDMEA.network outputs), 
-generate plot and then use dev.print. For example: 
+\note{To save static network graphs (e.g., mGSEA.network$static and 
+mDMEA.network$static outputs), generate plot and then use dev.print. 
 
-# Run netSEA or object in which netSEA results are stored
-#netSEA()
-
-# Save resulting plot as PDF named "Network_graph.pdf"
-dev.print(pdf, "Network_graph.pdf")
+To save 
+interactive network graphs (e.g., mGSEA.network$interactive and 
+mDMEA.network$interactive outputs) as HTML file, use visNetwork::visSave.
 }
 
 \section{Warning}{The column name for your samples must be the same in your
@@ -188,14 +193,15 @@ drug sensitivity data frame as in your expression data frame.
 \examples{
 ### example of 1 group: signatures of sensitivity to RAF or EGFR inhibitors
 ## Step 1: get inputs & format
-types <- c("GSE66539_SKCM_sensitive_vs_resistant_to_vemurafenib",
+examples <- c("GSE66539_SKCM_sensitive_vs_resistant_to_vemurafenib",
 "GSE31625_NSCLC_sensitive_vs_resistant_to_erlotinib")
+types <- c("GSE66539", "GSE31625") # short names for inputs for plots
 
 inputs <- list()
-for (i in 1:length(types)) {
-inputs[[types[i]]] <- read.csv(
+for (i in 1:length(examples)) {
+inputs[[examples[i]]] <- read.csv(
 paste0("https://raw.githubusercontent.com/BelindaBGarana/", 
-"DMEA/shiny-app/Examples/Gene_signature/", types[i], 
+"DMEA/shiny-app/Examples/Gene_signature/", examples[i], 
 "/Filtered_gene_signature_no_duplicates.csv"))
 }
 

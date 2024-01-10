@@ -25,7 +25,7 @@ compile_mDMEA(DMEA.list, p=0.05, FDR=0.25, n.dot.sets=10)
   
   \item{n.dot.sets}{Number of sets from enrichment analyses to be represented 
   in the dot plots. The top significant sets will be selected based on 
-  abs(NES) and p & FDR cutoff values. Default: 10.
+  abs(mean_NES) and p & FDR cutoff values. Default: 10.
   }
 }
 
@@ -38,14 +38,18 @@ compile_mDMEA(DMEA.list, p=0.05, FDR=0.25, n.dot.sets=10)
   \item{NES.df}{Data frame of compiled normalized enrichment scores (NES).}
   
   \item{minusLogFDR.df}{Data frame of compiled -log(FDR) values.}
-
+  
+  \item{venn.diagram}{ggplot object of venn diagram displaying the number of 
+  significantly enriched sets across different inputs and percentage of the 
+  total number of significantly enriched sets belonging to each input.}
+  
   \item{dot.plot}{ggplot2 object of dot plot displaying top significantly 
   enriched sets across different inputs.}
   
   \item{corr}{Data frame of correlation results between NES values of 
   different inputs.}
   
-  \item{corr.plot}{Tile plot of correlation results between NES values of 
+  \item{corr.matrix}{Tile plot of correlation results between NES values of 
   different inputs.}
 }
 
@@ -56,6 +60,10 @@ improves prioritization of therapeutics for repurposing. BMC Bioinformatics 24,
 }
 
 \author{Belinda B. Garana
+}
+
+\note{Output venn.diagram will only display results for the first 4 data frames 
+in the input data.list.
 }
 
 \seealso{

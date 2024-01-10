@@ -5,14 +5,17 @@
 \title{Multi-omic Diffential Expression Analysis
 }
 
-\description{Run differential expression analysis for each input data type.
+\description{Run differential expression analysis using limma::eBayes for each 
+input data type. If the input data is not normally distributed, Log2 
+transformation is performed prior to analysis.
 }
 
 \usage{
 mDEG(data.list, types, group.names=c("Diseased", "Healthy"), 
   group.samples=list(2:(0.5 * (ncol(data.list[[1]]) + 1)),
   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])), 
-  feature.names=rep("Gene", length(types)))
+  feature.names=rep("Gene", length(types)), 
+  p=0.05, FDR.features=0.05, n.dot.features=10)
 }
 
 \arguments{
@@ -30,9 +33,9 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
   }
   
   \item{group.samples}{List of column numbers or names corresponding to the 
-  group names. For example, if columns 1:3 correspond to the first group (e.g., 
-  "Diseased") and columns 4:6 correspond to the second group (e.g., "Healthy"), 
-  then group.samples would be list(1:3, 4:6). The order of samples must be the 
+  group names. For example, if columns 2:4 correspond to the first group (e.g., 
+  "Diseased") and columns 5:7 correspond to the second group (e.g., "Healthy"), 
+  then group.samples would be list(2:4, 5:7). The order of samples must be the 
   same across all data frames in the input data.list. Default: 
   list(2:(0.5 * (ncol(data.list[[1]]) + 1)), 
   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])).
@@ -42,15 +45,36 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
   gene symbols) in each corresponding data frame in the input data.list. 
   Default: rep("Gene", length(inputs)).
   }
+  
+  \item{p}{P-value cut-off for significant differential expression. Default: 
+  0.05.
+  }
+  
+  \item{FDR.features}{False discovery rate cut-off value for significant 
+  differential expression. Default: 0.05.
+  }
+
+  \item{n.dot.features}{Number of features from differential expression 
+  analyses to be represented in the dot plots. The top significant features 
+  will be selected based on abs(mean_Log2FC) and p & FDR cutoff values. 
+  Default: 10.
+  }
 }
 
-\value{List of data frames containing differential expression results 
-  after using limma::eBayes for each data frame in the input data.list. The 
-  last column of each output data frame 'Log2Transformed' describes if the 
-  corresponding input data was log2-transformed to normalize the distribution.
+\value{ 
+  \item{compiled.results}{Outputs from compile_mDEG function.}
+
+  \item{all.results}{List of data frames containing differential expression 
+  analysis results for each input type. The last column of each output data 
+  frame 'Log2Transformed' describes if the corresponding input data was 
+  log2-transformed to normalize the distribution}
 }
 
 \author{Belinda B. Garana
+}
+
+\note{Output venn.diagram in compiled.results will only display results for 
+the first 4 data frames in the input data.list.
 }
 
 \examples{

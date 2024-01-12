@@ -10,7 +10,7 @@ mDMEA_cell_corr <- function(drug.sensitivity = "PRISM", gmt = "PRISM",
                   exclusions = c("-666", "NA", "na", "NaN", "NULL"),
                   descriptions = NULL, min.per.corr = 3, scatter.plots = TRUE,
                   scatter.plot.type = "pearson", FDR.scatter.plots = 0.05,
-                  xlab = "Weighted Voting Score", ylab = value, 
+                  xlab = "Expression Correlation Estimate", ylab = value, 
                   position.x = "min", position.y = "min", se = TRUE, 
                   n.dot.sets = 10) {
   #### Step 1. Load data if necessary ####

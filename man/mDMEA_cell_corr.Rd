@@ -22,7 +22,7 @@ mDMEA_cell_corr(drug.sensitivity="PRISM", gmt="PRISM",
   exclusions=c("-666", "NA", "na", "NaN", "NULL"), 
   descriptions=NULL, min.per.corr=3, scatter.plots=TRUE, 
   scatter.plot.type="pearson", FDR.scatter.plots=0.05, 
-  xlab="Weighted Voting Score", ylab=value, position.x="min", 
+  xlab="Expression Correlation Estimate", ylab=value, position.x="min", 
   position.y="min", se=TRUE, n.dot.sets=10)
 }
 
@@ -135,7 +135,7 @@ mDMEA_cell_corr(drug.sensitivity="PRISM", gmt="PRISM",
   }
 
   \item{xlab}{Text describing rank metric for x-axis label of scatter plots.
-  Default: "Weighted Voting Score".
+  Default: "Expression Correlation Estimate".
   }
 
   \item{ylab}{Text describing variable values for y-axis label of scatter

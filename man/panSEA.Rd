@@ -19,8 +19,8 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   group.samples=list(2:(0.5 * (ncol(data.list[[1]]) + 1)),
   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])), 
   gmt.features=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types))), 
-  gmt.drugs="PRISM", p=0.05, FDR=0.25, FDR.features=0.05, min.per.set=6, 
-  drug.sensitivity="PRISM", 
+  gmt.drugs="PRISM", GSEA=TRUE, DMEA=TRUE, DMEA.type="WV", p=0.05, FDR=0.25, 
+  FDR.features=0.05, min.per.set=6, drug.sensitivity="PRISM", 
   expression=as.list(rep("adherent CCLE", length(types))), 
   n.network.sets=2*length(types), n.dot.sets=10, scale=5)
 }
@@ -77,6 +77,21 @@ panSEA(data.list, types, feature.names = rep("Gene", length(inputs)),
   \item{gmt.drugs}{Gmt object containing drug sets (e.g., output from
   GSA.read.gmt function from GSA package). If "PRISM", drug mechanisms of 
   action annotations from the PRISM drug screen will be used. Default: "PRISM".
+  }
+  
+  \item{GSEA}{Logical operator describing whether or not to run gene set 
+  enrichment analysis. Default: TRUE.
+  }
+  
+  \item{DMEA}{Logical operator describing whether or not to run drug mechanism 
+  enrichment analysis. Default: TRUE.
+  }
+  
+  \item{DMEA.type}{Character string describing type of drug rank list to use for 
+  drug mechanism enrichment analysis. Must be either "WV" for drugs to be 
+  ranked by correlations with weighted voting expression scores, "cell_corr" for
+  correlations with expression values, or "gene_corr" for correlations with 
+  drug expression perturbation values. Default: "WV".
   }
   
   \item{p}{P-value cut-off for significant enrichments. Default: 0.05.
@@ -177,6 +192,14 @@ mDMEA.network$static outputs), generate plot and then use dev.print.
 To save 
 interactive network graphs (e.g., mGSEA.network$interactive and 
 mDMEA.network$interactive outputs) as HTML file, use visNetwork::visSave.
+
+For DMEA.type input parameter: "WV" is recommended for an input gene signature 
+(e.g., representing Diseased vs. Healthy phenotypes) when you are seeking toxic
+drugs, "cell_corr" is recommended for an input expression data frame (e.g., 
+expression data for individual samples representing one phenotype) when you are 
+seeking toxic drugs, and "gene_corr" is recommended for an input gene signature 
+(e.g., representing Diseased vs. Healthy phenotypes) when you are seeking drugs 
+with similar/opposite effects on gene expression.
 }
 
 \section{Warning}{The column name for your samples must be the same in your

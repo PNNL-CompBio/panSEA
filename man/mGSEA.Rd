@@ -89,7 +89,8 @@ the first 4 data frames in the input data.list.
 }
 
 \seealso{
-  \link[panSEA]{compilGSEA}
+  \link[panSEA]{compile_mGSEA}
+  \link[panSEA]{panSEA}
 }
 
 \examples{

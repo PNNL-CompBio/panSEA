@@ -77,6 +77,11 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
 the first 4 data frames in the input data.list.
 }
 
+\seealso{
+  \link[panSEA]{compile_mDEG}
+  \link[panSEA]{panSEA}
+}
+
 \examples{
 ## Step 1: prepare expression data frames
 # create list of gene symbols

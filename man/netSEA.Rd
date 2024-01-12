@@ -75,8 +75,9 @@ To save interactive output as HTML file, use visNetwork::visSave.
 }
 
 \seealso{
-  \link[netSEA]{mGSEA}
-  \link[netSEA]{mDMEA}
+  \link[panSEA]{mGSEA}
+  \link[panSEA]{mDMEA}
+  \link[panSEA]{panSEA}
 }
 
 \examples{

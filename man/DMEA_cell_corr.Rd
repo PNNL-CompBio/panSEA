@@ -1,58 +1,45 @@
-\name{mDMEA}
+\name{DMEA_cell_corr}
 
-\alias{mDMEA}
+\alias{DMEA_cell_corr}
 
-\title{Multi-omic Drug Mechanism Enrichment Analysis
+\title{Drug Mechanism Enrichment Analysis Using Cell Correlations
 }
 
-\description{For each input omics type: ranks samples using Weighted Voting,
-correlates Weighted Voting scores to drug sensitivity,
-and then runs enrichment analysis using correlation estimates to
+\description{Ranks samples using correlations,
+correlates these estimates to drug sensitivity,
+and then runs enrichment analysis to
 determine the enrichment of drug mechanisms-of-action.
 }
 
 \usage{
-mDMEA(drug.sensitivity="PRISM", gmt="PRISM", 
-  expression=as.list(rep("adherent CCLE", length(types))), weights, types, 
-  value="AUC", sample.names=colnames(drug.sensitivity)[1], 
-  feature.names=rep("Gene", length(types)), 
-  weight.values=rep("Log2FC", length(types)), 
-  rank.metric=rep("Pearson.est", length(types)), p=0.05, FDR=0.25, 
-  num.permutations=1000, stat.type="Weighted", drug.info=NULL, drug="Drug", 
-  set.type="moa", min.per.set=6, sep="[|]", 
-  exclusions=c("-666", "NA", "na", "NaN", "NULL"), 
-  descriptions=NULL, min.per.corr=3, scatter.plots=TRUE, 
-  scatter.plot.type="pearson", FDR.scatter.plots=0.05, 
-  xlab="Weighted Voting Score", ylab=value, position.x="min", 
-  position.y="min", se=TRUE, n.dot.sets=10)
+DMEA_cell_corr(drug.sensitivity, gmt=NULL, expression, weights, value="AUC",
+    sample.names=colnames(expression)[1], gene.names=colnames(weights)[1],
+    weight.values=colnames(weights)[2], rank.metric="Pearson.est", FDR=0.25,
+    num.permutations=1000, stat.type="Weighted", drug.info=NULL, drug="Drug",
+    set.type="moa", min.per.set=6, sep="[|]",
+    exclusions=c("-666", "NA", "na", "NaN", "NULL"), descriptions=NULL,
+    min.per.corr=3, scatter.plots=TRUE, scatter.plot.type="pearson",
+    FDR.scatter.plots=0.05, xlab="Expression Correlation Estimate", ylab=value,
+    position.x="min", position.y="min", se=TRUE)
 }
 
 \arguments{
   \item{drug.sensitivity}{Data frame containing drug sensitivity scores
-  (e.g., AUC) with drug names as column names, except for one column which 
-  contains sample names. If "PRISM", drug AUC sensitivity scores for cancer 
-  cell lines from the PRISM drug screen will be used. Default: "PRISM".
+  (e.g., AUC) with drug names as column names,
+  except for one column which contains sample names.
   }
 
   \item{gmt}{Optional: gmt object containing drug sets (e.g., output from
   GSA.read.gmt function from GSA package). If gmt is not provided, drug.info
-  parameter must be provided. If "PRISM", drug mechanisms of action 
-  annotations from the PRISM drug screen will be used. Default: "PRISM".
+  parameter must be provided. Default: NULL.
   }
 
-  \item{expression}{List of data frames containing normalized expression with 
-  feature names (e.g., gene symbols) as column names, except for one column 
-  which contains sample names. If "adherent CCLE", normalized RNA-seq data for 
-  327 adherent cancer cell lines from CCLE version 19Q4 will be used. Default: 
-  as.list(rep("adherent CCLE", length(types))).
+  \item{expression}{Data frame containing normalized gene expression with gene
+  symbols as column names, except for one column which contains sample names.
   }
 
-  \item{weights}{List of data frames with feature.names and weight.values (e.g.,
+  \item{weights}{Data frame with gene.names and weight.values (e.g.,
   log2(fold-change) values).
-  }
-
-  \item{types}{Vector of character descriptions of each omics type (e.g., 
-  c("Transcriptomics", "Proteomics")).
   }
 
   \item{value}{Description of the values starting at column 3. Do not include
@@ -60,28 +47,24 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
   }
 
   \item{sample.names}{Column name in drug sensitivity and expression data
-  frames containing the sample names. Default: colnames(drug.sensitivity)[1].
+  frames containing the sample names. Default: colnames(expression)[1].
   }
 
-  \item{feature.names}{Vector of column names in weights data frames containing 
-  gene symbols. Default: rep("Gene", length(types)).
+  \item{gene.names}{Column name in weights data frame containing gene symbols.
+  Default: colnames(weights)[1].
   }
 
   \item{weight.values}{Column name in weights data frame containing weight
-  values (e.g., log2(fold-change) values). Default: rep("Log2FC", length(types)).
+  values (e.g., log2(fold-change) values). Default: colnames(weights)[2].
   }
 
-  \item{rank.metric}{Vector of estimates for ranking drugs for enrichment 
-  analysis. Possible values include "Pearson.est", "Spearman.est", "Slope", 
-  "Rank.slope", or another column name in the output produced by the rank_corr 
-  function. Default: rep("Pearson.est", length(types)).
+  \item{rank.metric}{Estimate for ranking drugs for enrichment analysis. Must
+  be "Pearson.est", "Spearman.est", "Slope", "Rank.slope", or another column
+  name in the output produced by the rank_corr function. Default: "Pearson.est".
   }
 
-  \item{p}{P-value cut-off for significant enrichments. Default: 0.05.
-  }
-  
-  \item{FDR}{False discovery rate cut-off value for significant enrichments.  
-  Default: 0.25.
+  \item{FDR}{False discovery rate cut-off value to produce mountain plots for
+  significant enrichments. Default: 0.25.
   }
 
   \item{num.permutations}{Number of permutations to perform for enrichment
@@ -114,8 +97,8 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
   }
 
   \item{exclusions}{A vector of drug set names to be excluded from the generated
-  gmt. Optional unless gmt is not provided. Default: 
-  c("-666", "NA", "na", "NaN", "NULL").
+  gmt. Optional unless gmt is not provided. Default: c("-666", "NA", "na", "NaN",
+  "NULL").
   }
 
   \item{descriptions}{Optional: column name in drug.info containing
@@ -140,7 +123,7 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
   }
 
   \item{xlab}{Text describing rank metric for x-axis label of scatter plots.
-  Default: "Weighted Voting Score".
+  Default: "Expression Correlation Estimate".
   }
 
   \item{ylab}{Text describing variable values for y-axis label of scatter
@@ -155,21 +138,41 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
   Must be "min", "mid", "max", or numeric. Default: "max".
   }
 
-  \item{se}{Logical operator describing whether or not to include the 95
-  percent confidence interval limits of the regression line on the scatter
-  plots. Default: TRUE.
-  }
-  
-  \item{n.dot.sets}{Number of sets from enrichment analyses to be represented 
-  in the dot plot. The top significant sets will be selected based on 
-  abs(mean_NES) and p & FDR cutoff values. Default: 10.
-  }
+    \item{se}{Logical operator describing whether or not to include the 95
+    percent confidence interval limits of the regression line on the scatter
+    plots. Default: TRUE.
+    }
 }
 
 \value{
-  \item{compiled.results}{Outputs from compile_mDMEA function.}
+  \item{WV.scores}{Data frame with Weighted Voting scores for each sample.}
 
-  \item{all.results}{List of outputs from DMEA function for each input type.}
+  \item{unused.weights}{Data frame with input weights not used for Weighted
+  Voting.}
+
+  \item{corr.result}{Data frame with Pearson & Spearman correlation
+  estimates, p-values, and FDR q-values (Benjamini-Hochberg method) for each
+  variable item.}
+
+  \item{corr.scatter.plots}{ggplot object with a scatter plot for each
+  significant correlation on each page.}
+
+  \item{gmt}{gmt object containing list of elements (genesets), set names
+  (geneset.names), and set descriptions (geneset.descriptions).}
+
+  \item{result}{Data frame containing GSEA results for drug sets.}
+
+  \item{mtn.plots}{ggplot object list of mountain plots for drug sets with
+  enrichment which meet the FDR threshold.}
+
+  \item{volcano.plot}{ggplot object for volcano plot summarizing enrichment of
+  all drug sets evaluated.}
+
+  \item{removed.sets}{Data frame containing any drug sets which had too few
+  elements to be evaluated and their number of elements.}
+
+  \item{unannotated.drugs}{Data frame containing input drug names which were
+  not matched to a drug set and their ranks.}
 }
 
 \references{
@@ -178,7 +181,16 @@ improves prioritization of therapeutics for repurposing. BMC Bioinformatics 24,
 215 (2023). https://doi.org/10.1186/s12859-023-05343-8
 }
 
-\author{Belinda B. Garana
+\author{Belinda B. Garana, James H. Joly
+}
+
+\note{Mountain plots can be saved individually using :
+for(i in seq_len(length(DMEA.output$mtn.plots))){
+ggsave(filename, DMEA.output$mtn.plots[[i]])
+}
+
+Output gmt can be saved for future use as an R object using:
+saveRDS(DMEA.output$gmt, file)
 }
 
 \section{Warning}{The column name for your samples must be the same in your
@@ -192,15 +204,8 @@ drug sets.
 Each drug must have only one numeric, nonzero rank.
 }
 
-
-\note{Output venn.diagram in compiled.results will only display results for 
-the first 4 data frames in the input data.list.
-}
-
 \seealso{
-  \link[panSEA]{compile_mDMEA}
   \link[panSEA]{mDMEA_cell_corr}
-  \link[panSEA]{mDMEA_gene_corr}
   \link[panSEA]{panSEA}
 }
 
@@ -227,39 +232,33 @@ info <- as.data.frame(Drug)
 # moa is our default name for the column containing drug set annotations
 info$moa <- rep(paste("Set", LETTERS[seq(from = 1, to = 4)]), 6)
 
-## Step 3: prepare gene weight data frames
+## Step 3: prepare gene weight data frame
 # create list of gene symbols
 Gene <- paste0("Gene_", seq(from = 1, to = 50))
 
 # by default, gene symbols are found in
 # the first column of your weights data frame
 weights <- as.data.frame(Gene)
-weights2 <- as.data.frame(Gene)
 
 # give each gene a weight
 # by default, gene weight values are found in
 # the second column of your weights data frame
-weights$Log2FC <- rnorm(length(Gene))
-weights2$Log2FC <- rnorm(length(Gene))
+weights$Rank_metric <- rnorm(length(Gene))
 
-## Step 4: prepare expression data frames
+## Step 4: prepare expression data frame
 # by default, column 1 of your expression data frame is
 # the column name from which sample names are gathered and
 # the column containing sample names in your drug sensitivity
 # data frame should have the same name
 expr <- as.data.frame(Sample_ID)
-expr2 <- as.data.frame(Sample_ID)
 
-# give each gene values representative of normalized expression
+# give each gene values representative of normalized RNA expression
 # each gene is represented by a column in your expression data frame
 for(i in 1:length(Gene)){
   expr[,c(Gene[i])] <- rnorm(length(Sample_ID), sd = 0.5)
-  expr2[,c(Gene[i])] <- rnorm(length(Sample_ID), sd = 0.5)
 }
 
 ## Step 5: perform DMEA and store results
-mDMEA.test <- panSEA::mDMEA(drug.sensitivity, gmt = NULL, 
-  expression = list(expr, expr2), 
-  types = c("Transcriptomics", "Proteomics"), 
-  weights = list(weights, weights2), drug.info = info)
+DMEA.test <- panSEA::DMEA_cell_corr(drug.sensitivity, expression = expr,
+                        weights = weights, drug.info = info)
 }

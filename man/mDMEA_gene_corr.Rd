@@ -1,39 +1,31 @@
-\name{mDMEA}
+\name{mDMEA_gene_corr}
 
-\alias{mDMEA}
+\alias{mDMEA_gene_corr}
 
-\title{Multi-omic Drug Mechanism Enrichment Analysis
+\title{Multi-omic Drug Mechanism Enrichment Analysis Using Gene Correlations
 }
 
-\description{For each input omics type: ranks samples using Weighted Voting,
-correlates Weighted Voting scores to drug sensitivity,
-and then runs enrichment analysis using correlation estimates to
+\description{For each input omics type: ranks drugs using correlations
+and then runs enrichment analysis to
 determine the enrichment of drug mechanisms-of-action.
 }
 
 \usage{
-mDMEA(drug.sensitivity="PRISM", gmt="PRISM", 
-  expression=as.list(rep("adherent CCLE", length(types))), weights, types, 
-  value="AUC", sample.names=colnames(drug.sensitivity)[1], 
-  feature.names=rep("Gene", length(types)), 
-  weight.values=rep("Log2FC", length(types)), 
+mDMEA_gene_corr(gmt="PRISM", 
+  expression=as.list(rep("L1000", length(types))), weights, types, 
+  value="Perturbation", sample.names=colnames(expression[[1]])[1], 
+  feature.names=rep("Gene", length(types)),  
   rank.metric=rep("Pearson.est", length(types)), p=0.05, FDR=0.25, 
   num.permutations=1000, stat.type="Weighted", drug.info=NULL, drug="Drug", 
   set.type="moa", min.per.set=6, sep="[|]", 
   exclusions=c("-666", "NA", "na", "NaN", "NULL"), 
   descriptions=NULL, min.per.corr=3, scatter.plots=TRUE, 
   scatter.plot.type="pearson", FDR.scatter.plots=0.05, 
-  xlab="Weighted Voting Score", ylab=value, position.x="min", 
+  xlab="Expression", ylab=value, position.x="min", 
   position.y="min", se=TRUE, n.dot.sets=10)
 }
 
 \arguments{
-  \item{drug.sensitivity}{Data frame containing drug sensitivity scores
-  (e.g., AUC) with drug names as column names, except for one column which 
-  contains sample names. If "PRISM", drug AUC sensitivity scores for cancer 
-  cell lines from the PRISM drug screen will be used. Default: "PRISM".
-  }
-
   \item{gmt}{Optional: gmt object containing drug sets (e.g., output from
   GSA.read.gmt function from GSA package). If gmt is not provided, drug.info
   parameter must be provided. If "PRISM", drug mechanisms of action 
@@ -41,14 +33,14 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
   }
 
   \item{expression}{List of data frames containing normalized expression with 
-  feature names (e.g., gene symbols) as column names, except for one column 
-  which contains sample names. If "adherent CCLE", normalized RNA-seq data for 
-  327 adherent cancer cell lines from CCLE version 19Q4 will be used. Default: 
-  as.list(rep("adherent CCLE", length(types))).
+  drug names as column names, except for one column 
+  which contains feature names. If "L1000", drug perturbation data from the 
+  Broad Institute's L1000 data set will be used. Default: 
+  as.list(rep("L1000", length(types))).
   }
 
-  \item{weights}{List of data frames with feature.names and weight.values (e.g.,
-  log2(fold-change) values).
+  \item{weights}{List of data frames with feature.names in column 1 and 
+  weight.values (e.g., log2(fold-change) values) in column 2.
   }
 
   \item{types}{Vector of character descriptions of each omics type (e.g., 
@@ -56,7 +48,7 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
   }
 
   \item{value}{Description of the values starting at column 3. Do not include
-  spaces! Default: "AUC".
+  spaces! Default: "Perturbation".
   }
 
   \item{sample.names}{Column name in drug sensitivity and expression data
@@ -65,10 +57,6 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
 
   \item{feature.names}{Vector of column names in weights data frames containing 
   gene symbols. Default: rep("Gene", length(types)).
-  }
-
-  \item{weight.values}{Column name in weights data frame containing weight
-  values (e.g., log2(fold-change) values). Default: rep("Log2FC", length(types)).
   }
 
   \item{rank.metric}{Vector of estimates for ranking drugs for enrichment 
@@ -140,7 +128,7 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
   }
 
   \item{xlab}{Text describing rank metric for x-axis label of scatter plots.
-  Default: "Weighted Voting Score".
+  Default: "Expression".
   }
 
   \item{ylab}{Text describing variable values for y-axis label of scatter
@@ -199,35 +187,24 @@ the first 4 data frames in the input data.list.
 
 \seealso{
   \link[panSEA]{compile_mDMEA}
-  \link[panSEA]{mDMEA_cell_corr}
+  \link[panSEA]{mDMEA}
   \link[panSEA]{mDMEA_gene_corr}
   \link[panSEA]{panSEA}
 }
 
 \examples{
-## Step 1: prepare drug sensitivity data frame
-# create list of sample names
-Sample_ID <- seq(from = 1, to = 21)
-
-drug.sensitivity <- as.data.frame(Sample_ID)
+## Step 1: prepare drug info data frame
+## alternatively, a gmt object could be provided
 
 # create list of drug names
 Drug <- paste0("Drug_", seq(from = 1, to = 24))
 
-# give each drug values representative of AUC sensitivity scores
-for(i in 1:length(Drug)){
-  drug.sensitivity[,c(Drug[i])] <- rnorm(length(Sample_ID),
-                                        mean = 0.83, sd = 0.166)
-}
-
-## Step 2: prepare drug info data frame
-# alternatively, a gmt object could be provided
 info <- as.data.frame(Drug)
 
 # moa is our default name for the column containing drug set annotations
 info$moa <- rep(paste("Set", LETTERS[seq(from = 1, to = 4)]), 6)
 
-## Step 3: prepare gene weight data frames
+## Step 2: prepare gene weight data frames
 # create list of gene symbols
 Gene <- paste0("Gene_", seq(from = 1, to = 50))
 
@@ -242,11 +219,13 @@ weights2 <- as.data.frame(Gene)
 weights$Log2FC <- rnorm(length(Gene))
 weights2$Log2FC <- rnorm(length(Gene))
 
-## Step 4: prepare expression data frames
+## Step 3: prepare expression data frames
 # by default, column 1 of your expression data frame is
-# the column name from which sample names are gathered and
-# the column containing sample names in your drug sensitivity
-# data frame should have the same name
+# the column name from which sample names are gathered
+
+# create list of sample names
+Sample_ID <- seq(from = 1, to = 21)
+
 expr <- as.data.frame(Sample_ID)
 expr2 <- as.data.frame(Sample_ID)
 
@@ -257,8 +236,8 @@ for(i in 1:length(Gene)){
   expr2[,c(Gene[i])] <- rnorm(length(Sample_ID), sd = 0.5)
 }
 
-## Step 5: perform DMEA and store results
-mDMEA.test <- panSEA::mDMEA(drug.sensitivity, gmt = NULL, 
+## Step 4: perform DMEA and store results
+mDMEA.test <- panSEA::mDMEA_gene_corr(gmt = NULL, 
   expression = list(expr, expr2), 
   types = c("Transcriptomics", "Proteomics"), 
   weights = list(weights, weights2), drug.info = info)

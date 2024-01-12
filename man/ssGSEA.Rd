@@ -77,7 +77,8 @@ FDR=0.25, num.permutations=1000, stat.type="Weighted", min.per.set=6)
 }
 
 \seealso{
-  \link[ssGSEA]{compilDMEA}
+  \link[panSEA]{mGSEA}
+  \link[panSEA]{panSEA}
 }
 
 \examples{

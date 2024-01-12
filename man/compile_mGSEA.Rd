@@ -62,6 +62,7 @@ in the input data.list.
 
 \seealso{
   \link[panSEA]{mGSEA}
+  \link[panSEA]{panSEA}
 }
 
 \examples{

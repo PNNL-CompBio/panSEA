@@ -1,22 +1,21 @@
-\name{mDMEA}
+\name{mDMEA_cell_corr}
 
-\alias{mDMEA}
+\alias{mDMEA_cell_corr}
 
-\title{Multi-omic Drug Mechanism Enrichment Analysis
+\title{Multi-omic Drug Mechanism Enrichment Analysis Using Cell Correlations
 }
 
-\description{For each input omics type: ranks samples using Weighted Voting,
-correlates Weighted Voting scores to drug sensitivity,
-and then runs enrichment analysis using correlation estimates to
+\description{For each input omics type: ranks samples using correlations,
+correlates these estimates to drug sensitivity,
+and then runs enrichment analysis to
 determine the enrichment of drug mechanisms-of-action.
 }
 
 \usage{
-mDMEA(drug.sensitivity="PRISM", gmt="PRISM", 
+mDMEA_cell_corr(drug.sensitivity="PRISM", gmt="PRISM", 
   expression=as.list(rep("adherent CCLE", length(types))), weights, types, 
   value="AUC", sample.names=colnames(drug.sensitivity)[1], 
-  feature.names=rep("Gene", length(types)), 
-  weight.values=rep("Log2FC", length(types)), 
+  feature.names=rep("Gene", length(types)),  
   rank.metric=rep("Pearson.est", length(types)), p=0.05, FDR=0.25, 
   num.permutations=1000, stat.type="Weighted", drug.info=NULL, drug="Drug", 
   set.type="moa", min.per.set=6, sep="[|]", 
@@ -47,8 +46,8 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
   as.list(rep("adherent CCLE", length(types))).
   }
 
-  \item{weights}{List of data frames with feature.names and weight.values (e.g.,
-  log2(fold-change) values).
+  \item{weights}{List of data frames with feature.names in column 1 and 
+  weight.values (e.g., log2(fold-change) values) in column 2.
   }
 
   \item{types}{Vector of character descriptions of each omics type (e.g., 
@@ -65,10 +64,6 @@ mDMEA(drug.sensitivity="PRISM", gmt="PRISM",
 
   \item{feature.names}{Vector of column names in weights data frames containing 
   gene symbols. Default: rep("Gene", length(types)).
-  }
-
-  \item{weight.values}{Column name in weights data frame containing weight
-  values (e.g., log2(fold-change) values). Default: rep("Log2FC", length(types)).
   }
 
   \item{rank.metric}{Vector of estimates for ranking drugs for enrichment 
@@ -198,8 +193,8 @@ the first 4 data frames in the input data.list.
 }
 
 \seealso{
-  \link[panSEA]{compile_mDMEA}
-  \link[panSEA]{mDMEA_cell_corr}
+  \link[panSEA]{compilDMEA}
+  \link[panSEA]{mDMEA}
   \link[panSEA]{mDMEA_gene_corr}
   \link[panSEA]{panSEA}
 }
@@ -258,7 +253,7 @@ for(i in 1:length(Gene)){
 }
 
 ## Step 5: perform DMEA and store results
-mDMEA.test <- panSEA::mDMEA(drug.sensitivity, gmt = NULL, 
+mDMEA.test <- panSEA::mDMEA_cell_corr(drug.sensitivity, gmt = NULL, 
   expression = list(expr, expr2), 
   types = c("Transcriptomics", "Proteomics"), 
   weights = list(weights, weights2), drug.info = info)

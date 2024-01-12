@@ -10,7 +10,8 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                      "msigdb_Homo sapiens_C2_CP:KEGG",
                      length(types)
                    )),
-                   gmt.drugs = "PRISM", p = 0.05, FDR = 0.25, 
+                   gmt.drugs = "PRISM", GSEA = TRUE, DMEA = TRUE,
+                   DMEA.type = "WV", p = 0.05, FDR = 0.25, 
                    FDR.features = 0.05, num.permutations = 1000, 
                    stat.type = "Weighted", min.per.set = 6, 
                    scatter.plots = TRUE, scatter.plot.type = "pearson", 
@@ -30,6 +31,14 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
     ))
   }
   
+  # check if DMEA.type is valid
+  if (DMEA & !(DMEA.type %in% c("WV", "cell_corr", "gene_corr")) {
+    stop(paste("DMEA.type parameter must be either 'WV' for drugs to be ranked",
+    "by correlations with weighted voting scores, 'cell_corr' for correlations",
+    "with expression values, or 'gene_corr' for correlations with perturbation",
+    "values"))
+  }
+  
   #### Step 2. Differential expression analysis if 2 groups ####
   if (length(group.names) > 2 | length(group.names) < 1) {
     stop("Only 1 or 2 group.names are allowed")
@@ -43,7 +52,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
   #### Step 3. Enrichment analyses ####
   if (length(group.names) == 2) {
     ## ssGSEA & network graph
-    if (!is.null(gmt.features)) {
+    if (GSEA & !is.null(gmt.features)) {
       ssGSEA.results <- panSEA::mGSEA(DEGs$all.results, gmt.features, types,
         feature.names, GSEA.rank.var, p = p, FDR = FDR, 
         num.permutations = num.permutations, stat.type = stat.type, 
@@ -60,19 +69,55 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
         DEGs$all.results, outputs, feature.names,
         GSEA.rank.var, p, FDR, n.network.sets, scale
       )
+    } else {
+      ssGSEA.results <- NA
+      ssGSEA.network <- NA
     }
 
     ## DMEA & network graph
-    if (!is.null(drug.sensitivity) & !is.null(expression) &
+    if (DMEA & !is.null(drug.sensitivity) & !is.null(expression) &
       !is.null(gmt.drugs)) {
-      DMEA.results <- panSEA::mDMEA(drug.sensitivity, gmt.drugs, expression,
-        DEGs$all.results, types, feature.names = feature.names,
-        rank.metric = DMEA.rank.var, weight.values = GSEA.rank.var, 
-        p = p, FDR = FDR, num.permutations = num.permutations,
-        stat.type = stat.type, min.per.set = min.per.set,
-        scatter.plots = scatter.plots, scatter.plot.type = scatter.plot.type,
-        n.dot.sets = n.dot.sets
-      )
+      if (DMEA.type == "WV") {
+        DMEA.results <- panSEA::mDMEA(drug.sensitivity, gmt.drugs, expression,
+                                      DEGs$all.results, types, 
+                                      feature.names = feature.names,
+                                      rank.metric = DMEA.rank.var, 
+                                      weight.values = GSEA.rank.var, 
+                                      p = p, FDR = FDR, 
+                                      num.permutations = num.permutations,
+                                      stat.type = stat.type, 
+                                      min.per.set = min.per.set,
+                                      scatter.plots = scatter.plots, 
+                                      scatter.plot.type = scatter.plot.type,
+                                      n.dot.sets = n.dot.sets
+        ) 
+      } else if (DMEA.type == "cell_corr") {
+        DMEA.results <- 
+          panSEA::mDMEA_cell_corr(drug.sensitivity, gmt.drugs, expression, 
+                                  DEGs$all.results, types,
+                                  feature.names = feature.names,
+                                  rank.metric = DMEA.rank.var, p = p, FDR = FDR,
+                                  num.permutations = num.permutations,
+                                  stat.type = stat.type, 
+                                  min.per.set = min.per.set,
+                                  scatter.plots = scatter.plots,
+                                  scatter.plot.type = scatter.plot.type,
+                                  n.dot.sets = n.dot.sets
+        ) 
+      } else if (DMEA.type == "gene_corr") {
+        DMEA.results <- 
+          panSEA::mDMEA_gene_corr(drug.sensitivity, gmt.drugs, expression, 
+                                  DEGs$all.results, types,
+                                  feature.names = feature.names,
+                                  rank.metric = DMEA.rank.var, p = p, FDR = FDR,
+                                  num.permutations = num.permutations,
+                                  stat.type = stat.type, 
+                                  min.per.set = min.per.set,
+                                  scatter.plots = scatter.plots,
+                                  scatter.plot.type = scatter.plot.type,
+                                  n.dot.sets = n.dot.sets
+          ) 
+      }
 
       # compile inputs & outputs for network graph
       inputs <- list()
@@ -89,6 +134,9 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
         inputs, outputs, rep("Drug", length(inputs)),
         DMEA.rank.var, p, FDR, n.network.sets, scale
       )
+    } else {
+      DMEA.results <- NA
+      DMEA.network <- NA
     }
   } else if (length(group.names) == 1) {
     # make sure feature names are in column 1
@@ -116,7 +164,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
       }
 
       ## ssGSEA & network graph
-      if (!is.null(gmt.features)) {
+      if (GSEA & !is.null(gmt.features)) {
         ssGSEA.results[[colnames(data.list[[1]])[j]]] <-
           panSEA::mGSEA(temp.data, gmt.features, types, feature.names,
                         GSEA.rank.var, p = p, FDR = FDR, 
@@ -137,19 +185,56 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
             temp.data, outputs, feature.names,
             GSEA.rank.var, p, FDR, n.network.sets, scale
           )
+      } else {
+        ssGSEA.results[[colnames(data.list[[1]])[j]]] <- NA
+        ssGSEA.network[[colnames(data.list[[1]])[j]]] <- NA
       }
 
       ## DMEA & network graph
-      if (!is.null(drug.sensitivity) & !is.null(expression) &
+      if (DMEA & !is.null(drug.sensitivity) & !is.null(expression) &
         !is.null(gmt.drugs)) {
-        DMEA.results[[colnames(data.list[[1]])[j]]] <-
-          panSEA::mDMEA(drug.sensitivity, gmt.drugs, expression, temp.data,
-            types, feature.names = feature.names, rank.metric = DMEA.rank.var, 
-            weight.values = GSEA.rank.var, p = p, FDR = FDR, 
-            num.permutations = num.permutations, stat.type = stat.type, 
-            min.per.set = min.per.set, scatter.plots = scatter.plots,
-            scatter.plot.type = scatter.plot.type, n.dot.sets = n.dot.sets
-          )
+        if (DMEA.type == "WV") {
+          DMEA.results[[colnames(data.list[[1]])[j]]] <-
+            panSEA::mDMEA(drug.sensitivity, gmt.drugs, expression, temp.data,
+                          types, feature.names = feature.names, 
+                          rank.metric = DMEA.rank.var, 
+                          weight.values = GSEA.rank.var, p = p, FDR = FDR, 
+                          num.permutations = num.permutations, 
+                          stat.type = stat.type, 
+                          min.per.set = min.per.set, 
+                          scatter.plots = scatter.plots,
+                          scatter.plot.type = scatter.plot.type, 
+                          n.dot.sets = n.dot.sets
+            ) 
+        } else if (DMEA.type == "cell_corr") {
+          DMEA.results[[colnames(data.list[[1]])[j]]] <-
+            panSEA::mDMEA_cell_corr(drug.sensitivity, gmt.drugs, expression, 
+                                    temp.data, types, 
+                                    feature.names = feature.names, 
+                                    rank.metric = DMEA.rank.var, p = p, 
+                                    FDR = FDR, 
+                                    num.permutations = num.permutations, 
+                                    stat.type = stat.type, 
+                                    min.per.set = min.per.set, 
+                                    scatter.plots = scatter.plots,
+                                    scatter.plot.type = scatter.plot.type, 
+                                    n.dot.sets = n.dot.sets
+            )
+        } else if (DMEA.type == "gene_corr") {
+          DMEA.results[[colnames(data.list[[1]])[j]]] <-
+            panSEA::mDMEA_gene_corr(drug.sensitivity, gmt.drugs, expression, 
+                                    temp.data, types, 
+                                    feature.names = feature.names, 
+                                    rank.metric = DMEA.rank.var, p = p, 
+                                    FDR = FDR, 
+                                    num.permutations = num.permutations, 
+                                    stat.type = stat.type, 
+                                    min.per.set = min.per.set, 
+                                    scatter.plots = scatter.plots,
+                                    scatter.plot.type = scatter.plot.type, 
+                                    n.dot.sets = n.dot.sets
+            )
+        }
 
         # compile inputs & outputs for network graph
         inputs <- list()
@@ -169,6 +254,9 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
             inputs, outputs, rep("Drug", length(inputs)),
             DMEA.rank.var, p, FDR, n.network.sets, scale
           )
+      } else {
+        DMEA.results[[colnames(data.list[[1]])[j]]] <- NA
+        DMEA.network[[colnames(data.list[[1]])[j]]] <- NA
       }
     }
   }

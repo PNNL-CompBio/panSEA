@@ -187,6 +187,8 @@ drug sensitivity data frame as in your expression data frame.
   \link[panSEA]{mDEG}
   \link[panSEA]{mGSEA}
   \link[panSEA]{mDMEA}
+  \link[panSEA]{mDMEA_cell_corr}
+  \link[panSEA]{mDMEA_gene_corr}
   \link[panSEA]{netSEA}
 }
 

@@ -32,7 +32,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
   }
   
   # check if DMEA.type is valid
-  if (DMEA & !(DMEA.type %in% c("WV", "cell_corr", "gene_corr")) {
+  if (DMEA & !(DMEA.type %in% c("WV", "cell_corr", "gene_corr"))) {
     stop(paste("DMEA.type parameter must be either 'WV' for drugs to be ranked",
     "by correlations with weighted voting scores, 'cell_corr' for correlations",
     "with expression values, or 'gene_corr' for correlations with perturbation",

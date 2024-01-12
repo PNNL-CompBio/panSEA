@@ -14,9 +14,15 @@ DMEA_cell_corr <- function(drug.sensitivity, gmt = NULL, expression, weights,
                            xlab = "Expression Correlation Estimate", 
                            ylab = value,
                            position.x = "min", position.y = "min", se = TRUE) {
+  # reformat expression data frame with cell lines as column names
+  rownames(expression) <- expression[ , sample.names]
+  expr <- as.data.frame(t(expression))
+  expr <- expr[rownames(expr) %in% weights[ , gene.names],]
+  expr[ , gene.names] <- rownames(expr)
+  
   # merge expression data frame with input weights
   expr.weights <- merge(weights[ , c(gene.names, weight.values)], 
-                        expression, by = gene.names)
+                        expr, by = gene.names)
   
   # for each cell line: run correlation between expression & input weights
   # data points are genes
@@ -29,16 +35,32 @@ DMEA_cell_corr <- function(drug.sensitivity, gmt = NULL, expression, weights,
   
   # for each drug: run correlation between sensitivity & expr.corr
   # data points are cell lines
-  drug.corr <- DMEA::rank_corr(drug.expr.corr, variable = drug, 
-                               plots = FALSE)$result
+  drug.corr <- DMEA::rank_corr(drug.expr.corr, variable = drug, value = value,
+                               type = scatter.plot.type, 
+                               min.per.corr = min.per.corr,
+                               plots = scatter.plots, FDR = FDR.scatter.plots, 
+                               xlab = xlab, ylab = ylab, 
+                               position.x = position.x, position.y = position.y,
+                               se = se)
   
   # run drugSEA
-  results <- DMEA::drugSEA(
-    drug.corr, gmt, drug, rank.metric, set.type, FDR = FDR,
+  DMEA.results <- DMEA::drugSEA(
+    drug.corr$result, gmt, drug, rank.metric, set.type, FDR = FDR,
     num.permutations = num.permutations, stat.type = stat.type,
     min.per.set = min.per.set, sep = sep, exclusions = exclusions,
     descriptions = descriptions
   )
 
-  return(results)
+  return(list(
+    cell.corr.result = expr.weights.corr,
+    unused.weights = weights[!(weights[ , gene.names] %in% expr[ , gene.names]), ],
+    corr.result = drug.corr$result,
+    corr.scatter.plots = drug.corr$scatter.plots,
+    gmt = gmt,
+    result = DMEA.results$result,
+    mtn.plots = DMEA.results$mtn.plots,
+    volcano.plot = DMEA.results$volcano.plot,
+    removed.sets = DMEA.results$removed.sets,
+    unannotated.drugs = DMEA.results$unannotated.drugs
+  ))
 }

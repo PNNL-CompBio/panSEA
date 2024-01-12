@@ -20,16 +20,31 @@ DMEA_gene_corr <- function(drug.sensitivity, gmt = NULL, expression, weights,
   
   # for each drug line: run correlation between expression & input weights
   # data points are genes
-  expr.weights.corr <- DMEA::rank_corr(expr.weights, variable = sample.names, 
-                               plots = FALSE)$result
+  drug.corr <- DMEA::rank_corr(expr.weights, variable = sample.names,
+                                       value = value, type = scatter.plot.type, 
+                                       min.per.corr = min.per.corr,
+                                       plots = scatter.plots, 
+                                       FDR = FDR.scatter.plots, 
+                                       xlab = xlab, ylab = ylab, 
+                                       position.x = position.x, 
+                                       position.y = position.y, se = se)
   
   # run drugSEA
-  results <- DMEA::drugSEA(
-    expr.weights.corr, gmt, drug, rank.metric, set.type, FDR = FDR,
+  DMEA.results <- DMEA::drugSEA(
+    drug.corr$result, gmt, drug, rank.metric, set.type, FDR = FDR,
     num.permutations = num.permutations, stat.type = stat.type,
     min.per.set = min.per.set, sep = sep, exclusions = exclusions,
     descriptions = descriptions
   )
 
-  return(results)
+  return(list(
+    corr.result = drug.corr$result,
+    corr.scatter.plots = drug.corr$scatter.plots,
+    gmt = gmt,
+    result = DMEA.results$result,
+    mtn.plots = DMEA.results$mtn.plots,
+    volcano.plot = DMEA.results$volcano.plot,
+    removed.sets = DMEA.results$removed.sets,
+    unannotated.drugs = DMEA.results$unannotated.drugs
+  ))
 }

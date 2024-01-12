@@ -29,11 +29,11 @@ DMEA_cell_corr <- function(drug.sensitivity, gmt = NULL, expression, weights,
   expr.weights.corr <- DMEA::rank_corr(expr.weights, variable = sample.names, 
                                plots = FALSE)$result
   
-  # merge expr.corr with drug sensitivity
-  drug.expr.corr <- merge(expr.corr[ , c(sample.names, rank.metric)], 
+  # merge expr.weights.corr with drug sensitivity
+  drug.expr.corr <- merge(expr.weights.corr[ , c(sample.names, rank.metric)], 
                           drug.sensitivity, by = sample.names)
   
-  # for each drug: run correlation between sensitivity & expr.corr
+  # for each drug: run correlation between sensitivity & drug.expr.corr
   # data points are cell lines
   drug.corr <- DMEA::rank_corr(drug.expr.corr, variable = drug, value = value,
                                type = scatter.plot.type, 

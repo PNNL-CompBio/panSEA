@@ -24,8 +24,8 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
         ))
       } else {
         # separate data.list based on group (i.e., categorical phenotype)
-        data.list1 <- data.list[[i]][, group.samples[[1]]]
-        data.list2 <- data.list[[i]][, group.samples[[2]]]
+        data.list1 <- as.data.frame(data.list[[i]][, group.samples[[1]]])
+        data.list2 <- as.data.frame(data.list[[i]][, group.samples[[2]]])
         all.data.list <- cbind(data.list1, data.list2)
         
         # set feature names as rownames

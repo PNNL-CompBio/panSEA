@@ -193,7 +193,7 @@ the first 4 data frames in the input data.list.
 }
 
 \seealso{
-  \link[panSEA]{compilDMEA}
+  \link[panSEA]{compile_mDMEA}
   \link[panSEA]{mDMEA}
   \link[panSEA]{mDMEA_gene_corr}
   \link[panSEA]{panSEA}

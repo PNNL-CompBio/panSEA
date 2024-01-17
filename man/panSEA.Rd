@@ -12,7 +12,7 @@ enriched feature and drug sets.
 }
 
 \usage{
-panSEA(data.list, types, feature.names = rep("Gene", length(inputs)), 
+panSEA(data.list, types, feature.names = rep("Gene", length(types)), 
   GSEA.rank.var = rep("Log2FC", length(types)), 
   DMEA.rank.var = rep("Pearson.est", length(types)),
   group.names=c("Diseased", "Healthy"), 

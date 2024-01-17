@@ -10,6 +10,7 @@ netSEA <- function(inputs, outputs,
     use.names = TRUE, idcol = "type", fill = TRUE
   )
   sig.outputs <- outputs[outputs$p_value < p & outputs$FDR_q_value < FDR, ]
+  types <- unique(outputs$type)
 
   #### Step 2. Extract data for & graph leading edge elements of top sets ####
   if (nrow(sig.outputs) == 0) {

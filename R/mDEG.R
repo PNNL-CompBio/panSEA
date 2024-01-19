@@ -43,7 +43,7 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
           (qx[6] - qx[1] > 50 && qx[2] > 0)
         if (LogC) {
           ex[which(ex <= 0)] <- NaN
-          exprs(eset) <- log2(ex)
+          Biobase::exprs(eset) <- log2(ex)
         }
 
         # identify sample phenotypes

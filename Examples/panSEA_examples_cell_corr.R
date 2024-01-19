@@ -9,7 +9,8 @@
 # 2 - import Coldren et al. data & run differential expression analysis
 # 3 - import GSE31625 data & run differential expression analysis
 # 4 - import GSE12790 data & run differential expression analysis
-# 5 - run panSEA
+# 5 - run panSEA with DMEA_cell_corr
+# 6 - run panSEA with DMEA (WV)
 
 rm(list=ls(all=TRUE))
 library(plyr);library(dplyr);library(GSA);library(panSEA);library(GEOquery)
@@ -17,7 +18,7 @@ base.path <- "~/OneDrive - PNNL/Documents/GitHub/panSEA/Examples/"
 setwd(paste0(base.path, "Inputs"))
 
 # function to save results
-savePanSEA <- function(panSEA.results, fig.folder) {
+savePanSEA <- function(panSEA.results, fig.folder, GSEA = TRUE, RDS = TRUE) {
   # set file names
   DMEA.files <- list("DMEA_results.csv" =
                        panSEA.results$mDMEA.results[[1]]$compiled.results$results,
@@ -31,20 +32,25 @@ savePanSEA <- function(panSEA.results, fig.folder) {
                        panSEA.results$mDMEA.results[[1]]$compiled.results$dot.plot,
                      "DMEA_interactive_network.graph.html" =
                        panSEA.results$mDMEA.network[[1]]$interactive)
-  GSEA.files <- list("GSEA_results.csv" =
-                       panSEA.results$mGSEA.results[[1]]$compiled.results$results,
-                     "GSEA_mean_results.csv" =
-                       panSEA.results$mGSEA.results[[1]]$compiled.results$mean.results,
-                     "GSEA_correlation_matrix.pdf" =
-                       panSEA.results$mGSEA.results[[1]]$compiled.results$corr.matrix,
-                     "GSEA_venn_diagram.pdf" = 
-                       panSEA.results$mGSEA.results[[1]]$compiled.results$venn.diagram,
-                     "GSEA_dot_plot.pdf" =
-                       panSEA.results$mGSEA.results[[1]]$compiled.results$dot.plot,
-                     "GSEA_interactive_network.graph.html" =
-                       panSEA.results$mGSEA.network[[1]]$interactive)
-  all.files <- list('GSEA' = GSEA.files,
-                    'DMEA' = DMEA.files)
+  
+  if (GSEA) {
+    GSEA.files <- list("GSEA_results.csv" =
+                         panSEA.results$mGSEA.results[[1]]$compiled.results$results,
+                       "GSEA_mean_results.csv" =
+                         panSEA.results$mGSEA.results[[1]]$compiled.results$mean.results,
+                       "GSEA_correlation_matrix.pdf" =
+                         panSEA.results$mGSEA.results[[1]]$compiled.results$corr.matrix,
+                       "GSEA_venn_diagram.pdf" = 
+                         panSEA.results$mGSEA.results[[1]]$compiled.results$venn.diagram,
+                       "GSEA_dot_plot.pdf" =
+                         panSEA.results$mGSEA.results[[1]]$compiled.results$dot.plot,
+                       "GSEA_interactive_network.graph.html" =
+                         panSEA.results$mGSEA.network[[1]]$interactive)
+    all.files <- list('GSEA' = GSEA.files,
+                      'DMEA' = DMEA.files)
+  } else {
+    all.files <- list('DMEA' = DMEA.files)
+  }
   
   base.path <- getwd()
   dir.create(fig.folder)
@@ -76,7 +82,9 @@ savePanSEA <- function(panSEA.results, fig.folder) {
     }
   }
   setwd(paste0(base.path, "/", fig.folder))
-  saveRDS(panSEA.results, paste0("panSEA_", fig.folder, ".rds"))
+  if (RDS) {
+    saveRDS(panSEA.results, paste0("panSEA_", fig.folder, ".rds"))
+  }
 }
 
 ##### Step 1: Import CCLE data (PRISM drug AUC, drug moa gmt, RNAseq, proteomics, metabolomics) #####
@@ -458,6 +466,7 @@ gene.gmt <- DMEA::as_gmt(
   descriptions = "gs_description")
 saveRDS(gene.gmt, "gmt_MSigDB_Homo-sapiens_C2_CP:KEGG.rds")
 gene.gmt <- readRDS("Inputs/gmt_MSigDB_Homo-sapiens_C2_CP:KEGG.rds")
+gene.gmt <- readRDS("gmt_MSigDB_Homo-sapiens_C2_CP:KEGG.rds")
 
 # get metabolite set info
 # based on hmdb v5.0 downloaded 20231220: https://hmdb.ca/downloads 
@@ -502,6 +511,7 @@ hmdb.CCLE[grep("alpha", hmdb.CCLE$class), ]$class <- "alpha amino acids"
 met.gmt <- DMEA::as_gmt(hmdb.CCLE, "name", "class", min.per.set = 6)
 saveRDS(met.gmt, "gmt_HMDB_in_CCLE_2sets.rds")
 met.gmt <- readRDS("Inputs/gmt_HMDB_in_CCLE_2sets.rds")
+met.gmt <- readRDS("gmt_HMDB_in_CCLE_2sets.rds")
 
 # met.gmt <- DMEA::as_gmt(hmdb.CCLE, "name", "class", min.per.set = 4)
 # saveRDS(met.gmt, "gmt_HMDB_in_CCLE_4minperset.rds")
@@ -521,7 +531,8 @@ Fig2.panSEA <- panSEA::panSEA(GSE12790, all.GSE12790.names, GSEA = FALSE,
                               group.names = group.names,
                               group.samples = group.samples, 
                               #gmt.features = gmt.features,
-                              expression = expression)
+                              expression = expression,
+                              scatter.plots = FALSE)
 
 # Loading PRISM drug sensitivity AUC scores
 # Loading PRISM drug mechanism of action annotations
@@ -631,16 +642,42 @@ for (i in 1:length(all.GSE31625.names)) {
     RNA.df$CCLE_ID != all.GSE31625.CCLE_IDs[i], ]
 }
 
-Fig3.panSEA <- panSEA::panSEA(GSE31625, all.GSE31625.names, 
+Fig3.panSEA <- panSEA::panSEA(GSE31625, all.GSE31625.names, GSEA = FALSE,
                               GSEA.rank.var = rep("Input", length(GSE31625)),
                               DMEA.type = "cell_corr", 
                               group.names = group.names,
                               group.samples = group.samples, 
                               gmt.features = gmt.features,
-                              expression = expression)
+                              expression = expression,
+                              scatter.plots = FALSE)
+# not doing GSEA because not enough sets for H1650_1 sample
+# again DMEA issue with H1650_1:
+# Running DMEA using H1650_1 data
+# Running correlations and regressions...
+# Error in `[.data.frame`(all.data.corr, , 3:ncol(all.data.corr)) : 
+#   undefined columns selected
+
+# try removing H1650_1
+GSE31625v2 <- GSE31625[2:length(GSE31625)]
+all.GSE31625.namesv2 <- all.GSE31625.names[2:length(all.GSE31625.names)]
+gmt.featuresv2 <- gmt.features[2:length(gmt.features)]
+expressionv2 <- expression[2:length(expression)]
+
+Fig3.panSEA <- panSEA::panSEA(GSE31625v2, all.GSE31625.namesv2, GSEA = FALSE,
+                              GSEA.rank.var = rep("Input", length(GSE31625v2)),
+                              DMEA.type = "cell_corr", 
+                              group.names = group.names,
+                              group.samples = group.samples, 
+                              gmt.features = gmt.featuresv2,
+                              expression = expressionv2,
+                              scatter.plots = FALSE)
+
+# realized it was because gene ids are not gene symbols
 # save results
-fig.folder <- "Fig3"
-savePanSEA(Fig3.panSEA, fig.folder)
+fig.folder <- "Fig3_GSE31625"
+setwd(base.path)
+setwd("cell_corr")
+savePanSEA(Fig3.panSEA, fig.folder, GSEA = FALSE)
 #Fig3.panSEA <- readRDS(paste0("panSEA_", fig.folder, ".rds"))
 Fig3.panSEA <- NULL # make space to process next analysis
 
@@ -685,6 +722,8 @@ Fig5.panSEA <- panSEA::panSEA(Coldren.prot.list, all.Coldren.prot.names,
                               expression = expression)
 # save results
 fig.folder <- "Fig5"
+setwd(base.path)
+setwd("cell_corr")
 savePanSEA(Fig5.panSEA, fig.folder)
 #Fig5.panSEA <- readRDS(paste0("panSEA_", fig.folder, ".rds"))
 Fig5.panSEA <- NULL # make space to process next analysis
@@ -693,21 +732,25 @@ Fig5.panSEA <- NULL # make space to process next analysis
 gmt.features <- list()
 expression <- list()
 for (i in 1:length(all.Coldren.met.names)) {
-  gmt.features[[all.Coldren.met.names[i]]] <- gene.gmt
+  gmt.features[[all.Coldren.met.names[i]]] <- met.gmt
   expression[[all.Coldren.met.names[i]]] <- met.df[
     met.df$CCLE_ID != all.Coldren.met.CCLE_IDs[i], ]
 }
 
 Fig6.panSEA <- panSEA::panSEA(Coldren.met.list, all.Coldren.met.names, 
+                              feature.names = rep("Metabolite", length(Coldren.met.list)),
                               GSEA.rank.var = rep("Input", 
                                                   length(Coldren.met.list)),
                               DMEA.type = "cell_corr", 
                               group.names = group.names,
                               group.samples = group.samples, 
                               gmt.features = gmt.features,
-                              expression = expression)
+                              expression = expression,
+                              scatter.plots = FALSE)
 # save results
 fig.folder <- "Fig6"
+setwd(base.path)
+setwd("cell_corr")
 savePanSEA(Fig6.panSEA, fig.folder)
 #Fig6.panSEA <- readRDS(paste0("panSEA_", fig.folder, ".rds"))
 Fig6.panSEA <- NULL # make space to process next analysis
@@ -733,11 +776,13 @@ Fig7.panSEA <- panSEA::panSEA(Coldren, all.Coldren.names,
                               group.names = group.names,
                               group.samples = group.samples, 
                               gmt.features = gmt.features,
-                              expression = expression)
+                              expression = expression,
+                              scatter.plots = FALSE)
 
 # save results
 setwd(base.path)
-savePanSEA(Fig7.panSEA, "Fig5")
+setwd("cell_corr")
+savePanSEA(Fig7.panSEA, "Fig7_Coldren_transcr_NSCLC")
 Fig7.panSEA <- NULL # make space to process next analysis
 
 #### Step 5g: Coldren proteomics but only querying non-small-cell lung cancer cell line data ####
@@ -756,32 +801,257 @@ Fig8.panSEA <- panSEA::panSEA(Coldren.prot.list, all.Coldren.prot.names,
                               group.names = group.names,
                               group.samples = group.samples, 
                               gmt.features = gmt.features,
-                              expression = expression)
+                              expression = expression,
+                              scatter.plots = FALSE)
 
 # save results
 setwd(base.path)
-savePanSEA(Fig8.panSEA, "Fig8")
+setwd("cell_corr")
+savePanSEA(Fig8.panSEA, "Fig8_Coldren_prot_NSCLC")
 Fig8.panSEA <- NULL # make space to process next analysis
 
-#### Step 5h: Coldren proteomics but only querying non-small-cell lung cancer cell line data ####
+#### Step 5h: Coldren metabolomics but only querying non-small-cell lung cancer cell line data ####
 gmt.features <- list()
 expression <- list()
 for (i in 1:length(all.Coldren.met.names)) {
-  gmt.features[[all.Coldren.met.names[i]]] <- gene.gmt
+  gmt.features[[all.Coldren.met.names[i]]] <- met.gmt
   expression[[all.Coldren.met.names[i]]] <- NSCLC.met.df[
     NSCLC.met.df$CCLE_ID != all.Coldren.met.CCLE_IDs[i], ]
 }
 
-Fig8.panSEA <- panSEA::panSEA(Coldren.met.list, all.Coldren.met.names, 
+Fig9.panSEA <- panSEA::panSEA(Coldren.met.list, all.Coldren.met.names, 
+                              feature.names = rep("Metabolite", length(Coldren.met.list)),
                               GSEA.rank.var = rep("Input", 
                                                   length(Coldren.met.list)),
                               DMEA.type = "cell_corr", 
                               group.names = group.names,
                               group.samples = group.samples, 
                               gmt.features = gmt.features,
-                              expression = expression)
+                              expression = expression,
+                              scatter.plots = FALSE)
 
 # save results
 setwd(base.path)
-savePanSEA(Fig8.panSEA, "Fig8")
-Fig8.panSEA <- NULL # make space to process next analysis
+setwd("cell_corr")
+savePanSEA(Fig9.panSEA, "Fig9_Coldren_met_NSCLC")
+Fig9.panSEA <- NULL # make space to process next analysis
+
+##### Step 6: run panSEA with WV #####
+setwd(base.path)
+dir.create("ssDMEA_WV")
+setwd("ssDMEA_WV")
+# IMPORTANT: each group must have the same # & position of samples across data sets
+# e.g. "Sensitive" samples must be in the same columns across input data.list
+# but "Resistant" could have different # as "Sensitive" hypothetically
+group.names <- "Sensitive or Resistant"
+group.samples <- 2
+
+# get gene set info
+gene.gmt <- readRDS("gmt_MSigDB_Homo-sapiens_C2_CP:KEGG.rds")
+
+# get metabolite set info
+met.gmt <- readRDS("gmt_HMDB_in_CCLE_2sets.rds")
+
+#### Step 6a: GSE12790 ####
+gmt.features <- list()
+expression <- list()
+for (i in 1:length(all.GSE12790.names)) {
+  gmt.features[[all.GSE12790.names[i]]] <- gene.gmt
+  expression[[all.GSE12790.names[i]]] <- RNA.df[
+    RNA.df$CCLE_ID != all.GSE12790.CCLE_IDs[i], ]
+}
+
+GSE12790.panSEA <- panSEA::panSEA(GSE12790, all.GSE12790.names, GSEA = FALSE,
+                              GSEA.rank.var = rep("Input", length(GSE12790)),
+                              GSEA = FALSE, DMEA.type = "WV", 
+                              group.names = group.names,
+                              group.samples = group.samples, 
+                              #gmt.features = gmt.features,
+                              expression = expression,
+                              scatter.plots = FALSE)
+
+# save results
+fig.folder <- "GSE12790"
+savePanSEA(GSE12790.panSEA, fig.folder)
+#GSE12790.panSEA <- readRDS(paste0("panSEA_", fig.folder, ".rds"))
+GSE12790.panSEA <- NULL # make space to process next analysis
+
+#### Step 6b: GSE31625 ####
+gmt.features <- list()
+expression <- list()
+for (i in 1:length(all.GSE31625.names)) {
+  gmt.features[[all.GSE31625.names[i]]] <- gene.gmt
+  expression[[all.GSE31625.names[i]]] <- RNA.df[
+    RNA.df$CCLE_ID != all.GSE31625.CCLE_IDs[i], ]
+}
+
+GSE31625.panSEA <- panSEA::panSEA(GSE31625, all.GSE31625.names, 
+                              GSEA.rank.var = rep("Input", length(GSE31625)),
+                              GSEA = FALSE, DMEA.type = "WV", 
+                              group.names = group.names,
+                              group.samples = group.samples, 
+                              gmt.features = gmt.features,
+                              expression = expression,
+                              scatter.plots = FALSE)
+# save results
+fig.folder <- "GSE31625"
+savePanSEA(GSE31625.panSEA, fig.folder)
+#GSE31625.panSEA <- readRDS(paste0("panSEA_", fig.folder, ".rds"))
+GSE31625.panSEA <- NULL # make space to process next analysis
+
+#### Step 6c: Coldren ####
+gmt.features <- list()
+expression <- list()
+for (i in 1:length(all.Coldren.names)) {
+  gmt.features[[all.Coldren.names[i]]] <- gene.gmt
+  expression[[all.Coldren.names[i]]] <- RNA.df[
+    RNA.df$CCLE_ID != all.Coldren.CCLE_IDs[i], ]
+}
+
+Coldren.panSEA <- panSEA::panSEA(Coldren, all.Coldren.names, 
+                              GSEA.rank.var = rep("Input", length(Coldren)),
+                              GSEA = FALSE, DMEA.type = "WV", 
+                              group.names = group.names,
+                              group.samples = group.samples, 
+                              gmt.features = gmt.features,
+                              expression = expression,
+                              scatter.plots = FALSE)
+# save results
+fig.folder <- "Coldren"
+savePanSEA(Coldren.panSEA, fig.folder, GSEA = FALSE)
+#Coldren.panSEA <- readRDS(paste0("panSEA_", fig.folder, ".rds"))
+Coldren.panSEA <- NULL # make space to process next analysis
+
+#### Step 6d: Coldren proteomics ####
+gmt.features <- list()
+expression <- list()
+for (i in 1:length(all.Coldren.prot.names)) {
+  gmt.features[[all.Coldren.prot.names[i]]] <- gene.gmt
+  expression[[all.Coldren.prot.names[i]]] <- prot.df[
+    prot.df$CCLE_ID != all.Coldren.prot.CCLE_IDs[i], ]
+}
+
+Coldren.prot.panSEA <- panSEA::panSEA(Coldren.prot.list, all.Coldren.prot.names, 
+                              GSEA.rank.var = rep("Input", 
+                                                  length(Coldren.prot.list)),
+                              GSEA = FALSE, DMEA.type = "WV", 
+                              group.names = group.names,
+                              group.samples = group.samples, 
+                              gmt.features = gmt.features,
+                              expression = expression, scatter.plots = FALSE)
+# save results
+fig.folder <- "Coldren.prot"
+setwd(base.path)
+setwd("ssDMEA_WV")
+savePanSEA(Coldren.prot.panSEA, fig.folder, GSEA = FALSE)
+#Coldren.prot.panSEA <- readRDS(paste0("panSEA_", fig.folder, ".rds"))
+Coldren.prot.panSEA <- NULL # make space to process next analysis
+
+#### Step 6e: Coldren metabolomics ####
+gmt.features <- list()
+expression <- list()
+for (i in 1:length(all.Coldren.met.names)) {
+  gmt.features[[all.Coldren.met.names[i]]] <- met.gmt
+  expression[[all.Coldren.met.names[i]]] <- met.df[
+    met.df$CCLE_ID != all.Coldren.met.CCLE_IDs[i], ]
+}
+
+Coldren.met.panSEA <- panSEA::panSEA(Coldren.met.list, all.Coldren.met.names, 
+                                     feature.names = rep("Metabolite", length(Coldren.met.list)),
+                              GSEA.rank.var = rep("Input", 
+                                                  length(Coldren.met.list)),
+                              GSEA = FALSE, DMEA.type = "WV", 
+                              group.names = group.names,
+                              group.samples = group.samples, 
+                              gmt.features = gmt.features,
+                              expression = expression,
+                              scatter.plots = FALSE)
+# save results
+fig.folder <- "Coldren.met"
+setwd(base.path)
+setwd("ssDMEA_WV")
+savePanSEA(Coldren.met.panSEA, fig.folder, GSEA = FALSE)
+#Coldren.met.panSEA <- readRDS(paste0("panSEA_", fig.folder, ".rds"))
+Coldren.met.panSEA <- NULL # make space to process next analysis
+
+#### Step 6f: Coldren but only querying non-small-cell lung cancer cell line data ####
+NSCLC.samples <- cell.line.info[cell.line.info$lineage_subtype == "NSCLC", ] # 273 CCLE
+NSCLC.RNA.df <- RNA.df[RNA.df$CCLE_ID %in% NSCLC.samples$CCLE_Name, ] # 63 CCLE
+NSCLC.prot.df <- prot.df[prot.df$CCLE_ID %in% NSCLC.samples$CCLE_Name, ] # 78 CCLE
+NSCLC.met.df <- met.df[met.df$CCLE_ID %in% NSCLC.samples$CCLE_Name, ] # 182 CCLE
+NSCLC.prot.df.noNA <- NSCLC.prot.df[, colSums(is.na(NSCLC.prot.df)) == 0] # 5565 gene names
+
+gmt.features <- list()
+expression <- list()
+for (i in 1:length(all.Coldren.names)) {
+  gmt.features[[all.Coldren.names[i]]] <- gene.gmt
+  expression[[all.Coldren.names[i]]] <- NSCLC.RNA.df[
+    NSCLC.RNA.df$CCLE_ID != all.Coldren.CCLE_IDs[i], ]
+}
+
+Coldren.NSCLC.panSEA <- panSEA::panSEA(Coldren, all.Coldren.names, 
+                              GSEA.rank.var = rep("Input", length(Coldren)),
+                              GSEA = FALSE, DMEA.type = "WV", 
+                              group.names = group.names,
+                              group.samples = group.samples, 
+                              gmt.features = gmt.features,
+                              expression = expression,
+                              scatter.plots = FALSE)
+
+# save results
+setwd(base.path)
+setwd("ssDMEA_WV")
+savePanSEA(Coldren.NSCLC.panSEA, "Coldren_trascr_NSCLC", GSEA = FALSE)
+Coldren.NSCLC.panSEA <- NULL # make space to process next analysis
+
+#### Step 6g: Coldren proteomics but only querying non-small-cell lung cancer cell line data ####
+gmt.features <- list()
+expression <- list()
+for (i in 1:length(all.Coldren.prot.names)) {
+  gmt.features[[all.Coldren.prot.names[i]]] <- gene.gmt
+  expression[[all.Coldren.prot.names[i]]] <- NSCLC.prot.df.noNA[
+    NSCLC.prot.df.noNA$CCLE_ID != all.Coldren.prot.CCLE_IDs[i], ]
+}
+
+Coldren.NSCLC.prot.panSEA <- panSEA::panSEA(Coldren.prot.list, all.Coldren.prot.names, 
+                              GSEA.rank.var = rep("Input", 
+                                                  length(Coldren.prot.list)),
+                              GSEA = FALSE, DMEA.type = "WV", 
+                              group.names = group.names,
+                              group.samples = group.samples, 
+                              gmt.features = gmt.features,
+                              expression = expression,
+                              scatter.plots = FALSE)
+
+# save results
+setwd(base.path)
+setwd("ssDMEA_WV")
+savePanSEA(Coldren.NSCLC.prot.panSEA, "Coldren_prot_NSCLC", GSEA = FALSE)
+Coldren.NSCLC.prot.panSEA <- NULL # make space to process next analysis
+
+#### Step 6h: Coldren metabolomics but only querying non-small-cell lung cancer cell line data ####
+gmt.features <- list()
+expression <- list()
+for (i in 1:length(all.Coldren.met.names)) {
+  gmt.features[[all.Coldren.met.names[i]]] <- met.gmt
+  expression[[all.Coldren.met.names[i]]] <- NSCLC.met.df[
+    NSCLC.met.df$CCLE_ID != all.Coldren.met.CCLE_IDs[i], ]
+}
+
+Coldren.NSCLC.met.panSEA <- panSEA::panSEA(Coldren.met.list, all.Coldren.met.names, 
+                                           feature.names = rep("Metabolite", length(Coldren.met.list)),
+                              GSEA.rank.var = rep("Input", 
+                                                  length(Coldren.met.list)),
+                              GSEA = FALSE, DMEA.type = "WV", 
+                              group.names = group.names,
+                              group.samples = group.samples, 
+                              gmt.features = gmt.features,
+                              expression = expression,
+                              scatter.plots = FALSE)
+
+# save results
+setwd(base.path)
+setwd("ssDMEA_WV")
+savePanSEA(Coldren.NSCLC.met.panSEA, "Coldren_met_NSCLC", GSEA = FALSE)
+Coldren.NSCLC.met.panSEA <- NULL # make space to process next analysis
+

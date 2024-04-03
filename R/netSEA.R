@@ -13,8 +13,8 @@ netSEA <- function(inputs, outputs,
   types <- unique(outputs$type)
 
   #### Step 2. Extract data for & graph leading edge elements of top sets ####
-  if (nrow(sig.outputs) == 0) {
-    warning("No enrichments passed significance thresholds for network graph")
+  if (nrow(sig.outputs) < 2) {
+    warning("Less than 2 enrichments passed significance thresholds for network graph")
     netPlot <- NA
     intPlot <- NA
   } else {

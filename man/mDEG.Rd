@@ -41,6 +41,18 @@ mDEG(data.list, types, group.names=c("Diseased", "Healthy"),
   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])).
   }
   
+  \item{group.names2}{Optional: vector of names for 2 sample groups intended 
+  for batch effects or other confounding factors (e.g., sex). Default: NULL.
+  }
+  
+  \item{group.samples2}{Optional: list of column numbers or names corresponding 
+  to group.names2. For example, if columns 2:4 correspond to the first group 
+  (e.g., "Batch1") and columns 5:7 correspond to the second group 
+  (e.g., "Batch2"), then group.samples2 would be list(2:4, 5:7). The order of 
+  samples must be the same across all data frames in the input data.list. 
+  Default: NULL.
+  }
+  
   \item{feature.names}{Vector of column names containing feature names (e.g., 
   gene symbols) in each corresponding data frame in the input data.list. 
   Default: rep("Gene", length(inputs)).

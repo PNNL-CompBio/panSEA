@@ -1,8 +1,9 @@
-mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
+mDEG2 <- function(data.list, types, group.names = c("Diseased", "Healthy"), 
                  group.samples = list(
                    2:(0.5 * (ncol(data.list[[1]]) + 1)),
                    (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])
-                 ), feature.names = rep("Gene", length(types)), p = 0.05, 
+                 ), group.names2 = NULL, group.samples2 = NULL, 
+                 feature.names = rep("Gene", length(types)), p = 0.05, 
                  FDR.features = 0.05, n.dot.features = 10) {
   #### Step 1. Check if formats are correct ####
   # check that there are as many types as data.list inputs
@@ -23,11 +24,51 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
           "for each feature"
         ))
       } else {
-        # separate data.list based on group (i.e., categorical phenotype)
+        ## separate data.list based on group (i.e., categorical phenotype)
+        # get column names for first set of groups
         data.list1 <- as.data.frame(data.list[[i]][, group.samples[[1]]])
+        cols1 <- colnames(data.list1)
         data.list2 <- as.data.frame(data.list[[i]][, group.samples[[2]]])
-        all.data.list <- cbind(data.list1, data.list2)
+        cols2 <- colnames(data.list2)
         
+        if (!is.null(group.names2) & !is.null(group.samples2)) {
+          # get column names for second set of groups
+          data.list1a <- as.data.frame(data.list[[i]][, group.samples2[[1]]])
+          data.list1a <- data.list1a[, cols1]
+          cols1a <- colnames(data.list1a)
+          data.list1 <- data.list1[, cols1]
+          data.list2a <- as.data.frame(data.list[[i]][, group.samples2[[2]]])
+          data.list2a <- data.list1a[, cols2]
+          cols2a <- colnames(data.list2a)
+          
+          # make sure samples have annotations for both sets of groups
+          cols1 <- cols1[cols1 %in% cols1a]
+          cols2 <- cols2[cols2 %in% cols2a]
+          data.list2 <- data.list2[, cols2]
+          data.list1a <- NULL
+          data.list2a <- NULL
+          all.data.list <- cbind(data.list1, data.list2)
+          
+          # store group annotations
+          cols <- c(cols1, cols2)
+          factor.info <- as.data.frame(cols)
+          factor.info$f1 <- factor(c(rep(0, ncol(data.list1)), rep(1, ncol(data.list2))))
+          levels(factor.info$f1) <- make.names(group.names)
+          factor.info$f2 <- NA
+          factor.info[factor.info$cols %in% cols1a, ]$f2 <- 0
+          factor.info[factor.info$cols %in% cols2a, ]$f2 <- 1
+          factor.info$f2 <- as.factor(factor.info$f2)
+          levels(factor.info$f2) <- make.names(group.names2)
+          factor.info <- na.omit(factor.info)
+        } else {
+          # store group annotations
+          cols <- c(cols1, cols2)
+          factor.info <- as.data.frame(cols)
+          factor.info$f1 <- factor(c(rep(0, ncol(data.list1)), rep(1, ncol(data.list2))))
+          levels(factor.info$f1) <- make.names(group.names)
+        }
+        
+
         # set feature names as rownames
         rownames(all.data.list) <- data.list[[i]][ , feature.names[i]]
 
@@ -46,13 +87,14 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
           Biobase::exprs(eset) <- log2(ex)
         }
 
-        # identify sample phenotypes
-        gs <- factor(c(rep(0, ncol(data.list1)), rep(1, ncol(data.list2))))
-        levels(gs) <- make.names(group.names)
-        eset$group <- gs
-
-        # set up design matrix
-        design <- stats::model.matrix(~ group + 0, eset)
+        # identify sample phenotypes and set up design matrix
+        eset$group <- factor.info$f1
+        if (!is.null(group.names2) & !is.null(group.samples2)) {
+          eset$batch <- factor.info$f2
+          design <- stats::model.matrix(~ group + batch + 0, eset)
+        } else {
+          design <- stats::model.matrix(~ group + 0, eset)
+        }
         colnames(design) <- levels(gs)
 
         # fit linear model

@@ -67,6 +67,18 @@ panSEA(data.list, types, feature.names = rep("Gene", length(types)),
   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])).
   }
   
+  \item{group.names2}{Optional: vector of names for 2 sample groups intended 
+  for batch effects or other confounding factors (e.g., sex). Default: NULL.
+  }
+  
+  \item{group.samples2}{Optional: list of column numbers or names corresponding 
+  to group.names2. For example, if columns 2:4 correspond to the first group 
+  (e.g., "Batch1") and columns 5:7 correspond to the second group 
+  (e.g., "Batch2"), then group.samples2 would be list(2:4, 5:7). The order of 
+  samples must be the same across all data frames in the input data.list. 
+  Default: NULL.
+  }
+  
   \item{gmt.features}{List of gmt objects containing sets of features for gene 
   set enrichment analyses (e.g., output from GSA.read.gmt function from GSA 
   package)  or character strings with input parameters for msigdbr::msigdbr 

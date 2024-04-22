@@ -1,4 +1,4 @@
-mDEG2 <- function(data.list, types, group.names = c("Diseased", "Healthy"), 
+mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"), 
                  group.samples = list(
                    2:(0.5 * (ncol(data.list[[1]]) + 1)),
                    (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])

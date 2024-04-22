@@ -14,6 +14,7 @@ transformation is performed prior to analysis.
 mDEG(data.list, types, group.names=c("Diseased", "Healthy"), 
   group.samples=list(2:(0.5 * (ncol(data.list[[1]]) + 1)),
   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])), 
+  group.names2=NULL, group.samples2=NULL,
   feature.names=rep("Gene", length(types)), 
   p=0.05, FDR.features=0.05, n.dot.features=10)
 }

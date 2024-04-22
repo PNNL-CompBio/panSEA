@@ -5,7 +5,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                    group.samples = list(
                      2:(0.5 * (ncol(data.list[[1]]) + 1)),
                      (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])
-                   ),
+                   ), group.names2 = NULL, group.samples2 = NULL,
                    gmt.features = as.list(rep(
                      "msigdb_Homo sapiens_C2_CP:KEGG",
                      length(types)
@@ -31,6 +31,30 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
     ))
   }
   
+  # make sure grouping lengths are valid
+  if (length(group.names) != length(group.samples)) {
+    stop("Lengths of group.names must match that of group.samples")
+  } else if (length(group.names) > 2 | length(group.names) < 1) {
+    stop("Only 1 or 2 group.names are allowed")
+  } else if (length(group.names) == 1) {
+    DEGs <- NA
+    group1.valid <- TRUE
+  } else {
+    group1.valid <- TRUE
+  }
+  
+  if (length(group.names2) != length(group.samples2)) {
+    stop("Lengths of group.names2 must match that of group.samples2")
+  } else if (is.null(group.names2) & is.null(group.samples2)) {
+    group2.valid <- TRUE
+  } else if (length(group.names2) > 2) {
+    stop("Only 1 or 2 group.names2 are allowed")
+  } else if (length(group.names2) == 1) {
+    group2.valid <- TRUE
+  } else {
+    group2.valid <- TRUE
+  }
+  
   # check if DMEA.type is valid
   if (DMEA & !(DMEA.type %in% c("WV", "cell_corr", "gene_corr"))) {
     stop(paste("DMEA.type parameter must be either 'WV' for drugs to be ranked",
@@ -40,13 +64,10 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
   }
   
   #### Step 2. Differential expression analysis if 2 groups ####
-  if (length(group.names) > 2 | length(group.names) < 1) {
-    stop("Only 1 or 2 group.names are allowed")
-  } else if (length(group.names) == 2) {
+  if (length(group.names) == 2 & group1.valid & group2.valid) {
     DEGs <- panSEA::mDEG(data.list, types, group.names, group.samples,
+                         group.names2, group.samples2,
                          feature.names, p, FDR.features, n.dot.sets)
-  } else if (length(group.names) == 1) {
-    DEGs <- NA
   }
 
   #### Step 3. Enrichment analyses ####

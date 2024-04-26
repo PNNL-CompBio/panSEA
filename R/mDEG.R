@@ -94,8 +94,8 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
           design <- stats::model.matrix(~ group + batch + 0, eset)
         } else {
           design <- stats::model.matrix(~ group + 0, eset)
+          colnames(design) <- levels(eset$group)
         }
-        colnames(design) <- levels(eset$group)
 
         # fit linear model
         fit <- limma::lmFit(eset, design)

@@ -92,6 +92,7 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
         if (!is.null(group.names2) & !is.null(group.samples2)) {
           eset$batch <- factor.info$f2
           design <- stats::model.matrix(~ group + batch + 0, eset)
+          colnames(design)[1:2] <- levels(eset$group)
         } else {
           design <- stats::model.matrix(~ group + 0, eset)
           colnames(design) <- levels(eset$group)

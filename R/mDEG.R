@@ -38,8 +38,10 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
           data.list2a <- as.data.frame(data.list[[i]][, group.samples2[[2]]])
           
           # make sure samples have annotations for both sets of groups
-          cols1 <- cols1[cols1 %in% colnames(data.list1a)]
-          cols2 <- cols2[cols2 %in% colnames(data.list2a)]
+          cols1a <- colnames(data.list1a)
+          cols2a <- colnames(data.list2a)
+          cols1 <- cols1[cols1 %in% cols1a]
+          cols2 <- cols2[cols2 %in% cols2a]
           
           # refine data lists to shared samples
           data.list1a <- NULL

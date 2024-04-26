@@ -30,27 +30,25 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
         cols1 <- colnames(data.list1)
         data.list2 <- as.data.frame(data.list[[i]][, group.samples[[2]]])
         cols2 <- colnames(data.list2)
+        cols <- c(cols1, cols2)
         
         if (!is.null(group.names2) & !is.null(group.samples2)) {
           # get column names for second set of groups
           data.list1a <- as.data.frame(data.list[[i]][, group.samples2[[1]]])
-          data.list1a <- data.list1a[, cols1]
-          cols1a <- colnames(data.list1a)
-          data.list1 <- data.list1[, cols1]
           data.list2a <- as.data.frame(data.list[[i]][, group.samples2[[2]]])
-          data.list2a <- data.list1a[, cols2]
-          cols2a <- colnames(data.list2a)
           
           # make sure samples have annotations for both sets of groups
           cols1 <- cols1[cols1 %in% cols1a]
           cols2 <- cols2[cols2 %in% cols2a]
-          data.list2 <- data.list2[, cols2]
+          
+          # refine data lists to shared samples
           data.list1a <- NULL
           data.list2a <- NULL
+          data.list1 <- data.list1[, cols1]
+          data.list2 <- data.list2[, cols2]
           all.data.list <- cbind(data.list1, data.list2)
           
           # store group annotations
-          cols <- c(cols1, cols2)
           factor.info <- as.data.frame(cols)
           factor.info$f1 <- factor(c(rep(0, ncol(data.list1)), rep(1, ncol(data.list2))))
           levels(factor.info$f1) <- make.names(group.names)
@@ -62,7 +60,6 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
           factor.info <- na.omit(factor.info)
         } else {
           # store group annotations
-          cols <- c(cols1, cols2)
           factor.info <- as.data.frame(cols)
           factor.info$f1 <- factor(c(rep(0, ncol(data.list1)), rep(1, ncol(data.list2))))
           levels(factor.info$f1) <- make.names(group.names)

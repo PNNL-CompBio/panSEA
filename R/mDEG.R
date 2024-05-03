@@ -47,7 +47,6 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
           data.list2a <- NULL
           data.list1 <- data.list1[, cols1]
           data.list2 <- data.list2[, cols2]
-          all.data.list <- cbind(data.list1, data.list2)
           
           # store group annotations
           cols <- c(cols1, cols2)
@@ -67,9 +66,9 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
           factor.info$f1 <- factor(c(rep(0, ncol(data.list1)), rep(1, ncol(data.list2))))
           levels(factor.info$f1) <- make.names(group.names)
         }
-        
 
-        # set feature names as rownames
+        # combine data and set feature names as rownames
+        all.data.list <- cbind(data.list1, data.list2)
         rownames(all.data.list) <- data.list[[i]][ , feature.names[i]]
 
         # create expression sets

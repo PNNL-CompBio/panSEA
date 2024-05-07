@@ -101,7 +101,7 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
         fit <- limma::lmFit(eset, design)
 
         # set up contrasts of interest and redo fit
-        cts <- paste(group.names[1], group.names[2], sep = "-")
+        cts <- paste(colnames(design)[1:2], collapse = "-")
         cont.matrix <- limma::makeContrasts(contrasts = cts, levels = design)
         fit <- limma::contrasts.fit(fit, cont.matrix)
 

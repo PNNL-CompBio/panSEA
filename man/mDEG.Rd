@@ -11,53 +11,22 @@ transformation is performed prior to analysis.
 }
 
 \usage{
-mDEG(data.list, types, group.names=c("Diseased", "Healthy"), 
-  group.samples=list(2:(0.5 * (ncol(data.list[[1]]) + 1)),
-  (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])), 
-  group.names2=NULL, group.samples2=NULL,
-  feature.names=rep("Gene", length(types)), 
+mDEG(data.list, factor.info, 
   p=0.05, FDR.features=0.05, n.dot.features=10)
 }
 
 \arguments{
   \item{data.list}{List of data frames where each data frame has one column 
   containing feature names (e.g., gene symbols) and the rest of its columns 
-  having sample names as column names.
+  having sample names as column names. List names will be interpreted as 
+  omics types (e.g., "global" or "phospho"). Non-numeric column will be 
+  assumed to be feature names (e.g., "Gene" or "SUB_SITE").
   }
 
-  \item{types}{Vector of character descriptions of each omics type (e.g., 
-  c("Transcriptomics", "Proteomics")).
-  }
-  
-  \item{group.names}{Vector of names for 2 sample groups. 
-  Default: c("Diseased", "Healthy").
-  }
-  
-  \item{group.samples}{List of column numbers or names corresponding to the 
-  group names. For example, if columns 2:4 correspond to the first group (e.g., 
-  "Diseased") and columns 5:7 correspond to the second group (e.g., "Healthy"), 
-  then group.samples would be list(2:4, 5:7). The order of samples must be the 
-  same across all data frames in the input data.list. Default: 
-  list(2:(0.5 * (ncol(data.list[[1]]) + 1)), 
-  (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])).
-  }
-  
-  \item{group.names2}{Optional: vector of names for 2 sample groups intended 
-  for batch effects or other confounding factors (e.g., sex). Default: NULL.
-  }
-  
-  \item{group.samples2}{Optional: list of column numbers or names corresponding 
-  to group.names2. For example, if columns 2:4 correspond to the first group 
-  (e.g., "Batch1") and columns 5:7 correspond to the second group 
-  (e.g., "Batch2"), then group.samples2 would be list(2:4, 5:7). The order of 
-  samples must be the same across all data frames in the input data.list. 
-  Default: NULL.
-  }
-  
-  \item{feature.names}{Vector of column names containing feature names (e.g., 
-  gene symbols) in each corresponding data frame in the input data.list. 
-  Default: rep("Gene", length(inputs)).
-  }
+  \item{factor.info}{Data frame where rownames are sample names found in each 
+  data frame of data.list, the first column is a contrast with 2 levels, and 
+  optionally there may be a second column to be included in the design matrix 
+  (e.g., sex or batch effect).}
   
   \item{p}{P-value cut-off for significant differential expression. Default: 
   0.05.
@@ -116,9 +85,13 @@ expr <- data.frame(Gene, Sample_1, Sample_2, Sample_3,
 expr2 <- data.frame(Gene, Sample_1, Sample_2, Sample_3, 
   Sample_4, Sample_5, Sample_6)
 
+# compile expression data into list with descriptive names
+data.list <- list("Transcriptomics" = expr, "Proteomics" = expr2)
+
+# prepare factor info for differential expression contrast
+factor.info <- data.frame("contrast" = c(rep(0, 3), rep(1, 3)))
+rownames(factor.info) <- colnames(expr)[2:ncol(expr)]
+
 ## Step 3: perform differential expression analysis
-# by default, we assume the first half of samples (1-3) are "Diseased"
-# and the second half of samples (4-6) are "Healthy"
-mDEG.test <- panSEA::mDEG(list(expr, expr2), 
-  types = c("Transcriptomics", "Proteomics"))
+mDEG.test <- panSEA::mDEG(data.list, factor.info)
 }

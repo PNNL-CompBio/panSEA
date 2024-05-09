@@ -1,5 +1,4 @@
-mDEG <- function(data.list, factor.info, 
-                 feature.names = rep("Gene", length(types)), p = 0.05, 
+mDEG <- function(data.list, factor.info, p = 0.05, 
                  FDR.features = 0.05, n.dot.features = 10) {
   #### Step 1. Check if formats are correct ####
   # check that there are as many types as data.list inputs
@@ -23,6 +22,7 @@ mDEG <- function(data.list, factor.info,
       } else {
         # select annotated samples and set feature names as rownames
         all.data.list <- data.list[[i]][,rownames(factor.info)]
+        
         rownames(all.data.list) <- data.list[[i]][ , feature.names[i]]
 
         # create expression sets

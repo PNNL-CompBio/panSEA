@@ -1,19 +1,16 @@
-mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"), 
-                 group.samples = list(
-                   2:(0.5 * (ncol(data.list[[1]]) + 1)),
-                   (0.5 * (ncol(data.list[[1]]) + 1) + 1):ncol(data.list[[1]])
-                 ), group.names2 = NULL, group.samples2 = NULL, 
+mDEG <- function(data.list, factor.info, 
                  feature.names = rep("Gene", length(types)), p = 0.05, 
                  FDR.features = 0.05, n.dot.features = 10) {
   #### Step 1. Check if formats are correct ####
   # check that there are as many types as data.list inputs
-  if (length(types) != length(data.list)) {
-    stop("Length of types vector must match that of data.list")
+  if (length(feature.names) != length(data.list)) {
+    stop("Length of feature.names vector must match that of data.list")
   }
+  types <- names(data.list)
 
   #### Step 2. Differential expression analysis ####
-  if (length(group.names) != 2) {
-    stop("Only 2 groups are allowed for differential expression analysis")
+  if (length(levels(factor.info[,1])) != 2) {
+    stop("Exactly 2 levels are required for the first column of factor.info")
   } else {
     deg <- list()
     for (i in 1:length(types)) {
@@ -24,51 +21,8 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
           "for each feature"
         ))
       } else {
-        ## separate data.list based on group (i.e., categorical phenotype)
-        # get column names for first set of groups
-        data.list1 <- as.data.frame(data.list[[i]][, group.samples[[1]]])
-        cols1 <- colnames(data.list1)
-        data.list2 <- as.data.frame(data.list[[i]][, group.samples[[2]]])
-        cols2 <- colnames(data.list2)
-        
-        if (!is.null(group.names2) & !is.null(group.samples2)) {
-          # get column names for second set of groups
-          data.list1a <- as.data.frame(data.list[[i]][, group.samples2[[1]]])
-          data.list2a <- as.data.frame(data.list[[i]][, group.samples2[[2]]])
-          
-          # make sure samples have annotations for both sets of groups
-          cols1a <- colnames(data.list1a)
-          cols2a <- colnames(data.list2a)
-          cols1 <- cols1[cols1 %in% c(cols1a, cols2a)]
-          cols2 <- cols2[cols2 %in% c(cols1a, cols2a)]
-          
-          # refine data lists to shared samples
-          data.list1a <- NULL
-          data.list2a <- NULL
-          data.list1 <- data.list1[, cols1]
-          data.list2 <- data.list2[, cols2]
-          
-          # store group annotations
-          cols <- c(cols1, cols2)
-          factor.info <- as.data.frame(cols)
-          factor.info$f1 <- factor(c(rep(0, ncol(data.list1)), rep(1, ncol(data.list2))))
-          levels(factor.info$f1) <- make.names(group.names)
-          factor.info$f2 <- NA
-          factor.info[factor.info$cols %in% cols1a, ]$f2 <- 0
-          factor.info[factor.info$cols %in% cols2a, ]$f2 <- 1
-          factor.info$f2 <- as.factor(factor.info$f2)
-          levels(factor.info$f2) <- make.names(group.names2)
-          factor.info <- na.omit(factor.info)
-        } else {
-          # store group annotations
-          cols <- c(cols1, cols2)
-          factor.info <- as.data.frame(cols)
-          factor.info$f1 <- factor(c(rep(0, ncol(data.list1)), rep(1, ncol(data.list2))))
-          levels(factor.info$f1) <- make.names(group.names)
-        }
-
-        # combine data and set feature names as rownames
-        all.data.list <- cbind(data.list1, data.list2)
+        # select annotated samples and set feature names as rownames
+        all.data.list <- data.list[[i]][,rownames(factor.info)]
         rownames(all.data.list) <- data.list[[i]][ , feature.names[i]]
 
         # create expression sets
@@ -87,9 +41,9 @@ mDEG <- function(data.list, types, group.names = c("Diseased", "Healthy"),
         }
 
         # identify sample phenotypes and set up design matrix
-        eset$group <- factor.info$f1
-        if (!is.null(group.names2) & !is.null(group.samples2)) {
-          eset$batch <- factor.info$f2
+        eset$group <- factor.info[,1]
+        if (ncol(factor.info) > 1) {
+          eset$batch <- factor.info[,2]
           design <- stats::model.matrix(~ group + batch + 0, eset)
           colnames(design)[1:2] <- levels(eset$group)
         } else {

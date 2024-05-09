@@ -1,0 +1,168 @@
+Drug,moa,PRISM_drug_name,BRD_id,PubChem_CID
+AKT Inhibitor IV,AKT inhibitor,NA,NA,5719375
+AKT Inhibitor X,AKT inhibitor,NA,NA,16760284
+AMPK Inhibitor,AMPK inhibitor,NA,NA,11524144
+AST-487,FLT3 inhibitor,NA,NA,11409972
+AZD1152-HQPA (AZD2811),Aurora kinase inhibitor,barasertib-HQPA,BRD-K63923597-001-10-0,16007391
+Alisertib (MLN8237),Aurora kinase inhibitor,alisertib,BRD-K75295174-001-05-0,24771867
+Bortezomib (Velcade),"NFkB pathway inhibitor, proteasome inhibitor",bortezomib,"BRD-K88510285-001-50-9, BRD-K88510285-001-34-3, BRD-K88510285-001-23-6, BRD-K88510285-001-22-8, BRD-K88510285-001-11-1, BRD-K88510285-001-17-8",387447
+CYT387,JAK inhibitor,cyt387,BRD-K87737963-001-06-0,25062766
+Canertinib (CI-1033),EGFR inhibitor,canertinib,BRD-K50168500-001-07-9,156414
+Crenolanib,PDGFR tyrosine kinase receptor inhibitor,crenolanib,BRD-K22127577-001-03-7,10366136
+Doramapimod (BIRB 796),p38 MAPK inhibitor,NA,BRD-K74065929-001-01-5,156422
+Dovitinib (CHIR-258),"EGFR inhibitor, FGFR inhibitor, FLT3 inhibitor, PDGFR tyrosine kinase receptor inhibitor, VEGFR inhibitor",dovitinib,BRD-K85402309-043-01-9BRD-K85402309-001-06-6 ,135398510
+Erlotinib,EGFR inhibitor,erlotinib,"BRD-K70401845-001-15-7, BRD-K70401845-003-09-6",176870Ê
+Flavopiridol,CDK inhibitor,NA,BRD-K87909389-001-01-2,5287969
+GDC-0941,PI3K inhibitor,GDC-0941,BRD-K52911425-001-09-8,17755052
+GW-2580,cFMS kinase inhibitor,NA,NA,11617559
+Gefitinib,EGFR inhibitor,gefitinib,"BRD-K64052750-001-22-5, BRD-K64052750-001-17-5",123631
+Go6976,PKC inhibitor,NA,NA,3501
+H-89,PKA inhibitor,NA,NA,449241
+INK-128,mTOR inhibitor,MLN0128,BRD-K59317601-001-05-5,45375953
+Idelalisib,PI3K inhibitor,idelalisib,BRD-K60866521-001-07-1,11625818
+Imatinib,"Bcr-Abl kinase inhibitor, KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor",imatinib,"BRD-K92723993-001-17-4, BRD-K92723993-001-06-7",
+JAK Inhibitor I,JAK inhibitor,NA,NA,5494425
+JNJ-7706621,CDK inhibitor,JNJ-7706621,BRD-K11636097-001-03-1,5330790
+JNK Inhibitor II,JAK inhibitor,NA,NA,8515
+KN92,CaMK inhibitor,NA,NA,NA
+KN93,CaMK inhibitor,NA,NA,NA
+LY-333531,PKC inhibitor,NA,NA,153999
+LY294002,PI3K inhibitor,NA,NA,3973
+Lapatinib,EGFR inhibitor,lapatinib,"BRD-K19687926-001-04-1, BRD-K19687926-379-07-4",208908
+Linifanib (ABT-869),"PDGFR tyrosine kinase receptor inhibitor, VEGFR inhibitor",linifanib,BRD-K99749624-001-07-0,11485656
+MEK1/2 Inhibitor,MEK inhibitor,MEK1-2-inhibitor,BRD-K12244279-001-05-8,9549284
+Midostaurin,"FLT3 inhibitor, KIT inhibitor, PKC inhibitor",midostaurin,BRD-K13646352-001-03-8,9829523
+Motesanib (AMG-706),"KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor, VEGFR inhibitor",motesanib,BRD-K99616396-001-05-1,11667893
+NF-kB Activation Inhibitor,NFkB pathway inhibitor,EVP4593,BRD-K68395654-001-03-1,509554
+PD153035,EGFR inhibitor,PD-153035,BRD-K26603252-003-04-9,4705
+PD98059,MEK inhibitor,PD-98059,BRD-K62810658-001-12-2,4713
+PI-103,"mTOR inhibitor, PI3K inhibitor",PI-103,BRD-K67868012-001-07-6,9884685
+PP2,src inhibitor,PP-2,BRD-K95785537-001-23-1,4878
+PRT062070,"JAK inhibitor, SYK inhibitor",PRT062070,BRD-K25835157-001-01-4,44595079
+Pazopanib (GW786034),"KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor, VEGFR inhibitor",pazopanib,"BRD-K74514084-003-09-2, BRD-K74514084-001-03-9",10113978
+Pelitinib (EKB-569),EGFR inhibitor,pelitinib,BRD-K08799216-001-05-3,6445562
+Quizartinib (AC220),FLT3 inhibitor,quizartinib,BRD-K93918653-001-08-9,24889392
+R406,SYK inhibitor,R406,BRD-K20285085-074-04-5,11213558
+RAF265 (CHIR-265),"RAF inhibitor, VEGFR inhibitor",RAF265,BRD-K93123848-001-04-1,11656518
+Rapamycin,mTOR inhibitor,sirolimus,"BRD-K42898655-001-01-8, BRD-K84937637-001-09-9",5284616
+Roscovitine (CYC-202),CDK inhibitor,NA,NA,160355
+SB-202190,p38 MAPK inhibitor,NA,NA,5169
+SB-203580,p38 MAPK inhibitor,NA,NA,176155
+SB-431542,TGF beta receptor inhibitor,SB-431542,BRD-K67298865-001-09-0,4521392
+SNS-032 (BMS-387032),"CDK inhibitor, cell cycle inhibitor, MCL1 inhibitor",BMS-387032,BRD-K43389698-001-09-9,3025986
+STO609,CaMK inhibitor,NA,NA,3467590
+SU14813,"PDGFR tyrosine kinase receptor inhibitor, VEGFR inhibitor",SU014813,BRD-K75911534-001-01-6,10138259
+SYK Inhibitor,SYK inhibitor,NA,NA,6419747
+Sorafenib,"FLT3 inhibitor, KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor, RAF inhibitor, RET tyrosine kinase inhibitor, VEGFR inhibitor",sorafenib,"BRD-K23984367-001-07-5, BRD-K23984367-075-15-2",216239
+Tandutinib (MLN518),"FLT3 inhibitor, KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor",tandutinib,BRD-K89162000-001-06-4,3038522
+Tofacitinib (CP-690550),JAK inhibitor,NA,NA,9926791
+Tozasertib (VX-680),"Aurora kinase inhibitor, Bcr-Abl kinase inhibitor, FLT3 inhibitor, JAK inhibitor",tozasertib,"BRD-K59369769-001-22-9, BRD-K59369769-001-20-3",
+VX-745,p38 MAPK inhibitor,NA,NA,3038525
+Vandetanib (ZD6474),"EGFR inhibitor, RET tyrosine kinase inhibitor, VEGFR inhibitor",vandetanib,BRD-K77625799-001-07-7,3081361
+Vatalanib (PTK787),"KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor, VEGFR inhibitor",vatalanib,BRD-K70163715-300-05-7,151194
+YM-155,survivin inhibitor,YM-155,BRD-K76703230-004-04-1,10126189
+p38 MAP Kinase Inhibitor,p38 MAPK inhibitor,NA,NA,4665
+Dasatinib,"Bcr-Abl kinase inhibitor, ephrin inhibitor, KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor, src inhibitor, tyrosine kinase inhibitor",dasatinib,BRD-K49328571-001-15-0,3062316
+Nilotinib,"Abl kinase inhibitor, Bcr-Abl kinase inhibitor",nilotinib,BRD-K81528515-001-13-8,644241
+Ponatinib (AP24534),"Bcr-Abl kinase inhibitor, FLT3 inhibitor, PDGFR tyrosine kinase receptor inhibitor",ponatinib,BRD-K44227013-001-06-4,24826799
+Sunitinib,"FLT3 inhibitor, KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor, RET tyrosine kinase inhibitor, VEGFR inhibitor",sunitinib,"BRD-K42828737-001-03-3, BRD-K42828737-044-09-0",5329102
+A-674563,AKT inhibitor,A-674563,BRD-K78177893-001-02-4,11314340
+AT7519,CDK inhibitor,AT-7519,BRD-K13390322-001-06-3,11338033
+AZD1480,JAK inhibitor,AZD1480,BRD-K65928735-001-04-3,16659841
+Afatinib (BIBW-2992),EGFR inhibitor,afatinib,"BRD-K66175015-001-12-4, BRD-K66175015-001-09-0",10184653
+BEZ235,"mTOR inhibitor, PI3K inhibitor",NVP-BEZ235,"BRD-K12184916-001-19-6, BRD-K12184916-001-15-4",11977753
+BI-2536,PLK inhibitor,BI-2536,BRD-K64890080-001-13-8,11364421
+BMS-345541,IKK inhibitor,BMS-345541,BRD-K13566078-001-02-3,9813758
+Bosutinib (SKI-606),"Abl kinase inhibitor, Bcr-Abl kinase inhibitor, src inhibitor",bosutinib,BRD-K99964838-001-11-9,5328940
+CI-1040 (PD184352),MEK inhibitor,PD-184352,BRD-K05104363-001-10-0,6918454
+Cediranib (AZD2171),"KIT inhibitor, VEGFR inhibitor",cediranib,BRD-K86930074-001-05-0,9933475
+Crizotinib (PF-2341066),ALK tyrosine kinase receptor inhibitor,crizotinib,BRD-K78431006-001-15-1,11626560
+Foretinib (XL880),VEGFR inhibitor,foretinib,BRD-K03449891-001-08-6,42642645
+GDC-0879,RAF inhibitor,GDC-0879,BRD-K67578145-001-09-7,11717001
+GSK-1838705A,insulin growth factor receptor inhibitor,GSK1838705A,BRD-K06749501-001-02-1,25182616
+GSK690693,AKT inhibitor,NA,NA,Ê16725726
+Ibrutinib (PCI-32765),Bruton's tyrosine kinase (BTK) inhibitor,ibrutinib,"BRD-K70301465-001-05-9, BRD-K70301465-001-02-6",24821094
+JNJ-28312141,"tyrosine kinase inhibitor, FLT3 inhibitor, CSF1R inhibitor",NA,NA,11676971
+KI20227,"tyrosine kinase inhibitor, CSF1R inhibitor, VEGFR inhibitor, KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor",NA,NA,9869779
+KW-2449,"Abl kinase inhibitor, Aurora kinase inhibitor, FLT3 inhibitor",KW-2449,BRD-K21718444-001-06-8,11427553
+Lestaurtinib (CEP-701),"FLT3 inhibitor, growth factor receptor inhibitor, JAK inhibitor",lestaurtinib,BRD-A27376179-001-01-3,9932888
+MLN120B,IKK inhibitor,NA,NA,9929127
+Masitinib (AB-1010),"KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor, src inhibitor",masitinib,BRD-K71035033-001-07-1,10074640
+NVP-TAE684,ALK tyrosine kinase receptor inhibitor,NVP-TAE684,BRD-K50140147-001-10-1,16038120
+Neratinib (HKI-272),EGFR inhibitor,neratinib,BRD-K85606544-001-09-1,9915743
+PD173955,"src inhibitor, Yes inhibitor, Abl kinase inhibitor",NA,NA,447077
+PHA-665752,c-Met inhibitor,PHA-665752,BRD-K95435023-001-08-5,10461815
+PLX-4720,RAF inhibitor,PLX-4720,BRD-K16478699-001-09-2,24180719
+PP242,mTOR inhibitor,PP242,BRD-K87112191-001-04-5,135565635
+R547,CDK inhibitor,R547,BRD-K52233191-001-02-4,6918852
+SGX-523,c-Met inhibitor,NA,NA,24779724
+Selumetinib (AZD6244),MEK inhibitor,selumetinib,BRD-K57080016-001-15-9,10127622
+Staurosporine,"PKA inhibitor, PKC inhibitor, c-Fgr inhibitor, PK inhibitor, TAOK2 inhibitor, apoptosis stimulant",NA,NA,44259
+TG100-115,PI3K inhibitor,TG100-115,BRD-K64785675-001-04-0,10427712
+TG101348,"FLT3 inhibitor, JAK inhibitor",TG-101348,BRD-K12502280-001-08-0,16722836
+Trametinib (GSK1120212),MEK inhibitor,trametinib,"BRD-K12343256-001-14-7, BRD-K12343256-001-08-9",11707110
+Axitinib (AG-013736),"PDGFR tyrosine kinase receptor inhibitor, VEGFR inhibitor",axitinib,BRD-K29905972-001-06-3,6450551
+Vargetef,tyrosine kinase inhibitor,NA,NA,NA
+Ruxolitinib (INCB018424),JAK inhibitor,ruxolitinib,BRD-K53972329-001-07-0,25126798
+CHIR-99021,glycogen synthase kinase inhibitor,CHIR-99021,BRD-K16189898-003-03-3,9956119
+GSK-1904529A,"IGF-1 inhibitor, insulin growth factor receptor inhibitor, insulin receptor ligand",GSK1904529A,BRD-K04833372-001-06-2,25124816
+MK-2206,AKT inhibitor,MK-2206,BRD-K68065987-300-09-1,24964624
+MGCD-265,VEGFR inhibitor,MGCD-265,BRD-K56277358-001-07-5,24901704
+17-AAG (Tanespimycin),HSP inhibitor,tanespimycin,"BRD-K81473043-001-19-5, BRD-K81473043-001-14-6",6505803
+ABT-737,BCL inhibitor,ABT-737,BRD-K56301217-001-07-4,11228183
+Cabozantinib,"RET tyrosine kinase inhibitor, VEGFR inhibitor",cabozantinib,BRD-K51544265-001-04-2,25102847
+Elesclomol,oxidative stress inducer,elesclomol,BRD-K82135108-001-04-3,300471
+JNJ-38877605,c-Met inhibitor,NA,NA,46911863
+KU-55933,ATM inhibitor,NA,NA,5278396
+MLN8054,Aurora kinase inhibitor,MLN-8054,BRD-K83963101-001-06-9,11712649
+NVP-ADW742,"IGF-1 inhibitor, insulin growth factor receptor inhibitor, insulin receptor ligand",NA,NA,9825149
+PHT-427,"AKT inhibitor, PDPK1 inhibitor",NA,NA,44240850
+PRT062607,SYK inhibitor,PRT062607,BRD-K53734668-003-02-0,44462758
+Regorafenib (BAY 73-4506),"FGFR inhibitor, KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor, RAF inhibitor, RET tyrosine kinase inhibitor, VEGFR inhibitor",regorafenib,"BRD-K16730910-001-10-7, BRD-K16730910-001-07-3",11167602
+S31-201,STAT inhibitor,NA,NA,252682
+SU11274,"c-Met inhibitor, MET inhibitor",NA,NA,9549297
+Saracatinib (AZD0530),src inhibitor,saracatinib,BRD-K19540840-001-09-4,10302451
+Tivozanib (AV-951),VEGFR inhibitor,tivozanib,BRD-K53414658-001-08-2,9911830
+Vismodegib (GDC-0449),"hedgehog pathway inhibitor, smoothened receptor antagonist",vismodegib,BRD-K44827188-001-06-0,24776445
+XAV-939,TNKS inhibitor,NA,NA,135418940
+Vemurafenib (PLX-4032),RAF inhibitor,vemurafenib,"BRD-K56343971-001-14-8, BRD-K56343971-001-10-6",42611257
+Arsenic Trioxide,antineoplastic agent,NA,NA,14888
+Azacytidine,DNA methyltransferase inhibitor,azacitidine,"BRD-K03406345-001-21-1, BRD-K03406345-001-27-8",9444
+DBZ,gamma secretase inhibitor,YO-01027,BRD-K04622161-001-02-3,11454028
+AGI-5198,IDH1 inhibitor,NA,NA,56645356
+AGI-6780,IDH2 inhibitor,NA,NA,71299339
+Bay 11-7085,NFkB pathway inhibitor,BAY-11-7085,BRD-K48684885-001-04-2,5353432
+JQ1,bromodomain inhibitor,JQ1-(+),BRD-K54606188-001-13-1,46907787
+Lenvatinib,"FGFR inhibitor, KIT inhibitor, PDGFR tyrosine kinase receptor inhibitor, VEGFR inhibitor",lenvatinib,BRD-K39974922-001-04-3,9823820
+Venetoclax,BCL inhibitor,venetoclax,"BRD-K62391742-001-09-7, BRD-K62391742-001-03-0",49846579
+Volasertib (BI-6727),PLK inhibitor,volasertib,BRD-K69776681-001-03-8,10461508
+Cytarabine,ribonucleotide reductase inhibitor,cytarabine,BRD-K71847383-001-12-5,6175
+Entospletinib (GS-9973),SYK inhibitor,GS-9973,BRD-K76719364-001-02-5,59473233
+Nutlin 3a,MDM inhibitor,nutlin-3,BRD-A12230535-001-06-7,216345
+OTX-015,bromodomain inhibitor,OTX015,BRD-K43471985-001-03-0,9936746
+Palbociclib,CDK inhibitor,palbociclib,"BRD-K51313569-001-07-8, BRD-K51313569-003-03-3",5330286
+Panobinostat,HDAC inhibitor,panobinostat,BRD-K02130563-001-11-4,6918837
+Gilteritinib,FLT3 inhibitor,gilteritinib,BRD-K72280606-001-01-2,49803313
+Lenalidomide,anticancer agent,lenalidomide,BRD-A17883755-001-06-1,216326
+Lovastatin,HMGCR inhibitor,lovastatin,BRD-K09416995-001-39-9,53232
+SR9011,REV-ERB agonist,NA,NA,57394021
+Artemisinin,DNA synthesis inhibitor,artemisinin,BRD-K13112821-001-17-4,68827
+Selinexor,exportin antagonist,selinexor,BRD-K21361524-001-01-1,71481097
+Entrectinib,"Trk inhibitor, ROS1 inhibitor, ALK inhibitor, apoptosis stimulant, cell cycle inhibitor, antitumor agent",NA,NA,25141092
+Olaparib,PARP inhibitor,olaparib,"BRD-K02113016-001-19-6, BRD-K02113016-001-15-4",23725625
+Indisulam,CDK inhibitor,indisulam,BRD-K17610631-001-03-3,216468
+F_S_V,NA,NA,NA,NA
+AT-101,"BCL inhibitor, MCL1 inhibitor",gossypol,BRD-K19295594-015-14-3,3503
+Birinapant,XIAP inhibitor,birinapant,BRD-K71221037-001-01-6,49836020
+GSK-2879552,"LSD1 inhibitor, KDM1A inhibitor",NA,NA,66571643
+BLZ945,"cFMS kinase inhibitor, CSF1R inhibitor",NA,NA,46184986
+Baiclein,lipoxygenase inhibitor,baicalein,BRD-K72327355-001-14-7,5281605
+Etomoxir,carnitine palmitoyltransferase inhibitor,etomoxir,BRD-K32405725-001-02-8,9840324
+Metformin,mitochondrial respiratory chain inhibitor,NA,NA,4091
+NVP-AEW541,IGF-1 inhibitor,NVP-AEW541,BRD-K24696047-001-02-3,11476171
+PH-797804,p38 MAPK inhibitor,NA,NA,22049997
+Perhexiline maleate,"CPT inhibitor, antitumor agent, apoptosis agonist",NA,NA,5284439
+Ralimetinib (LY2228820),"p38, MK2 inhibitor",NA,NA,11570805
+Ranolazine,"antianginal agent, sodium channel blocker, fatty acid oxidation inhibitor",NA,NA,56959
+XMD 8-87,TNK2 inhibitor,NA,NA,53322923
+BMS-754807,IGF-1 inhibitor,BMS-754807,"BRD-K13049116-001-04-0, BRD-K13049116-001-05-7",24785538

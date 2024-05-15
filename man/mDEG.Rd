@@ -11,7 +11,7 @@ transformation is performed prior to analysis.
 }
 
 \usage{
-mDEG(data.list, factor.info, 
+mDEG(data.list, factor.info, feature.names = rep("Gene", length(data.list)),
   p=0.05, FDR.features=0.05, n.dot.features=10)
 }
 
@@ -27,6 +27,11 @@ mDEG(data.list, factor.info,
   data frame of data.list, the first column is a contrast with 2 levels, and 
   optionally there may be a second column to be included in the design matrix 
   (e.g., sex or batch effect).}
+  
+  \item{feature.names}{Vector of column names containing feature names (e.g., 
+  gene symbols) in each corresponding data frame in the input data.list. 
+  Default: rep("Gene", length(inputs)).
+  }
   
   \item{p}{P-value cut-off for significant differential expression. Default: 
   0.05.

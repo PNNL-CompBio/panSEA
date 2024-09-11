@@ -1,3 +1,4 @@
+export(drugSEA_ties)
 export(mDEG)
 export(ssGSEA)
 export(DMEA_cell_corr)

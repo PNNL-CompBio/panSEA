@@ -20,7 +20,7 @@ DMEA_cell_corr(drug.sensitivity, gmt=NULL, expression, weights, value="AUC",
     exclusions=c("-666", "NA", "na", "NaN", "NULL"), descriptions=NULL,
     min.per.corr=3, scatter.plots=TRUE, scatter.plot.type="pearson",
     FDR.scatter.plots=0.05, xlab="Expression Correlation Estimate", ylab=value,
-    position.x="min", position.y="min", se=TRUE)
+    position.x="min", position.y="min", se=TRUE, ties=FALSE)
 }
 
 \arguments{
@@ -138,10 +138,13 @@ DMEA_cell_corr(drug.sensitivity, gmt=NULL, expression, weights, value="AUC",
   Must be "min", "mid", "max", or numeric. Default: "max".
   }
 
-    \item{se}{Logical operator describing whether or not to include the 95
-    percent confidence interval limits of the regression line on the scatter
-    plots. Default: TRUE.
-    }
+  \item{se}{Logical operator describing whether or not to include the 95
+  percent confidence interval limits of the regression line on the scatter
+  plots. Default: TRUE.
+  }
+  
+  \item{ties}{Logical operator describing whether or not to permute order of drugs with tied ranks. Default: FALSE.
+  }
 }
 
 \value{

@@ -13,7 +13,7 @@ DMEA_gene_corr <- function(drug.sensitivity, gmt = NULL, expression, weights,
                            FDR.scatter.plots = 0.05,
                            xlab = "Expression Correlation Estimate", 
                            ylab = value,
-                           position.x = "min", position.y = "min", se = TRUE) {
+                           position.x = "min", position.y = "min", se = TRUE, ties = FALSE) {
   # merge expression data frame with input weights
   expr.weights <- merge(weights[ , c(gene.names, weight.values)], 
                         expression, by = gene.names)
@@ -30,12 +30,21 @@ DMEA_gene_corr <- function(drug.sensitivity, gmt = NULL, expression, weights,
                                        position.y = position.y, se = se)
   
   # run drugSEA
-  DMEA.results <- DMEA::drugSEA(
-    drug.corr$result, gmt, drug, rank.metric, set.type, FDR = FDR,
-    num.permutations = num.permutations, stat.type = stat.type,
-    min.per.set = min.per.set, sep = sep, exclusions = exclusions,
-    descriptions = descriptions
-  )
+  if (ties) {
+    DMEA.results <- panSEA::drugSEA_ties(
+      drug.corr$result, gmt, drug, rank.metric, set.type, FDR = FDR,
+      num.permutations = num.permutations, stat.type = stat.type,
+      min.per.set = min.per.set, sep = sep, exclusions = exclusions,
+      descriptions = descriptions
+    )
+  } else {
+    DMEA.results <- DMEA::drugSEA(
+      drug.corr$result, gmt, drug, rank.metric, set.type, FDR = FDR,
+      num.permutations = num.permutations, stat.type = stat.type,
+      min.per.set = min.per.set, sep = sep, exclusions = exclusions,
+      descriptions = descriptions
+    ) 
+  }
 
   return(list(
     corr.result = drug.corr$result,

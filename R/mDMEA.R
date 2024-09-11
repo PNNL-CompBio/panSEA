@@ -13,7 +13,7 @@ mDMEA <- function(drug.sensitivity = "PRISM", gmt = "PRISM",
                   scatter.plot.type = "pearson", FDR.scatter.plots = 0.05,
                   xlab = "Weighted Voting Score", ylab = value, 
                   position.x = "min", position.y = "min", se = TRUE, 
-                  n.dot.sets = 10) {
+                  n.dot.sets = 10, ties = FALSE) {
   #### Step 1. Load data if necessary ####
   # get drug.sensitivity, gmt, and expression if PRISM/CCLE
   if (is.character(drug.sensitivity)) {
@@ -99,7 +99,7 @@ mDMEA <- function(drug.sensitivity = "PRISM", gmt = "PRISM",
   for (i in 1:length(types)) {
     message(paste("Running DMEA using", types[i], "data"))
 
-    DMEA.list[[types[i]]] <- DMEA::DMEA(
+    DMEA.list[[types[i]]] <- panSEA::DMEA(
       drug.sensitivity, gmt, expression[[i]],
       weights[[i]], value, sample.names,
       feature.names[i], weight.values[i],
@@ -109,7 +109,7 @@ mDMEA <- function(drug.sensitivity = "PRISM", gmt = "PRISM",
       descriptions, min.per.corr,
       scatter.plots, scatter.plot.type,
       FDR.scatter.plots, xlab, ylab,
-      position.x, position.y, se
+      position.x, position.y, se, ties
     )
 
     # merge correlation results with drug annotations if !is.null(drug.info)

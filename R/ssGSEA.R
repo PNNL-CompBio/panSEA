@@ -2,7 +2,7 @@ ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
                    feature.names = colnames(data)[1],
                    rank.var = colnames(data)[2], direction.adjust = NULL,
                    FDR = 0.25, num.permutations = 1000,
-                   stat.type = "Weighted", min.per.set = 6) {
+                   stat.type = "Weighted", min.per.set = 6, ties = FALSE) {
   # get gmt if not provided
   if (is.character(gmt)) {
     if (grepl("msigdb", gmt, ignore.case = TRUE)) {
@@ -32,11 +32,19 @@ ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
   }
 
   # run ssGSEA
-  results <- DMEA::drugSEA(
-    data, gmt, feature.names, rank.var,
-    "gs_name", direction.adjust, FDR,
-    num.permutations, stat.type, min.per.set
-  )
+  if (ties) {
+    results <- panSEA::drugSEA_ties(
+      data, gmt, feature.names, rank.var,
+      "gs_name", direction.adjust, FDR,
+      num.permutations, stat.type, min.per.set
+    )
+  } else {
+    results <- DMEA::drugSEA(
+      data, gmt, feature.names, rank.var,
+      "gs_name", direction.adjust, FDR,
+      num.permutations, stat.type, min.per.set
+    ) 
+  }
 
   # change "Drug_set" column names to "Feature_set"
   colnames(results$result)[2] <- "Feature_set"

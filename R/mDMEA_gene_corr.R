@@ -12,7 +12,7 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
                   scatter.plot.type = "pearson", FDR.scatter.plots = 0.05,
                   xlab = "Expression", ylab = value, 
                   position.x = "min", position.y = "min", se = TRUE, 
-                  n.dot.sets = 10) {
+                  n.dot.sets = 10, ties = FALSEß) {
   #### Step 1. Load data if necessary ####
   # get drug.sensitivity, gmt, and expression if PRISM/CCLE
   if (is.character(drug.sensitivity)) {
@@ -108,7 +108,7 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
       descriptions, min.per.corr,
       scatter.plots, scatter.plot.type,
       FDR.scatter.plots, xlab, ylab,
-      position.x, position.y, se
+      position.x, position.y, se, ties
     )
 
     # merge correlation results with drug annotations if !is.null(drug.info)

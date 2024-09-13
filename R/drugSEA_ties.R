@@ -661,7 +661,7 @@ gsea_mountain_plot <- function(GSEA.list, Sample.Name, Gene.Set.A,
   return(assembled)
 }
 
-summaryPlots <- function(EA, FDR = 0.25, n.top = 10) {
+summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
   plot.data <- EA$GSEA.Results.ties
   
   if (nrow(plot.data[plot.data$p_value == 0, ]) > 0) {
@@ -871,7 +871,7 @@ drugSEA_ties <- function(data, gmt = NULL, drug = "Drug",
   
   if (plots) {
     ## produce volcano and bar plots
-    sumPlots <- summaryPlots(EA, FDR = FDR, n.top = n.top) 
+    sumPlots <- summaryPlots(EA, FDR = FDR, n.top = n.top, est.name = est.name) 
   } else {
     sumPlots <- list("volcano" = NA, "bar" = NA, "mtn" = NA)
   }

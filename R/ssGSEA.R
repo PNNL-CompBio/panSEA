@@ -48,6 +48,7 @@ ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
 
   # change "Drug_set" column names to "Feature_set"
   colnames(results$result)[2] <- "Feature_set"
+  colnames(results$result.w.ties)[2] <- "Feature_set"
   colnames(results$removed.sets)[1] <- "Feature_set"
   colnames(results$removed.sets)[2] <- "N_features"
 
@@ -55,7 +56,11 @@ ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
   results$replaced.drugs <- NULL
 
   # change name of output referring to drugs to features
-  names(results)[6] <- "unannotated.features"
+  if (ties) {
+    names(results)[10] <- "unannotated.features"
+  } else {
+    names(results)[6] <- "unannotated.features" 
+  }
 
   return(results)
 }

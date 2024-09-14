@@ -75,6 +75,7 @@ DMEA <- function(drug.sensitivity, gmt = NULL, expression, weights,
       stat.type, min.per.set, sep, exclusions, 
       descriptions, convert.synonyms = FALSE
     )
+    DMEA.results$result.w.ties <- NA
   }
 
   return(list(
@@ -84,6 +85,7 @@ DMEA <- function(drug.sensitivity, gmt = NULL, expression, weights,
     corr.scatter.plots = corr.results$scatter.plots,
     gmt = gmt,
     result = DMEA.results$result,
+    result.w.ties = DMEA.results$result.w.ties,
     mtn.plots = DMEA.results$mtn.plots,
     volcano.plot = DMEA.results$volcano.plot,
     removed.sets = DMEA.results$removed.sets,

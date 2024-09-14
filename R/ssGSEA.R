@@ -57,7 +57,7 @@ ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
 
   # change name of output referring to drugs to features
   if (ties) {
-    names(results)[10] <- "unannotated.features"
+    names(results)[11] <- "unannotated.features"
   } else {
     names(results)[6] <- "unannotated.features" 
   }

@@ -827,7 +827,22 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
       y = "Feature Set",
       color = "NES", size = "-log(FDR)"
     )
-  return(list(volcano = volc, bar = bar, mtn = temp.plot, dot = dot))
+  
+  dot.sd <- ggplot2::ggplot(
+    bar.data,
+    ggplot2::aes(y = Feature_set, color = NES,
+                 size = -log10(ES_sd)
+    )
+  ) +
+    ggplot2::geom_point() +
+    ggplot2::scale_y_discrete(limits = bar.data[order(bar.data$NES, decreasing = TRUE), ]$Drug_set) +
+    viridis::scale_color_viridis() +
+    bg.theme +
+    ggplot2::labs(
+      y = "Feature Set",
+      color = "NES", size = "-log(Standard Deviation of ES)"
+    )
+  return(list(volcano = volc, bar = bar, mtn = temp.plot, dot = dot, dot.sd = dot.sd))
 }
 
 drugSEA_ties <- function(data, gmt = NULL, drug = "Drug",
@@ -900,7 +915,7 @@ drugSEA_ties <- function(data, gmt = NULL, drug = "Drug",
     gmt = gmt, result = EA$GSEA.Results.ties, result.w.ties = EA$GSEA.Results, 
     mtn.plots = sumPlots$mtn,
     volcano.plot = sumPlots$volcano, bar.plot = sumPlots$bar,
-    dot.plot = sumPlots$dot,
+    dot.plot = sumPlots$dot, dot.sd = sumPlots$dot.sd,
     removed.sets = EA$removed.sets,
     replaced.drugs = EA$replacements,
     unannotated.drugs = EA$unannotated.drugs

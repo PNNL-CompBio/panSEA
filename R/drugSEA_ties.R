@@ -793,6 +793,26 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
         breaks = c(paste0("FDR > ", FDR))
       ) 
   }
+  bg.theme <- ggplot2::theme(
+    legend.background = element_rect(), legend.position = "top",
+    legend.text = element_text(size = 14),
+    legend.key = element_blank(),
+    legend.title = element_text(size = 16),
+    axis.title.x = element_text(size = 20),
+    axis.text.x = element_text(size = 16, colour = "black"),
+    axis.title.y = element_text(size = 20),
+    axis.text.y = element_text(size = 16, colour = "black"),
+    plot.title = element_text(
+      lineheight = .8, face = "bold", size = 36
+    ),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(fill = NA),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    axis.ticks.x = element_line(colour = "black"),
+    axis.ticks.y = element_line(colour = "black")
+  )
   dot <- ggplot2::ggplot(
     bar.data,
     ggplot2::aes(y = Feature_set, color = NES,

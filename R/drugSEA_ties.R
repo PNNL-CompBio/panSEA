@@ -815,7 +815,7 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
   )
   dot <- ggplot2::ggplot(
     bar.data,
-    ggplot2::aes(y = Feature_set, color = NES,
+    ggplot2::aes(y = Drug_set, color = NES,
       size = -log10(FDR_q_value)
     )
   ) +
@@ -830,7 +830,7 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
   
   dot.sd <- ggplot2::ggplot(
     bar.data,
-    ggplot2::aes(y = Feature_set, color = NES,
+    ggplot2::aes(y = Drug_set, color = NES,
                  size = -log10(ES_sd)
     )
   ) +

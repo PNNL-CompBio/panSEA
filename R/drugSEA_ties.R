@@ -742,6 +742,7 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
         ), text = element_text(size = 20),
         legend.position = "bottom", legend.key = element_blank()
       ) + ggplot2::xlab("Normalized Enrichment Score") + 
+      ggplot2::ylab("") +
       ggplot2::scale_fill_manual(
         values = c("red", "azure4"), name = "Significance",
         breaks = c(paste0("FDR < ", FDR), paste0("FDR > ", FDR))
@@ -788,6 +789,7 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
         ), text = element_text(size = 20),
         legend.position = "bottom", legend.key = element_blank()
       ) + ggplot2::xlab("Normalized Enrichment Score") + 
+      ggplot2::ylab("") +
       ggplot2::scale_fill_manual(
         values = c("azure4"), name = "Significance",
         breaks = c(paste0("FDR > ", FDR))
@@ -825,7 +827,7 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(
-      y = "Feature Set",
+      y = "",
       color = "NES", size = "-log(FDR)"
     )
   
@@ -840,7 +842,7 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(
-      y = "Feature Set",
+      y = "",
       color = "NES", size = "-log(Standard Deviation of ES)"
     )
   return(list(volcano = volc, bar = bar, mtn = temp.plot, dot = dot, dot.sd = dot.sd))

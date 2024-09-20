@@ -790,6 +790,7 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
         legend.position = "bottom", legend.key = element_blank()
       ) + ggplot2::xlab("Normalized Enrichment Score") + 
       ggplot2::ylab("") +
+      ggplot2::scale_y_discrete(limits = bar.data[order(bar.data$NES, decreasing = TRUE), ]$Drug_set) +
       ggplot2::scale_fill_manual(
         values = c("azure4"), name = "Significance",
         breaks = c(paste0("FDR > ", FDR))

@@ -752,7 +752,6 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
                                      levels = paste0("FDR > ", FDR))
     bar.data <- plot.data %>% slice_max(abs(NES), n=n.top)
     bar.data <- bar.data[order(bar.data$NES),]
-    bar.data$name <- est.name
     
     volc <- ggplot2::ggplot(data = plot.data,
                             aes(x = NES, y = -log(p_value, 10))) +
@@ -794,6 +793,7 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
         breaks = c(paste0("FDR > ", FDR))
       ) 
   }
+  bar.data$name <- est.name
   bg.theme <- ggplot2::theme(
     legend.background = element_rect(), legend.position = "top",
     legend.text = element_text(size = 14),
@@ -816,7 +816,7 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
   )
   dot <- ggplot2::ggplot(
     bar.data,
-    ggplot2::aes(x= name, y = Drug_set, color = NES,
+    ggplot2::aes(x = name, y = Drug_set, color = NES,
       size = -log10(FDR_q_value)
     )
   ) +

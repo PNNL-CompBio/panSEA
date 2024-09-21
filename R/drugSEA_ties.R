@@ -668,6 +668,10 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
     plot.data[plot.data$p_value == 0, ]$p_value <- 0.00099
   }
   
+  if (nrow(plot.data[plot.data$FDR_q_value == 0, ]) > 0) {
+    plot.data[plot.data$FDR_q_value == 0, ]$FDR_q_value <- 0.00099
+  }
+  
   # define x, y limits
   limit.x <- ceiling(max(abs(as.numeric(plot.data$NES)), na.rm = TRUE))
   limit.y <- ceiling(max(-as.numeric(log(plot.data$p_value, 10)), na.rm = TRUE))

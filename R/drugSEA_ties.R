@@ -828,7 +828,7 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(
-      y = "",
+      x = "", y = "",
       color = "NES", size = "-log(FDR)"
     )
   
@@ -843,8 +843,8 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
     viridis::scale_color_viridis() +
     bg.theme +
     ggplot2::labs(
-      y = "",
-      color = "NES", size = "-log(Standard Deviation of ES)"
+      x = "", y = "",
+      color = "NES", size = "-log(ES SD)"
     )
   return(list(volcano = volc, bar = bar, mtn = temp.plot, dot = dot, dot.sd = dot.sd))
 }

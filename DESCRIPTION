@@ -13,6 +13,7 @@ License: MIT
 URL: https://github.com/BelindaBGarana/panSEA
 BugReports: https://github.com/BelindaBGarana/panSEA/issues
 Encoding: UTF-8
+Depends: ggplot2 (== 3.4.4)
 Imports:
 	ggplot2, DMEA, plyr, dplyr, Biobase, data.table, ggcorrplot, ggvenn, GSA, igraph, 
 	limma, metap, msigdbr, multtest, qvalue, reshape2, stats, stringr, viridis, visNetwork, utils

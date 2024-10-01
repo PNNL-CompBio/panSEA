@@ -30,21 +30,12 @@ DMEA_gene_corr <- function(drug.sensitivity, gmt = NULL, expression, weights,
                                        position.y = position.y, se = se)
   
   # run drugSEA
-  if (ties) {
-    DMEA.results <- panSEA::drugSEA_ties(
-      drug.corr$result, gmt, drug, rank.metric, set.type, FDR = FDR,
-      num.permutations = num.permutations, stat.type = stat.type,
-      min.per.set = min.per.set, sep = sep, exclusions = exclusions,
-      descriptions = descriptions
-    )
-  } else {
-    DMEA.results <- DMEA::drugSEA(
-      drug.corr$result, gmt, drug, rank.metric, set.type, FDR = FDR,
-      num.permutations = num.permutations, stat.type = stat.type,
-      min.per.set = min.per.set, sep = sep, exclusions = exclusions,
-      descriptions = descriptions
-    ) 
-  }
+  DMEA.results <- panSEA::drugSEA_ties(
+    drug.corr$result, gmt, drug, rank.metric, set.type, FDR = FDR,
+    num.permutations = num.permutations, stat.type = stat.type,
+    min.per.set = min.per.set, sep = sep, exclusions = exclusions,
+    descriptions = descriptions, ties = ties
+  )
 
   return(list(
     corr.result = drug.corr$result,

@@ -3,7 +3,7 @@
 GSEA_custom <- function(input.df, gmt.list,
                         nperm = 1000,
                         stat.type = "Weighted", min.per.set,
-                        convert.synonyms = FALSE) {
+                        convert.synonyms = FALSE, ties = FALSE) {
   GSEA.EnrichmentScore <- function(gene.list, gene.set,
                                    weighted.score.type = score.weight,
                                    correl.vector = NULL) {
@@ -287,53 +287,55 @@ GSEA_custom <- function(input.df, gmt.list,
   rm(KS_real)
   
   ### tie permutations (NOT a null distribution)
-  KSRandomArray_ties <- matrix(data = NA, nrow = nperm,
-                               ncol = length(Drug.Sets.All))
-  num.Drug.Sets.all <- length(Drug.Sets.All)
-  `%dopar%` <- foreach::`%dopar%`
-  message("calculating ES with shuffled ties")
-  KSRandomArray_ties <- foreach::foreach(L = seq_len(nperm),
-                                         .combine = "rbind") %dopar% {
-                                           # randomly jitter list to shuffle ties
-                                           temp.input <- input.df[order(-input.df[, Samples], jitter(-input.df[, Samples])),]
-                                           rownames(temp.input) <- seq_len(nrow(temp.input)) # adding in case random result is due to nonsequential rownames?
-                                           gene.list <- rownames(temp.input)
-                                           
-                                           temp.KSRandomArray <- matrix(data = NA, nrow = 1,
-                                                                        ncol = num.Drug.Sets.all)
-                                           for (i in seq_len(length(Drug.Sets.All))) {
-                                             pos_gene_set <- which(temp.input[, Drug.Sets.All[i]] %in% c("X"))
+  if (ties) {
+    KSRandomArray_ties <- matrix(data = NA, nrow = nperm,
+                                 ncol = length(Drug.Sets.All))
+    num.Drug.Sets.all <- length(Drug.Sets.All)
+    `%dopar%` <- foreach::`%dopar%`
+    message("calculating ES with shuffled ties")
+    KSRandomArray_ties <- foreach::foreach(L = seq_len(nperm),
+                                           .combine = "rbind") %dopar% {
+                                             # randomly jitter list to shuffle ties
+                                             temp.input <- input.df[order(-input.df[, Samples], jitter(-input.df[, Samples])),]
+                                             rownames(temp.input) <- seq_len(nrow(temp.input)) # adding in case random result is due to nonsequential rownames?
+                                             gene.list <- rownames(temp.input)
                                              
-                                             # calculate ES with shuffled ties
-                                             temp.KSRandomArray[, i] <- GSEA.EnrichmentScore(gene.list,
-                                                                                             pos_gene_set,
-                                                                                             weighted.score.type = score.weight,
-                                                                                             correl.vector = temp.input[, Samples]
-                                             )$ES
+                                             temp.KSRandomArray <- matrix(data = NA, nrow = 1,
+                                                                          ncol = num.Drug.Sets.all)
+                                             for (i in seq_len(length(Drug.Sets.All))) {
+                                               pos_gene_set <- which(temp.input[, Drug.Sets.All[i]] %in% c("X"))
+                                               
+                                               # calculate ES with shuffled ties
+                                               temp.KSRandomArray[, i] <- GSEA.EnrichmentScore(gene.list,
+                                                                                               pos_gene_set,
+                                                                                               weighted.score.type = score.weight,
+                                                                                               correl.vector = temp.input[, Samples]
+                                               )$ES
+                                             }
+                                             temp.KSRandomArray
                                            }
-                                           temp.KSRandomArray
-                                         }
-  colnames(KSRandomArray_ties) <- Drug.Sets.All
-  KSRandomArray_ties <- as.data.frame(KSRandomArray_ties)
-  
-  ### calculate ES & NES
-  # let ES = mean of ES tie distribution and NES = mean of NES tie distribution
-  GSEA.Results.ties <- matrix(data = NA, nrow = length(Drug.Sets.All), ncol = 11)
-  colnames(GSEA.Results.ties) <- c(
-    "Rank_metric", "Drug_set", "ES","ES_min","ES_max", "ES_sd",
-    "NES", "NES_min", "NES_max", "p_value", "FDR_q_value"
-  )
-  GSEA.Results.ties <- as.data.frame(GSEA.Results.ties)
-  GSEA.Results.ties$Drug_set <- Drug.Sets.All
-  GSEA.Results.ties$Rank_metric <- Samples
-  GSEA.Results.ties$ES <- colMeans(KSRandomArray_ties, na.rm = TRUE)
-  GSEA.Results.ties$ES_min <- apply(KSRandomArray_ties, 2, min)
-  GSEA.Results.ties$ES_max <- apply(KSRandomArray_ties, 2, max)
-  GSEA.Results.ties$ES_sd <- apply(KSRandomArray_ties, 2, sd)
-  percent.pos.GSEA.ties <- sum(GSEA.Results.ties$ES >= 0) /
-    length(GSEA.Results.ties$ES) # BG OR EQUAL TO
-  percent.neg.GSEA.ties <- sum(GSEA.Results.ties$ES <= 0) /
-    length(GSEA.Results.ties$ES) # BG OR EQUAL TO
+    colnames(KSRandomArray_ties) <- Drug.Sets.All
+    KSRandomArray_ties <- as.data.frame(KSRandomArray_ties)
+    
+    ### calculate ES & NES
+    # let ES = mean of ES tie distribution and NES = mean of NES tie distribution
+    GSEA.Results.ties <- matrix(data = NA, nrow = length(Drug.Sets.All), ncol = 11)
+    colnames(GSEA.Results.ties) <- c(
+      "Rank_metric", "Drug_set", "ES","ES_min","ES_max", "ES_sd",
+      "NES", "NES_min", "NES_max", "p_value", "FDR_q_value"
+    )
+    GSEA.Results.ties <- as.data.frame(GSEA.Results.ties)
+    GSEA.Results.ties$Drug_set <- Drug.Sets.All
+    GSEA.Results.ties$Rank_metric <- Samples
+    GSEA.Results.ties$ES <- colMeans(KSRandomArray_ties, na.rm = TRUE)
+    GSEA.Results.ties$ES_min <- apply(KSRandomArray_ties, 2, min)
+    GSEA.Results.ties$ES_max <- apply(KSRandomArray_ties, 2, max)
+    GSEA.Results.ties$ES_sd <- apply(KSRandomArray_ties, 2, sd)
+    percent.pos.GSEA.ties <- sum(GSEA.Results.ties$ES >= 0) /
+      length(GSEA.Results.ties$ES) # BG OR EQUAL TO
+    percent.neg.GSEA.ties <- sum(GSEA.Results.ties$ES <= 0) /
+      length(GSEA.Results.ties$ES) # BG OR EQUAL TO 
+  }
   
   ### MOA permutations (null distribution)
   KSRandomArray <- matrix(data = NA, nrow = nperm,
@@ -401,9 +403,11 @@ GSEA_custom <- function(input.df, gmt.list,
     temp.gene.set <- Drug.Sets.All[i]
     temp.perms <- KSRandomArray[, temp.gene.set]
     temp.ES <- GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$ES
-    temp.ES.tie <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$ES
-    temp.ES.tie.min <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$ES_min
-    temp.ES.tie.max <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$ES_max
+    if (ties) {
+      temp.ES.tie <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$ES
+      temp.ES.tie.min <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$ES_min
+      temp.ES.tie.max <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$ES_max 
+    }
     pos.perms <- temp.perms[which(temp.perms >= 0)] # BG OR EQUAL TO
     neg.perms <- temp.perms[which(temp.perms <= 0)] # BG OR EQUAL TO
     
@@ -429,46 +433,49 @@ GSEA_custom <- function(input.df, gmt.list,
     }
     
     # shuffled ties
-    if (temp.ES.tie >= 0) {
-      # p-value
-      GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$p_value <-
-        signif(sum(pos.perms >= temp.ES.tie.min) /
-                 length(pos.perms), digits = 3)
-      
-      # NES
-      GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES <-
-        signif(temp.ES.tie / mean(pos.perms), digits = 3)
-      GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_min <-
-        signif(temp.ES.tie.min / mean(pos.perms), digits = 3)
-      GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_max <-
-        signif(temp.ES.tie.max / mean(pos.perms), digits = 3)
-    } else { # BG OR EQUAL TO
-      # p-val
-      GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$p_value <-
-        signif(sum(neg.perms <= temp.ES) /
-                 length(neg.perms), digits = 3) # BG OR EQUAL TO
-      GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$p_value <-
-        signif(sum(neg.perms <= temp.ES.tie.max) /
-                 length(neg.perms), digits = 3)
-      
-      # NES
-      GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES <-
-        signif(temp.ES.tie / mean(neg.perms) * -1, digits = 3)
-      GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_min <-
-        signif(temp.ES.tie.min / mean(neg.perms) * -1, digits = 3)
-      GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_max <-
-        signif(temp.ES.tie.max / mean(neg.perms) * -1, digits = 3)
+    if (ties) {
+      if (temp.ES.tie >= 0) {
+        # p-value
+        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$p_value <-
+          signif(sum(pos.perms >= temp.ES.tie.min) /
+                   length(pos.perms), digits = 3)
+        
+        # NES
+        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES <-
+          signif(temp.ES.tie / mean(pos.perms), digits = 3)
+        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_min <-
+          signif(temp.ES.tie.min / mean(pos.perms), digits = 3)
+        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_max <-
+          signif(temp.ES.tie.max / mean(pos.perms), digits = 3)
+      } else { # BG OR EQUAL TO
+        # p-val
+        GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$p_value <-
+          signif(sum(neg.perms <= temp.ES) /
+                   length(neg.perms), digits = 3) # BG OR EQUAL TO
+        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$p_value <-
+          signif(sum(neg.perms <= temp.ES.tie.max) /
+                   length(neg.perms), digits = 3)
+        
+        # NES
+        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES <-
+          signif(temp.ES.tie / mean(neg.perms) * -1, digits = 3)
+        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_min <-
+          signif(temp.ES.tie.min / mean(neg.perms) * -1, digits = 3)
+        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_max <-
+          signif(temp.ES.tie.max / mean(neg.perms) * -1, digits = 3)
+      } 
     }
-      
   }
   
   # Calculate GSEA FDR
   for (i in seq_len(length(Drug.Sets.All))) {
     temp.gene.set <- Drug.Sets.All[i]
     temp.NES <- GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$NES
-    temp.NES.tie <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES
-    temp.NES.tie.min <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_min
-    temp.NES.tie.max <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_max
+    if (ties) {
+      temp.NES.tie <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES
+      temp.NES.tie.min <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_min
+      temp.NES.tie.max <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_max 
+    }
     
     # results for original input
     if (temp.NES >= 0) { # BG OR EQUAL TO
@@ -496,22 +503,24 @@ GSEA_custom <- function(input.df, gmt.list,
     }
     
     # results for shuffled ties
-    if (temp.NES.tie >= 0) {
-      percent.temp <-
-        sum(GSEA.NES.perms.pos >= temp.NES.tie.min) / length(GSEA.NES.perms.pos) # BG OR EQUAL TO
-      percent.pos.stronger <-
-        sum(GSEA.Results.ties$NES_max >= temp.NES.tie.min) / sum(GSEA.Results.ties$NES >= 0) # BG
-      GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$FDR_q_value <-
-        ifelse(signif(percent.temp / percent.pos.stronger, digits = 3) < 1,
-               signif(percent.temp / percent.pos.stronger, digits = 3), 1
-        ) # BG
-    } else {
-      percent.temp <- sum(GSEA.NES.perms.neg <= temp.NES.tie.max) / length(GSEA.NES.perms.neg) # BG OR EQUAL TO
-      percent.neg.stronger <- sum(GSEA.Results.ties$NES_min <= temp.NES.tie.max) / sum(GSEA.Results.ties$NES <= 0) # BG
-      GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$FDR_q_value <-
-        ifelse(signif(percent.temp / percent.neg.stronger, digits = 3) < 1,
-               signif(percent.temp / percent.neg.stronger, digits = 3), 1
-        ) # BG
+    if (ties) {
+      if (temp.NES.tie >= 0) {
+        percent.temp <-
+          sum(GSEA.NES.perms.pos >= temp.NES.tie.min) / length(GSEA.NES.perms.pos) # BG OR EQUAL TO
+        percent.pos.stronger <-
+          sum(GSEA.Results.ties$NES_max >= temp.NES.tie.min) / sum(GSEA.Results.ties$NES >= 0) # BG
+        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$FDR_q_value <-
+          ifelse(signif(percent.temp / percent.pos.stronger, digits = 3) < 1,
+                 signif(percent.temp / percent.pos.stronger, digits = 3), 1
+          ) # BG
+      } else {
+        percent.temp <- sum(GSEA.NES.perms.neg <= temp.NES.tie.max) / length(GSEA.NES.perms.neg) # BG OR EQUAL TO
+        percent.neg.stronger <- sum(GSEA.Results.ties$NES_min <= temp.NES.tie.max) / sum(GSEA.Results.ties$NES <= 0) # BG
+        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$FDR_q_value <-
+          ifelse(signif(percent.temp / percent.neg.stronger, digits = 3) < 1,
+                 signif(percent.temp / percent.neg.stronger, digits = 3), 1
+          ) # BG
+      } 
     }
   }
   
@@ -522,6 +531,10 @@ GSEA_custom <- function(input.df, gmt.list,
       snow::stopCluster(cl) # stop cluster
       rm(cl)
     }
+  }
+  
+  if (!ties) {
+    GSEA.Results.ties <- data.frame()
   }
   
   return(list(
@@ -661,8 +674,14 @@ gsea_mountain_plot <- function(GSEA.list, Sample.Name, Gene.Set.A,
   return(assembled)
 }
 
-summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
-  plot.data <- EA$GSEA.Results.ties
+summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est", ties = FALSE) {
+  if (ties) {
+    plot.data <- EA$GSEA.Results.ties
+    significant.hits <- EA$GSEA.Results.ties[which(EA$GSEA.Results.ties$FDR_q_value < FDR), ]
+  } else {
+    plot.data <- EA$GSEA.Results 
+    significant.hits <- EA$GSEA.Results[which(EA$GSEA.Results$FDR_q_value < FDR), ]
+  }
   
   if (nrow(plot.data[plot.data$p_value == 0, ]) > 0) {
     plot.data[plot.data$p_value == 0, ]$p_value <- 0.00099
@@ -677,7 +696,6 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
   limit.y <- ceiling(max(-as.numeric(log(plot.data$p_value, 10)), na.rm = TRUE))
   
   ## select results which meet FDR threshold and produce mountain plots
-  significant.hits <- EA$GSEA.Results.ties[which(EA$GSEA.Results.ties$FDR_q_value < FDR), ]
   temp.plot <- list()
   if (nrow(significant.hits) > 0) {
     for (i in seq_len(nrow(significant.hits))) {
@@ -836,20 +854,24 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est") {
       color = "NES", size = "-log(FDR)"
     )
   
-  dot.sd <- ggplot2::ggplot(
-    bar.data,
-    ggplot2::aes(x = name, y = Drug_set, color = NES,
-                 size = -log10(ES_sd)
-    )
-  ) +
-    ggplot2::geom_point() +
-    ggplot2::scale_y_discrete(limits = bar.data[order(bar.data$NES, decreasing = TRUE), ]$Drug_set) +
-    viridis::scale_color_viridis() +
-    bg.theme +
-    ggplot2::labs(
-      x = "", y = "",
-      color = "NES", size = "-log(ES SD)"
-    )
+  if (ties) {
+    dot.sd <- ggplot2::ggplot(
+      bar.data,
+      ggplot2::aes(x = name, y = Drug_set, color = NES,
+                   size = -log10(ES_sd)
+      )
+    ) +
+      ggplot2::geom_point() +
+      ggplot2::scale_y_discrete(limits = bar.data[order(bar.data$NES, decreasing = TRUE), ]$Drug_set) +
+      viridis::scale_color_viridis() +
+      bg.theme +
+      ggplot2::labs(
+        x = "", y = "",
+        color = "NES", size = "-log(ES SD)"
+      ) 
+  } else {
+    dot.sd <- NA
+  }
   return(list(volcano = volc, bar = bar, mtn = temp.plot, dot = dot, dot.sd = dot.sd))
 }
 
@@ -859,7 +881,8 @@ drugSEA_ties <- function(data, gmt = NULL, drug = "Drug",
                     num.permutations = 1000, stat.type = "Weighted",
                     min.per.set = 6, n.top = 10, sep = "[|]",
                     exclusions = c("-666", "NA", "na", "NaN", "NULL"),
-                    descriptions = NULL, convert.synonyms = FALSE, plots = TRUE) {
+                    descriptions = NULL, convert.synonyms = FALSE, plots = TRUE, 
+                    ties = FALSE) {
   # avoid unclear initialization
   Drug_set <- NULL
   NES <- NULL
@@ -909,18 +932,25 @@ drugSEA_ties <- function(data, gmt = NULL, drug = "Drug",
   message("Running enrichment analysis...")
   EA <- GSEA_custom(
     input, gmt, num.permutations, stat.type,
-    min.per.set, convert.synonyms
+    min.per.set, convert.synonyms, ties
   )
+  if (ties) {
+    result <- EA$GSEA.Results.ties
+    result.w.ties <- EA$GSEA.Results
+  } else {
+    result <- EA$GSEA.Results
+    result.w.ties <- data.frame()
+  }
   
   if (plots) {
     ## produce volcano and bar plots
-    sumPlots <- summaryPlots(EA, FDR = FDR, n.top = n.top, est.name = est.name) 
+    sumPlots <- summaryPlots(EA, FDR = FDR, n.top = n.top, est.name = est.name, ties = ties) 
   } else {
     sumPlots <- list("volcano" = NA, "bar" = NA, "mtn" = NA)
   }
 
   return(list(
-    gmt = gmt, result = EA$GSEA.Results.ties, result.w.ties = EA$GSEA.Results, 
+    gmt = gmt, result = result, result.w.ties = result.w.ties, 
     mtn.plots = sumPlots$mtn,
     volcano.plot = sumPlots$volcano, bar.plot = sumPlots$bar,
     dot.plot = sumPlots$dot, dot.sd = sumPlots$dot.sd,

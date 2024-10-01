@@ -32,23 +32,17 @@ ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
   }
 
   # run ssGSEA
-  if (ties) {
-    results <- panSEA::drugSEA_ties(
-      data, gmt, feature.names, rank.var,
-      "gs_name", direction.adjust, FDR,
-      num.permutations, stat.type, min.per.set
-    )
-  } else {
-    results <- DMEA::drugSEA(
-      data, gmt, feature.names, rank.var,
-      "gs_name", direction.adjust, FDR,
-      num.permutations, stat.type, min.per.set
-    ) 
-  }
+  results <- panSEA::drugSEA_ties(
+    data, gmt, feature.names, rank.var,
+    "gs_name", direction.adjust, FDR,
+    num.permutations, stat.type, min.per.set, ties = ties
+  )
 
   # change "Drug_set" column names to "Feature_set"
   colnames(results$result)[2] <- "Feature_set"
-  colnames(results$result.w.ties)[2] <- "Feature_set"
+  if (ties) {
+    colnames(results$result.w.ties)[2] <- "Feature_set" 
+  }
   colnames(results$removed.sets)[1] <- "Feature_set"
   colnames(results$removed.sets)[2] <- "N_features"
 

@@ -61,23 +61,13 @@ DMEA <- function(drug.sensitivity, gmt = NULL, expression, weights,
   }
 
   # Drug Mechanism Enrichment Analysis (DMEA)
-  if (ties) {
-    DMEA.results <- panSEA::drugSEA_ties(
-      data = corr.output, gmt = gmt, drug = drug, rank.metric = rank.metric, 
-      set.type = set.type, direction.adjust = NULL, FDR = FDR, 
-      num.permutations = num.permutations, stat.type = stat.type, 
-      min.per.set = min.per.set, sep = sep, exclusions = exclusions, 
-      descriptions = descriptions, convert.synonyms = FALSE
-    )
-  } else {
-    DMEA.results <- DMEA::drugSEA(
-      corr.output, gmt, drug, rank.metric, set.type,
-      direction.adjust = NULL, FDR, num.permutations,
-      stat.type, min.per.set, sep, exclusions, 
-      descriptions, convert.synonyms = FALSE
-    )
-    DMEA.results$result.w.ties <- NA
-  }
+  DMEA.results <- panSEA::drugSEA_ties(
+    data = corr.output, gmt = gmt, drug = drug, rank.metric = rank.metric, 
+    set.type = set.type, direction.adjust = NULL, FDR = FDR, 
+    num.permutations = num.permutations, stat.type = stat.type, 
+    min.per.set = min.per.set, sep = sep, exclusions = exclusions, 
+    descriptions = descriptions, convert.synonyms = FALSE, ties = ties
+  )
 
   return(list(
     WV.scores = WV.result$scores,

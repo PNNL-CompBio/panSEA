@@ -22,6 +22,7 @@ Suggests: BiocStyle, knitr, rmarkdown
 Collate:
 	'mDEG.R'
 	'drugSEA_ties.R'
+	'WV.R'
 	'DMEA.R'
 	'ssGSEA.R'
 	'DMEA_cell_corr.R'

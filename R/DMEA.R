@@ -16,7 +16,7 @@ DMEA <- function(drug.sensitivity, gmt = NULL, expression, weights,
   testthat::expect_is(weights, "data.frame")
 
   # Weighted Voting (WV)
-  WV.result <- WV(
+  WV.result <- panSEA::WV(
     expression = expression, weights = weights,
     sample.names = sample.names, gene.names = gene.names,
     weight.values = weight.values

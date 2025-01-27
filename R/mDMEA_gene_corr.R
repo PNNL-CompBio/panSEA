@@ -91,20 +91,6 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
     stop("Length of types vector must match that of weights list")
   }
 
-  # check that sample names are in drug.sensitivity data frame
-  if (!(sample.names %in% names(drug.sensitivity))) {
-    stop(paste("sample.names must match across drug.sensitivity and", 
-               "expression data frames"))
-  }
-
-  # check that sample names are in expression data frames
-  for (i in 1:length(types)) {
-    if (!(sample.names %in% names(expression[[i]]))) {
-      stop(paste("sample.names must match across drug.sensitivity and", 
-                 "expression data frames"))
-    }
-  }
-
   #### Step 2. Perform DMEA on each omics type ####
   DMEA.list <- list()
   for (i in 1:length(types)) {

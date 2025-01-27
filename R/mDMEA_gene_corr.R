@@ -14,23 +14,7 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
                   position.x = "min", position.y = "min", se = TRUE, 
                   n.dot.sets = 10, ties = FALSEß) {
   #### Step 1. Load data if necessary ####
-  # get drug.sensitivity, gmt, and expression if PRISM/CCLE
-  if (is.character(drug.sensitivity)) {
-    if (drug.sensitivity == "PRISM") {
-      message("Loading PRISM drug sensitivity AUC scores")
-      drug.sensitivity <- read.csv(file = paste0(
-        "https://raw.github.com/BelindaBGarana/",
-        "DMEA/shiny-app/Inputs/PRISM_drug_mean_AUC_6-23-21.csv"
-      )) # 481 cell lines
-      drug.sensitivity$X <- NULL
-    } else {
-      stop(paste(
-        "drug.sensitivity must be either 'PRISM' or data frame per",
-        "documentation"
-      ))
-    }
-  }
-
+  # get gmt and expression if PRISM/L1000
   if (is.character(gmt)) {
     if (gmt == "PRISM") {
       message("Loading PRISM drug mechanism of action annotations")
@@ -45,32 +29,59 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
     }
   }
 
-  if ("adherent CCLE" %in% expression) {
-    message("Loading adherent CCLE RNA-seq data version 19Q4")
-    download.file(
-      paste0(
-        "https://raw.github.com/BelindaBGarana/DMEA/shiny-app/Inputs/",
-        "Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_1-200.Rbin"
-      ),
-      destfile =
-        "Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_1-200.Rbin"
-    )
-    load("Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_1-200.Rbin")
+  if ("L1000" %in% expression) {
+    message("Loading L1000")
+    # source: https://github.com/PNNL-CompBio/coderdata/blob/main/build/lincs/05-LINCS_perturbations.R
+    # identify URLs
+    #basename="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE101406"
+    L1000 <- 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE101nnn/GSE101406/suppl/GSE101406%5FBroad%5FLINCS%5FL1000%5FLevel4%5FZSPCINF%5Fmlr12k%5Fn1667x12328.gctx.gz'
+    L1000.genes <- 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE101nnn/GSE101406/suppl/GSE101406%5FBroad%5FLINCS%5FL1000%5Fgene%5Finfo.txt.gz'
+    L1000.inst <- 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE101nnn/GSE101406/suppl/GSE101406%5FBroad%5FLINCS%5FL1000%5Finst%5Finfo.txt.gz'
+    
+    # download source sample & perturbation info
+    L1000.genes.info <- readr::read_delim(L1000.genes, "\t") # pr_gene_symbol, pr_gene_id
+    L1000.inst.info <- readr::read_delim(L1000.inst, "\t") # pert_iname; pert_type = "trt_cp" if drug, "ctl_vehicle" if DMSO; cell_id
+    L1000.inst.info <- L1000.inst.info[L1000.inst.info$pert_type == "trt_cp", ] # only keep drug treatments (remove DMSO controls)
+    
+    # download L1000 data
+    if (file.exists("L1000.gctx")) {
+      L1000.df <- cmapR::parse_gctx("L1000.gctx")
+    } else {
+      res<-download.file(L1000,'L1000.gctx.gz', mode="wb")
+      L1000.df<-cmapR::parse_gctx(R.utils::gunzip("L1000.gctx.gz")) 
+    }
+    
+    # put data into long format
+    L1000.long <- cmapR::melt_gct(L1000.df)
+    colnames(L1000.long) <- c("inst_id", "pr_gene_id", "data_value")
+    L1000.long$pr_gene_id <- as.numeric(L1000.long$pr_gene_id)
+    
+    # join with L1000.gene.info based on pr_gene_id;
+    # L1000.inst.info based on inst_id;
+    # keep only cell_id, pert_type, pert_iname, gene_symbol, data_value
+    L1000.full <- L1000.long |>
+      dplyr::left_join(L1000.genes.info) |>
+      dplyr::left_join(L1000.inst.info) |>
+      dplyr::select(cell_id,pert_type,pert_iname,pr_gene_symbol,data_value)|>
+      dplyr::distinct()
+    L1000.long <- NULL # save space
+    
+    # add relevant columns
+    L1000.full <- na.omit(L1000.full)
+    colnames(L1000.full)[1] <- "other_names" # match samples column name
+    colnames(L1000.full)[4] <- "gene_symbol" # match genes column name
+    colnames(L1000.full)[3] <- "chem_name"
+    L1000.full$data_type <- "transcriptomics"
+    L1000.full$source <- "Broad"
+    L1000.full$study <- "LINCS"
+    L1000.full$perturbation_type <- "drug" # all entries have pert_type="trt_cp"
 
-    download.file(
-      paste0(
-        "https://raw.github.com/BelindaBGarana/DMEA/shiny-app/Inputs/",
-        "Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_201-327.Rbin"
-      ),
-      destfile =
-        "Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_201-327.Rbin"
-    )
-    load("Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_201-327.Rbin")
+    # aggregate across cell types
+    L1000.full <- reshape2::dcast(L1000.full, gene_symbol ~ chem_name, 
+                                  value.var = "data_value", fun.aggregate = mean)
 
-    RNA.df <- rbind(RNA.first200, RNA.rest)
-
-    for (i in which(expression == "adherent CCLE")) {
-      expression[[i]] <- RNA.df
+    for (i in which(expression == "L1000")) {
+      expression[[i]] <- L1000.full
     }
   }
 
@@ -99,8 +110,7 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
     message(paste("Running DMEA using", types[i], "data"))
 
     DMEA.list[[types[i]]] <- panSEA::DMEA_gene_corr(
-      drug.sensitivity, gmt, expression[[i]],
-      weights[[i]], value, sample.names,
+      gmt, expression[[i]], weights[[i]], value, sample.names,
       feature.names[i], colnames(weights[[i]])[2],
       rank.metric[i], FDR, num.permutations,
       stat.type, drug.info, drug, set.type,

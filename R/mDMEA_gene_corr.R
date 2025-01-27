@@ -79,6 +79,7 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
     # aggregate across cell types
     L1000.full <- reshape2::dcast(L1000.full, gene_symbol ~ chem_name, 
                                   value.var = "data_value", fun.aggregate = mean)
+    colnames(L1000.full)[1] <- feature.names[1]
 
     for (i in which(expression == "L1000")) {
       expression[[i]] <- L1000.full

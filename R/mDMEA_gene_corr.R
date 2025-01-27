@@ -1,7 +1,7 @@
 mDMEA_gene_corr <- function(gmt = "PRISM",
                   expression = as.list(rep("L1000", length(types))),
                   weights, types, value = "Perturbation",
-                  sample.names = colnames(expression[[1]])[1],
+                  sample.names = "Drug",
                   feature.names = rep("Gene", length(types)),
                   rank.metric = rep("Pearson.est", length(types)), p = 0.05,
                   FDR = 0.25, num.permutations = 1000, stat.type = "Weighted",
@@ -12,7 +12,7 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
                   scatter.plot.type = "pearson", FDR.scatter.plots = 0.05,
                   xlab = "Expression", ylab = value, 
                   position.x = "min", position.y = "min", se = TRUE, 
-                  n.dot.sets = 10, ties = FALSEß) {
+                  n.dot.sets = 10, ties = FALSE) {
   #### Step 1. Load data if necessary ####
   # get gmt and expression if PRISM/L1000
   if (is.character(gmt)) {

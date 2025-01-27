@@ -1,5 +1,5 @@
 DMEA_gene_corr <- function(gmt = NULL, expression, weights,
-                           value = "Perturbation", sample.names = colnames(expression)[1], 
+                           value = "Perturbation", sample.names = "Drug", 
                            gene.names = colnames(weights)[1], 
                            weight.values = colnames(weights)[2],
                            rank.metric = "Pearson.est", FDR = 0.25,
@@ -18,24 +18,34 @@ DMEA_gene_corr <- function(gmt = NULL, expression, weights,
   expr.weights <- merge(weights[ , c(gene.names, weight.values)], 
                         expression, by = gene.names)
   
-  # for each drug line: run correlation between expression & input weights
-  # data points are genes
-  drug.corr <- DMEA::rank_corr(expr.weights, variable = sample.names,
-                                       value = value, type = scatter.plot.type, 
-                                       min.per.corr = min.per.corr,
-                                       plots = scatter.plots, 
-                                       FDR = FDR.scatter.plots, 
-                                       xlab = xlab, ylab = ylab, 
-                                       position.x = position.x, 
-                                       position.y = position.y, se = se)
-  
-  # run drugSEA
-  DMEA.results <- panSEA::drugSEA_ties(
-    drug.corr$result, gmt, drug, rank.metric, set.type, FDR = FDR,
-    num.permutations = num.permutations, stat.type = stat.type,
-    min.per.set = min.per.set, sep = sep, exclusions = exclusions,
-    descriptions = descriptions, ties = ties
-  )
+  if (nrow(na.omit(expr.weights)) > 2) {
+    # for each drug line: run correlation between expression & input weights
+    # data points are genes
+    drug.corr <- DMEA::rank_corr(expr.weights, variable = sample.names,
+                                 value = value, type = scatter.plot.type, 
+                                 min.per.corr = min.per.corr,
+                                 plots = scatter.plots, 
+                                 FDR = FDR.scatter.plots, 
+                                 xlab = xlab, ylab = ylab, 
+                                 position.x = position.x, 
+                                 position.y = position.y, se = se)
+    
+    # run drugSEA
+    DMEA.results <- panSEA::drugSEA_ties(
+      drug.corr$result, gmt, drug, rank.metric, set.type, FDR = FDR,
+      num.permutations = num.permutations, stat.type = stat.type,
+      min.per.set = min.per.set, sep = sep, exclusions = exclusions,
+      descriptions = descriptions, ties = ties
+    ) 
+  } else {
+    drug.corr <- list("result" = data.frame(),
+                      "scatter.plots" = NA)
+    DMEA.results <- list("result" = data.frame(),
+                         "mtn.plots" = list(),
+                         "volcano.plot" = list(),
+                         "removed.sets" = data.frame(),
+                         "unannotated.drugs" = data.frame())
+  }
 
   return(list(
     corr.result = drug.corr$result,

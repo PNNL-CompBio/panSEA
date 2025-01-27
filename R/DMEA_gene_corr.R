@@ -1,5 +1,5 @@
-DMEA_gene_corr <- function(drug.sensitivity, gmt = NULL, expression, weights,
-                           value = "AUC", sample.names = colnames(expression)[1], 
+DMEA_gene_corr <- function(gmt = NULL, expression, weights,
+                           value = "Perturbation", sample.names = colnames(expression)[1], 
                            gene.names = colnames(weights)[1], 
                            weight.values = colnames(weights)[2],
                            rank.metric = "Pearson.est", FDR = 0.25,

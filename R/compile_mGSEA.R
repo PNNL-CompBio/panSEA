@@ -8,11 +8,13 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
   }
 
   # collapse GSEA results across omics types
-  GSEA.df <- data.table::rbindlist(GSEA.df, use.names = TRUE, idcol = "type")
+  GSEA.df <- as.data.frame(data.table::rbindlist(GSEA.df, use.names = TRUE, idcol = "type"))
   GSEA.df$minusLogP <- -log(GSEA.df$p_value, base = 10)
   GSEA.df$minusLogFDR <- -log(GSEA.df$FDR_q_value, base = 10)
   GSEA.df$sig <- FALSE
-  GSEA.df[GSEA.df$p_value < p & GSEA.df$FDR_q_value < FDR, ]$sig <- TRUE
+  if (nrow(GSEA.df[GSEA.df$p_value < p & GSEA.df$FDR_q_value < FDR, ]) > 0) {
+    GSEA.df[GSEA.df$p_value < p & GSEA.df$FDR_q_value < FDR, ]$sig <- TRUE 
+  }
   
   # summarize results for each Feature_set
   mean.GSEA.df <- plyr::ddply(GSEA.df, .(Feature_set), summarize,
@@ -23,7 +25,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
                               N_types = length(unique(type)),
                               N_sig = length(sig[sig]),
                               sig_types = paste0(type[sig], collapse = ", "))
-  if (length(unique(mean.GSEA.df$Fisher_p)) > 1) {
+  if (length(na.omit(unique(mean.GSEA.df$Fisher_p))) > 1) {
     mean.GSEA.df$adj_Fisher_p <- 
       qvalue::qvalue(mean.GSEA.df$Fisher_p, pi0=1)$qvalues
   } else {
@@ -45,6 +47,9 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
       mean.GSEA.df %>% dplyr::slice_max(abs(mean_NES), n = n.dot.sets)
   }
   dot.df <- GSEA.df[GSEA.df$Feature_set %in% top.GSEA.df$Feature_set, ]
+  if (any(dot.df$FDR_q_value == 0)) {
+    dot.df[dot.df$FDR_q_value == 0,]$FDR_q_value <- 0.0001
+  }
 
   ## create venn diagram
   # compile significant results for each type in list

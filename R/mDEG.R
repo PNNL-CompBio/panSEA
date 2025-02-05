@@ -55,14 +55,21 @@ mDEG <- function(data.list, factor.info,
         # identify sample phenotypes and set up design matrix
         eset$group <- factor.info[,1]
         #levels(eset$group) <- levels(factor.info[,1])
-        if (ncol(factor.info) > 1) {
+        if (ncol(factor.info) == 2) {
           eset$batch <- factor.info[,2]
           levels(eset$batch) <- levels(factor.info[,2])
           design <- stats::model.matrix(~ group + batch + 0, eset)
           colnames(design)[1:2] <- substr(colnames(design)[1:2], 6, nchar(colnames(design)[1:2]))
-        } else {
+        } else if (ncol(factor.info) == 1) {
           design <- stats::model.matrix(~ group + 0, eset)
           colnames(design) <- substr(colnames(design), 6, nchar(colnames(design)))
+        } else if (ncol(factor.info) > 2) {
+          eset$batch <- factor.info[,2]
+          eset$batch2 <- factor.info[,3]
+          levels(eset$batch) <- levels(factor.info[,2])
+          levels(eset$batch2) <- levels(factor.info[,3])
+          design <- stats::model.matrix(~ group + batch + batch2 + 0, eset)
+          colnames(design)[1:3] <- substr(colnames(design)[1:3], 6, nchar(colnames(design)[1:3]))
         }
         
         # fit linear model

@@ -471,7 +471,7 @@ GSEA_custom <- function(input.df, gmt.list,
   for (i in seq_len(length(Drug.Sets.All))) {
     temp.gene.set <- Drug.Sets.All[i]
     temp.NES <- GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$NES
-    if (!is.na(temp.NES)) {
+    if (is.numeric(temp.NES)) {
       if (ties) {
         temp.NES.tie <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES
         temp.NES.tie.min <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_min

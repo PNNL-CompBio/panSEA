@@ -471,55 +471,57 @@ GSEA_custom <- function(input.df, gmt.list,
   for (i in seq_len(length(Drug.Sets.All))) {
     temp.gene.set <- Drug.Sets.All[i]
     temp.NES <- GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$NES
-    if (ties) {
-      temp.NES.tie <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES
-      temp.NES.tie.min <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_min
-      temp.NES.tie.max <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_max 
-    }
-    
-    # results for original input
-    if (temp.NES >= 0) { # BG OR EQUAL TO
-      percent.temp <-
-        sum(GSEA.NES.perms.pos >=
-              GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$NES) /
-        length(GSEA.NES.perms.pos) # BG OR EQUAL TO
-      percent.pos.stronger <-
-        sum(GSEA.Results$NES >=
-              GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$NES) /
-        sum(GSEA.Results$NES >= 0) # BG
-      GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$FDR_q_value <-
-        ifelse(signif(percent.temp / percent.pos.stronger, digits = 3) < 1,
-               signif(percent.temp / percent.pos.stronger, digits = 3), 1
-        ) # BG
-    } else { # BG OR EQUAL TO
-      percent.temp <- sum(GSEA.NES.perms.neg <= temp.NES) /
-        length(GSEA.NES.perms.neg) # BG OR EQUAL TO
-      percent.neg.stronger <- sum(GSEA.Results$NES <= temp.NES) /
-        sum(GSEA.Results$NES <= 0) # BG
-      GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$FDR_q_value <-
-        ifelse(signif(percent.temp / percent.neg.stronger, digits = 3) < 1,
-               signif(percent.temp / percent.neg.stronger, digits = 3), 1
-        ) # BG
-    }
-    
-    # results for shuffled ties
-    if (ties) {
-      if (temp.NES.tie >= 0) {
+    if (!is.na(temp.NES)) {
+      if (ties) {
+        temp.NES.tie <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES
+        temp.NES.tie.min <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_min
+        temp.NES.tie.max <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES_max 
+      }
+      
+      # results for original input
+      if (temp.NES >= 0) { # BG OR EQUAL TO
         percent.temp <-
-          sum(GSEA.NES.perms.pos >= temp.NES.tie.min) / length(GSEA.NES.perms.pos) # BG OR EQUAL TO
+          sum(GSEA.NES.perms.pos >=
+                GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$NES) /
+          length(GSEA.NES.perms.pos) # BG OR EQUAL TO
         percent.pos.stronger <-
-          sum(GSEA.Results.ties$NES_max >= temp.NES.tie.min) / sum(GSEA.Results.ties$NES >= 0) # BG
-        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$FDR_q_value <-
+          sum(GSEA.Results$NES >=
+                GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$NES) /
+          sum(GSEA.Results$NES >= 0) # BG
+        GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$FDR_q_value <-
           ifelse(signif(percent.temp / percent.pos.stronger, digits = 3) < 1,
                  signif(percent.temp / percent.pos.stronger, digits = 3), 1
           ) # BG
-      } else {
-        percent.temp <- sum(GSEA.NES.perms.neg <= temp.NES.tie.max) / length(GSEA.NES.perms.neg) # BG OR EQUAL TO
-        percent.neg.stronger <- sum(GSEA.Results.ties$NES_min <= temp.NES.tie.max) / sum(GSEA.Results.ties$NES <= 0) # BG
-        GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$FDR_q_value <-
+      } else { # BG OR EQUAL TO
+        percent.temp <- sum(GSEA.NES.perms.neg <= temp.NES) /
+          length(GSEA.NES.perms.neg) # BG OR EQUAL TO
+        percent.neg.stronger <- sum(GSEA.Results$NES <= temp.NES) /
+          sum(GSEA.Results$NES <= 0) # BG
+        GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$FDR_q_value <-
           ifelse(signif(percent.temp / percent.neg.stronger, digits = 3) < 1,
                  signif(percent.temp / percent.neg.stronger, digits = 3), 1
           ) # BG
+      }
+      
+      # results for shuffled ties
+      if (ties) {
+        if (temp.NES.tie >= 0) {
+          percent.temp <-
+            sum(GSEA.NES.perms.pos >= temp.NES.tie.min) / length(GSEA.NES.perms.pos) # BG OR EQUAL TO
+          percent.pos.stronger <-
+            sum(GSEA.Results.ties$NES_max >= temp.NES.tie.min) / sum(GSEA.Results.ties$NES >= 0) # BG
+          GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$FDR_q_value <-
+            ifelse(signif(percent.temp / percent.pos.stronger, digits = 3) < 1,
+                   signif(percent.temp / percent.pos.stronger, digits = 3), 1
+            ) # BG
+        } else {
+          percent.temp <- sum(GSEA.NES.perms.neg <= temp.NES.tie.max) / length(GSEA.NES.perms.neg) # BG OR EQUAL TO
+          percent.neg.stronger <- sum(GSEA.Results.ties$NES_min <= temp.NES.tie.max) / sum(GSEA.Results.ties$NES <= 0) # BG
+          GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$FDR_q_value <-
+            ifelse(signif(percent.temp / percent.neg.stronger, digits = 3) < 1,
+                   signif(percent.temp / percent.neg.stronger, digits = 3), 1
+            ) # BG
+        } 
       } 
     }
   }

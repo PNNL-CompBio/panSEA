@@ -712,7 +712,7 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est", t
   }
   
   # categorize data by significance level if there are significant hits
-  if (nrow(significant.hits) > 0) {
+  if (any(plot.data$FDR_q_value < FDR)) {
     plot.data$Significance <- paste0("FDR > ", FDR)
     plot.data[plot.data$FDR_q_value < FDR, ]$Significance <- paste0("FDR < ", FDR)
     plot.data$Significance <- factor(plot.data$Significance,

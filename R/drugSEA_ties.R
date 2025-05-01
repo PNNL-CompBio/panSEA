@@ -678,11 +678,11 @@ gsea_mountain_plot <- function(GSEA.list, Sample.Name, Gene.Set.A,
 
 summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est", ties = FALSE) {
   if (ties) {
-    plot.data <- EA$GSEA.Results.ties
-    significant.hits <- EA$GSEA.Results.ties[which(EA$GSEA.Results.ties$FDR_q_value < FDR), ]
+    plot.data <- na.omit(EA$GSEA.Results.ties)
+    significant.hits <- na.omit(EA$GSEA.Results.ties[which(EA$GSEA.Results.ties$FDR_q_value < FDR), ])
   } else {
-    plot.data <- EA$GSEA.Results 
-    significant.hits <- EA$GSEA.Results[which(EA$GSEA.Results$FDR_q_value < FDR), ]
+    plot.data <- na.omit(EA$GSEA.Results) 
+    significant.hits <- na.omit(EA$GSEA.Results[which(EA$GSEA.Results$FDR_q_value < FDR), ])
   }
   
   if (nrow(plot.data[plot.data$p_value == 0, ]) > 0) {

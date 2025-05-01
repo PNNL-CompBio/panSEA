@@ -461,8 +461,8 @@ GSEA_custom <- function(input.df, gmt.list,
   GSEA.NES.perms.neg <-
     GSEA.NES.perms[which(GSEA.NES.perms <= 0)] # BG OR EQUAL TO
   rm(GSEA.NES.perms)
-  for (i in seq_len(length(Drug.Sets.All))) {
-    temp.gene.set <- Drug.Sets.All[i]
+  for (i in seq_len(length(GSEA.Results$Drug_set))) {
+    temp.gene.set <- GSEA.Results$Drug_set[i]
     temp.NES <- GSEA.Results[GSEA.Results$Drug_set == temp.gene.set, ]$NES
     if (ties) {
       temp.NES.tie <- GSEA.Results.ties[GSEA.Results.ties$Drug_set == temp.gene.set, ]$NES

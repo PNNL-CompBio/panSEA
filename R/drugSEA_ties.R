@@ -685,182 +685,167 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est", t
     significant.hits <- na.omit(EA$GSEA.Results[which(EA$GSEA.Results$FDR_q_value < FDR), ])
   }
   
-  if (nrow(plot.data[plot.data$p_value == 0, ]) > 0) {
-    plot.data[plot.data$p_value == 0, ]$p_value <- 0.00099
-  }
-  
-  if (nrow(plot.data[plot.data$FDR_q_value == 0, ]) > 0) {
-    plot.data[plot.data$FDR_q_value == 0, ]$FDR_q_value <- 0.00099
-  }
-  
-  # define x, y limits
-  limit.x <- ceiling(max(abs(as.numeric(plot.data$NES)), na.rm = TRUE))
-  limit.y <- ceiling(max(-as.numeric(log(plot.data$p_value, 10)), na.rm = TRUE))
-  
-  ## select results which meet FDR threshold and produce mountain plots
-  temp.plot <- list()
-  if (nrow(significant.hits) > 0) {
-    for (i in seq_len(nrow(significant.hits))) {
-      temp <- gsea_mountain_plot(
-        GSEA.list = EA, Sample.Name = est.name,
-        Gene.Set.A = significant.hits$Drug_set[i]
-      )
-      temp.plot[significant.hits$Drug_set[i]] <- list(temp)
+  if (nrow(plot.data) > 0) {
+    if (nrow(plot.data[plot.data$p_value == 0, ]) > 0) {
+      plot.data[plot.data$p_value == 0, ]$p_value <- 0.00099
     }
-  } else {
-    warning("No enrichments met the FDR cut-off to produce mountain plots")
-  }
-  
-  # categorize data by significance level if there are significant hits
-  if (any(plot.data$FDR_q_value < FDR)) {
-    plot.data$Significance <- paste0("FDR > ", FDR)
-    plot.data[plot.data$FDR_q_value < FDR, ]$Significance <- paste0("FDR < ", FDR)
-    plot.data$Significance <- factor(plot.data$Significance,
-                                     levels = c(paste0("FDR < ", FDR),
-                                                paste0("FDR > ", FDR)))
-    bar.data <- plot.data %>% slice_max(abs(NES), n=n.top)
-    bar.data <- bar.data[order(bar.data$NES),]
     
-    volc <- ggplot2::ggplot(data = plot.data, aes(
-      x = NES, y = -log(p_value, 10),
-      color = Significance
-    )) +
-      ggplot2::geom_point(size = 4) +
-      ggrepel::geom_text_repel(
-        data = subset(plot.data, Significance == paste0("FDR < ", FDR)),
-        mapping = aes(label = Drug_set, size = I(6)), nudge_y = 0.25
-      ) +
-      ggplot2::scale_color_manual(
-        values = c("red", "azure4"), name = "Significance",
-        breaks = c(paste0("FDR < ", FDR), paste0("FDR > ", FDR))
-      ) +
-      ggplot2::xlim(-limit.x, limit.x) +
-      ggplot2::ylim(0, limit.y) +
-      ggplot2::xlab("Normalized Enrichment Score") +
-      ggplot2::ylab("-Log(p-value)") +
-      ggplot2::geom_vline(xintercept = 0, linetype = "solid", color = "grey",
-                          linewidth = 0.5) +
-      ggplot2::theme(
-        panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
-        axis.line = element_line(colour = "black", linewidth = 0.65),
-        legend.text = element_text(size = 20),
-        axis.text = element_text(size = 20),
-        axis.title = element_text(size = 26, face = "bold"),
-        panel.background = element_rect(
-          fill = "white", colour = "white", linewidth = 0.5,
-          linetype = "solid", color = "black"
-        ), text = element_text(size = 20),
-        legend.position = "bottom", legend.key = element_blank()
-      )
+    if (nrow(plot.data[plot.data$FDR_q_value == 0, ]) > 0) {
+      plot.data[plot.data$FDR_q_value == 0, ]$FDR_q_value <- 0.00099
+    }
     
-    bar <- ggplot2::ggplot(bar.data, aes(x=NES, y=Drug_set, fill = Significance)) + 
-      geom_bar(stat='identity') + ggplot2::theme(
-        panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
-        axis.line = element_line(colour = "black", linewidth = 0.65),
-        legend.text = element_text(size = 20),
-        axis.text = element_text(size = 20),
-        axis.title = element_text(size = 26, face = "bold"),
-        panel.background = element_rect(
-          fill = "white", colour = "white", linewidth = 0.5,
-          linetype = "solid", color = "black"
-        ), text = element_text(size = 20),
-        legend.position = "bottom", legend.key = element_blank()
-      ) + ggplot2::xlab("Normalized Enrichment Score") + 
-      ggplot2::ylab("") +
-      ggplot2::scale_fill_manual(
-        values = c("red", "azure4"), name = "Significance",
-        breaks = c(paste0("FDR < ", FDR), paste0("FDR > ", FDR))
-      ) 
-  } else {
-    plot.data$Significance <- paste0("FDR > ", FDR)
-    plot.data$Significance <- factor(plot.data$Significance,
-                                     levels = paste0("FDR > ", FDR))
-    bar.data <- plot.data %>% slice_max(abs(NES), n=n.top)
-    bar.data <- bar.data[order(bar.data$NES),]
+    # define x, y limits
+    limit.x <- ceiling(max(abs(as.numeric(plot.data$NES)), na.rm = TRUE))
+    limit.y <- ceiling(max(-as.numeric(log(plot.data$p_value, 10)), na.rm = TRUE))
     
-    volc <- ggplot2::ggplot(data = plot.data,
-                            aes(x = NES, y = -log(p_value, 10))) +
-      ggplot2::geom_point(size = 4, color = "azure4") +
-      ggplot2::xlim(-limit.x, limit.x) +
-      ggplot2::ylim(0, limit.y) +
-      ggplot2::xlab("Normalized Enrichment Score") +
-      ggplot2::ylab("-Log(p-value)") +
-      ggplot2::geom_vline(xintercept = 0, linetype = "solid", color = "grey",
-                          linewidth = 0.5) +
-      ggplot2::theme(
-        panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
-        axis.line = element_line(colour = "black", linewidth = 0.65),
-        legend.text = element_text(size = 20),
-        axis.text = element_text(size = 20),
-        axis.title = element_text(size = 26, face = "bold"),
-        panel.background = element_rect(
-          fill = "white", colour = "white", linewidth = 0.5,
-          linetype = "solid", color = "black"
-        ), text = element_text(size = 20),
-        legend.position = "bottom", legend.key = element_blank()
-      )
+    ## select results which meet FDR threshold and produce mountain plots
+    temp.plot <- list()
+    if (nrow(significant.hits) > 0) {
+      for (i in seq_len(nrow(significant.hits))) {
+        temp <- gsea_mountain_plot(
+          GSEA.list = EA, Sample.Name = est.name,
+          Gene.Set.A = significant.hits$Drug_set[i]
+        )
+        temp.plot[significant.hits$Drug_set[i]] <- list(temp)
+      }
+    } else {
+      warning("No enrichments met the FDR cut-off to produce mountain plots")
+    }
     
-    bar <- ggplot2::ggplot(bar.data, aes(x=NES, y=Drug_set, fill = Significance)) + 
-      geom_bar(stat='identity') + ggplot2::theme(
-        panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
-        axis.line = element_line(colour = "black", linewidth = 0.65),
-        legend.text = element_text(size = 20),
-        axis.text = element_text(size = 20),
-        axis.title = element_text(size = 26, face = "bold"),
-        panel.background = element_rect(
-          fill = "white", colour = "white", linewidth = 0.5,
-          linetype = "solid", color = "black"
-        ), text = element_text(size = 20),
-        legend.position = "bottom", legend.key = element_blank()
-      ) + ggplot2::xlab("Normalized Enrichment Score") + 
-      ggplot2::ylab("") +
-      ggplot2::scale_y_discrete(limits = bar.data[order(bar.data$NES, decreasing = TRUE), ]$Drug_set) +
-      ggplot2::scale_fill_manual(
-        values = c("azure4"), name = "Significance",
-        breaks = c(paste0("FDR > ", FDR))
-      ) 
-  }
-  bar.data$name <- est.name
-  bg.theme <- ggplot2::theme(
-    legend.background = element_rect(), legend.position = "top",
-    legend.text = element_text(size = 14),
-    legend.key = element_blank(),
-    legend.title = element_text(size = 16),
-    axis.title.x = element_text(size = 20),
-    axis.text.x = element_text(size = 16, colour = "black"),
-    axis.title.y = element_text(size = 20),
-    axis.text.y = element_text(size = 16, colour = "black"),
-    plot.title = element_text(
-      lineheight = .8, face = "bold", size = 36
-    ),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    panel.border = element_rect(fill = NA),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    axis.ticks.x = element_line(colour = "black"),
-    axis.ticks.y = element_line(colour = "black")
-  )
-  dot <- ggplot2::ggplot(
-    bar.data,
-    ggplot2::aes(x = name, y = Drug_set, color = NES,
-      size = -log10(FDR_q_value)
+    # categorize data by significance level if there are significant hits
+    if (any(plot.data$FDR_q_value < FDR)) {
+      plot.data$Significance <- paste0("FDR > ", FDR)
+      plot.data[plot.data$FDR_q_value < FDR, ]$Significance <- paste0("FDR < ", FDR)
+      plot.data$Significance <- factor(plot.data$Significance,
+                                       levels = c(paste0("FDR < ", FDR),
+                                                  paste0("FDR > ", FDR)))
+      bar.data <- plot.data %>% slice_max(abs(NES), n=n.top)
+      bar.data <- bar.data[order(bar.data$NES),]
+      
+      volc <- ggplot2::ggplot(data = plot.data, aes(
+        x = NES, y = -log(p_value, 10),
+        color = Significance
+      )) +
+        ggplot2::geom_point(size = 4) +
+        ggrepel::geom_text_repel(
+          data = subset(plot.data, Significance == paste0("FDR < ", FDR)),
+          mapping = aes(label = Drug_set, size = I(6)), nudge_y = 0.25
+        ) +
+        ggplot2::scale_color_manual(
+          values = c("red", "azure4"), name = "Significance",
+          breaks = c(paste0("FDR < ", FDR), paste0("FDR > ", FDR))
+        ) +
+        ggplot2::xlim(-limit.x, limit.x) +
+        ggplot2::ylim(0, limit.y) +
+        ggplot2::xlab("Normalized Enrichment Score") +
+        ggplot2::ylab("-Log(p-value)") +
+        ggplot2::geom_vline(xintercept = 0, linetype = "solid", color = "grey",
+                            linewidth = 0.5) +
+        ggplot2::theme(
+          panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
+          axis.line = element_line(colour = "black", linewidth = 0.65),
+          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 20),
+          axis.title = element_text(size = 26, face = "bold"),
+          panel.background = element_rect(
+            fill = "white", colour = "white", linewidth = 0.5,
+            linetype = "solid", color = "black"
+          ), text = element_text(size = 20),
+          legend.position = "bottom", legend.key = element_blank()
+        )
+      
+      bar <- ggplot2::ggplot(bar.data, aes(x=NES, y=Drug_set, fill = Significance)) + 
+        geom_bar(stat='identity') + ggplot2::theme(
+          panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
+          axis.line = element_line(colour = "black", linewidth = 0.65),
+          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 20),
+          axis.title = element_text(size = 26, face = "bold"),
+          panel.background = element_rect(
+            fill = "white", colour = "white", linewidth = 0.5,
+            linetype = "solid", color = "black"
+          ), text = element_text(size = 20),
+          legend.position = "bottom", legend.key = element_blank()
+        ) + ggplot2::xlab("Normalized Enrichment Score") + 
+        ggplot2::ylab("") +
+        ggplot2::scale_fill_manual(
+          values = c("red", "azure4"), name = "Significance",
+          breaks = c(paste0("FDR < ", FDR), paste0("FDR > ", FDR))
+        ) 
+    } else {
+      plot.data$Significance <- paste0("FDR > ", FDR)
+      plot.data$Significance <- factor(plot.data$Significance,
+                                       levels = paste0("FDR > ", FDR))
+      bar.data <- plot.data %>% slice_max(abs(NES), n=n.top)
+      bar.data <- bar.data[order(bar.data$NES),]
+      
+      volc <- ggplot2::ggplot(data = plot.data,
+                              aes(x = NES, y = -log(p_value, 10))) +
+        ggplot2::geom_point(size = 4, color = "azure4") +
+        ggplot2::xlim(-limit.x, limit.x) +
+        ggplot2::ylim(0, limit.y) +
+        ggplot2::xlab("Normalized Enrichment Score") +
+        ggplot2::ylab("-Log(p-value)") +
+        ggplot2::geom_vline(xintercept = 0, linetype = "solid", color = "grey",
+                            linewidth = 0.5) +
+        ggplot2::theme(
+          panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
+          axis.line = element_line(colour = "black", linewidth = 0.65),
+          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 20),
+          axis.title = element_text(size = 26, face = "bold"),
+          panel.background = element_rect(
+            fill = "white", colour = "white", linewidth = 0.5,
+            linetype = "solid", color = "black"
+          ), text = element_text(size = 20),
+          legend.position = "bottom", legend.key = element_blank()
+        )
+      
+      bar <- ggplot2::ggplot(bar.data, aes(x=NES, y=Drug_set, fill = Significance)) + 
+        geom_bar(stat='identity') + ggplot2::theme(
+          panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
+          axis.line = element_line(colour = "black", linewidth = 0.65),
+          legend.text = element_text(size = 20),
+          axis.text = element_text(size = 20),
+          axis.title = element_text(size = 26, face = "bold"),
+          panel.background = element_rect(
+            fill = "white", colour = "white", linewidth = 0.5,
+            linetype = "solid", color = "black"
+          ), text = element_text(size = 20),
+          legend.position = "bottom", legend.key = element_blank()
+        ) + ggplot2::xlab("Normalized Enrichment Score") + 
+        ggplot2::ylab("") +
+        ggplot2::scale_y_discrete(limits = bar.data[order(bar.data$NES, decreasing = TRUE), ]$Drug_set) +
+        ggplot2::scale_fill_manual(
+          values = c("azure4"), name = "Significance",
+          breaks = c(paste0("FDR > ", FDR))
+        ) 
+    }
+    bar.data$name <- est.name
+    bg.theme <- ggplot2::theme(
+      legend.background = element_rect(), legend.position = "top",
+      legend.text = element_text(size = 14),
+      legend.key = element_blank(),
+      legend.title = element_text(size = 16),
+      axis.title.x = element_text(size = 20),
+      axis.text.x = element_text(size = 16, colour = "black"),
+      axis.title.y = element_text(size = 20),
+      axis.text.y = element_text(size = 16, colour = "black"),
+      plot.title = element_text(
+        lineheight = .8, face = "bold", size = 36
+      ),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.border = element_rect(fill = NA),
+      panel.background = element_blank(),
+      axis.line = element_line(colour = "black"),
+      axis.ticks.x = element_line(colour = "black"),
+      axis.ticks.y = element_line(colour = "black")
     )
-  ) +
-    ggplot2::geom_point() +
-    ggplot2::scale_y_discrete(limits = bar.data[order(bar.data$NES, decreasing = TRUE), ]$Drug_set) +
-    viridis::scale_color_viridis() +
-    bg.theme +
-    ggplot2::labs(
-      x = "", y = "",
-      color = "NES", size = "-log(FDR)"
-    )
-  
-  if (ties) {
-    dot.sd <- ggplot2::ggplot(
+    dot <- ggplot2::ggplot(
       bar.data,
       ggplot2::aes(x = name, y = Drug_set, color = NES,
-                   size = -log10(ES_sd)
+                   size = -log10(FDR_q_value)
       )
     ) +
       ggplot2::geom_point() +
@@ -869,9 +854,32 @@ summaryPlots <- function(EA, FDR = 0.25, n.top = 10, est.name = "Pearson.est", t
       bg.theme +
       ggplot2::labs(
         x = "", y = "",
-        color = "NES", size = "-log(ES SD)"
-      ) 
+        color = "NES", size = "-log(FDR)"
+      )
+    
+    if (ties) {
+      dot.sd <- ggplot2::ggplot(
+        bar.data,
+        ggplot2::aes(x = name, y = Drug_set, color = NES,
+                     size = -log10(ES_sd)
+        )
+      ) +
+        ggplot2::geom_point() +
+        ggplot2::scale_y_discrete(limits = bar.data[order(bar.data$NES, decreasing = TRUE), ]$Drug_set) +
+        viridis::scale_color_viridis() +
+        bg.theme +
+        ggplot2::labs(
+          x = "", y = "",
+          color = "NES", size = "-log(ES SD)"
+        ) 
+    } else {
+      dot.sd <- NA
+    }
   } else {
+    volc <- NA
+    bar <- NA
+    temp.plot <- list()
+    dot <- NA
     dot.sd <- NA
   }
   return(list(volcano = volc, bar = bar, mtn = temp.plot, dot = dot, dot.sd = dot.sd))

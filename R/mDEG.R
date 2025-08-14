@@ -63,13 +63,22 @@ mDEG <- function(data.list, factor.info,
         } else if (ncol(factor.info) == 1) {
           design <- stats::model.matrix(~ group + 0, eset)
           colnames(design) <- substr(colnames(design), 6, nchar(colnames(design)))
-        } else if (ncol(factor.info) > 2) {
+        } else if (ncol(factor.info) == 3) {
           eset$batch <- factor.info[,2]
           eset$batch2 <- factor.info[,3]
           levels(eset$batch) <- levels(factor.info[,2])
           levels(eset$batch2) <- levels(factor.info[,3])
           design <- stats::model.matrix(~ group + batch + batch2 + 0, eset)
           colnames(design)[1:3] <- substr(colnames(design)[1:3], 6, nchar(colnames(design)[1:3]))
+        } else if (ncol(factor.info) > 3) {
+          eset$batch <- factor.info[,2]
+          eset$batch2 <- factor.info[,3]
+          eset$batch3 <- factor.info[,4]
+          levels(eset$batch) <- levels(factor.info[,2])
+          levels(eset$batch2) <- levels(factor.info[,3])
+          levels(eset$batch3) <- levels(factor.info[,4])
+          design <- stats::model.matrix(~ group + batch + batch2 + batch3 + 0, eset)
+          colnames(design)[1:4] <- substr(colnames(design)[1:4], 6, nchar(colnames(design)[1:4]))
         }
         
         # fit linear model

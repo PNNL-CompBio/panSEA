@@ -364,6 +364,8 @@ GSEA_custom <- function(input.df, gmt.list,
     KSMarkerArray <- as.data.frame(KSMarkerArray) 
     
     markerDiff <- KSMarkerArray - GSEA.Results$ES # check this will subtract first ES from first column values
+  } else{ #SG Added to avoid error
+    markerDiff <- rep(0,nrow(GSEA.Results))
   }
   
   ### MOA permutations (null distribution)

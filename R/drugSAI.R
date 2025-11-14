@@ -3,7 +3,7 @@
 GSEA_custom <- function(input.df, gmt.list,
                         nperm = 1000,
                         stat.type = "Weighted", min.per.set,
-                        convert.synonyms = FALSE, ties = FALSE, marker.select=FALSE) {
+                        convert.synonyms = FALSE, ties = FALSE, marker.select=TRUE) {
   GSEA.EnrichmentScore <- function(gene.list, gene.set,
                                    weighted.score.type = score.weight,
                                    correl.vector = NULL) {

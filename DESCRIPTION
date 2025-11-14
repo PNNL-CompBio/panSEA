@@ -36,5 +36,3 @@ Collate:
 	'mDMEA_gene_corr.R'
 	'netSEA.R'
 	'panSEA.R'
-    'DMAI.R'
-    'drugSAI.R'

@@ -20,6 +20,8 @@ Imports:
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
 Collate:
+    'DMAI.R'
+    'drugSAI.R'
 	'mDEG.R'
 	'drugSEA_ties.R'
 	'WV.R'

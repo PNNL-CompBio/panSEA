@@ -1,6 +1,6 @@
 
 # load GSEA_custom function
-GSEA_custom <- function(input.df, gmt.list,
+GSEA_custom1 <- function(input.df, gmt.list,
                         nperm = 1000,
                         stat.type = "Weighted", min.per.set,
                         convert.synonyms = FALSE, ties = FALSE) {
@@ -931,7 +931,7 @@ drugSEA_ties <- function(data, gmt = NULL, drug = "Drug",
 
   ## perform enrichment analysis using GSEA_custom
   message("Running enrichment analysis...")
-  EA <- GSEA_custom(
+  EA <- GSEA_custom1(
     input, gmt, num.permutations, stat.type,
     min.per.set, convert.synonyms, ties
   )

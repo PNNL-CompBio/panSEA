@@ -19,22 +19,3 @@ Imports:
 	limma, metap, msigdbr, multtest, qvalue, reshape2, stats, stringr, viridis, visNetwork, utils
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
-Collate:
-    'DMAI.R'
-    'drugSAI.R'
-	'mDEG.R'
-	'drugSEA_ties.R'
-	'WV.R'
-	'DMEA.R'
-	'ssGSEA.R'
-	'DMEA_cell_corr.R'
-	'DMEA_gene_corr.R'
-	'compile_mDEG.R'
-	'compile_mGSEA.R'
-	'compile_mDMEA.R'
-	'mGSEA.R'
-	'mDMEA.R'
-	'mDMEA_cell_corr.R'
-	'mDMEA_gene_corr.R'
-	'netSEA.R'
-	'panSEA.R'

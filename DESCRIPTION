@@ -19,3 +19,4 @@ Imports:
 	limma, metap, msigdbr, multtest, qvalue, reshape2, stats, stringr, viridis, visNetwork, utils
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
+RoxygenNote: 7.3.3

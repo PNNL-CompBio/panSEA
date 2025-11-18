@@ -12,7 +12,7 @@ mDMEA_cell_corr <- function(drug.sensitivity = "PRISM", gmt = "PRISM",
                   scatter.plot.type = "pearson", FDR.scatter.plots = 0.05,
                   xlab = "Expression Correlation Estimate", ylab = value, 
                   position.x = "min", position.y = "min", se = TRUE, 
-                  n.dot.sets = 10, ties = FALSE) {
+                  n.dot.sets = 10) {
   #### Step 1. Load data if necessary ####
   # get drug.sensitivity, gmt, and expression if PRISM/CCLE
   if (is.character(drug.sensitivity)) {
@@ -108,7 +108,7 @@ mDMEA_cell_corr <- function(drug.sensitivity = "PRISM", gmt = "PRISM",
       descriptions, min.per.corr,
       scatter.plots, scatter.plot.type,
       FDR.scatter.plots, xlab, ylab,
-      position.x, position.y, se, ties
+      position.x, position.y, se
     )
 
     # merge correlation results with drug annotations if !is.null(drug.info)

@@ -10,7 +10,7 @@
 
 \usage{
 ssGSEA(data, gmt="msigdb_Homo sapiens_C2_CP:KEGG", direction.adjust=NULL, 
-FDR=0.25, num.permutations=1000, stat.type="Weighted", min.per.set=6, ties=FALSE)
+FDR=0.25, num.permutations=1000, stat.type="Weighted", min.per.set=6)
 }
 
 \arguments{
@@ -47,9 +47,6 @@ FDR=0.25, num.permutations=1000, stat.type="Weighted", min.per.set=6, ties=FALSE
   }
   
   \item{min.per.set}{The minimum number of drugs required per set. Default: 6.
-  }
-  
-  \item{ties}{Logical operator describing whether or not to permute order of genes with tied ranks. Default: FALSE.
   }
 }
 

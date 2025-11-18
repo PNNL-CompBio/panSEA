@@ -1,0 +1,84 @@
+"Drug_set","mean_NES","sd_NES","Fisher_p","types","N_types","N_sig","sig_types","adj_Fisher_p"
+"MDM inhibitor",1.86666666666667,0.265015722804013,0.000475898353953111,"transcriptomics, proteomics, metabolomics",3,2,"transcriptomics, metabolomics",0.012849255556734
+"HMGCR inhibitor",1.82,0.252388589282479,1.52209119223203e-05,"transcriptomics, proteomics, metabolomics",3,2,"transcriptomics, proteomics",0.00123289386570794
+"PLK inhibitor",1.62666666666667,0.239652526240249,0.000410344949248524,"transcriptomics, proteomics, metabolomics",3,2,"transcriptomics, proteomics",0.012849255556734
+"microtubule inhibitor",1.54666666666667,0.245424801789333,0.00334884736346567,"transcriptomics, proteomics, metabolomics",3,1,"transcriptomics",0.0678141591101799
+"Aurora kinase inhibitor",1.45333333333333,0.089628864398325,0.0135858996870902,"transcriptomics, proteomics, metabolomics",3,0,"",0.176684580818349
+"tubulin polymerization inhibitor",1.43333333333333,0.243378991150291,0.0174503289697135,"transcriptomics, proteomics, metabolomics",3,0,"",0.176684580818349
+"sterol demethylase inhibitor",1.35333333333333,0.0665832811847939,0.0586291436870008,"transcriptomics, proteomics, metabolomics",3,0,"",0.285565558753444
+"acetylcholine receptor agonist",1.31333333333333,0.0776745346515402,0.0817710395821918,"transcriptomics, proteomics, metabolomics",3,0,"",0.287976269832936
+"protein synthesis inhibitor",1.31333333333333,0.150111069989303,0.0760879765060129,"transcriptomics, proteomics, metabolomics",3,0,"",0.285565558753444
+"PARP inhibitor",1.29666666666667,0.181475434517549,0.0671557019171678,"transcriptomics, proteomics, metabolomics",3,0,"",0.285565558753444
+"RAF inhibitor",1.28733333333333,0.518711223450325,0.0172805979005271,"transcriptomics, proteomics, metabolomics",3,0,"",0.176684580818349
+"DNA polymerase inhibitor",1.20666666666667,0.198578280114753,0.15892160326282,"transcriptomics, proteomics, metabolomics",3,0,"",0.433447304602584
+"serotonin receptor agonist",1.203,0.341214009091069,0.135379131943202,"transcriptomics, proteomics, metabolomics",3,0,"",0.421758064899977
+"topoisomerase inhibitor",1.178,0.532326967192157,0.0775610159577255,"transcriptomics, proteomics, metabolomics",3,0,"",0.285565558753444
+"ATPase inhibitor",1.17666666666667,0.228108161479008,0.21362467604965,"transcriptomics, proteomics, metabolomics",3,0,"",0.500845418127828
+"DNA synthesis inhibitor",1.17033333333333,0.295398600764007,0.182965639853951,"transcriptomics, proteomics, metabolomics",3,0,"",0.463131775880312
+"growth factor receptor inhibitor",1.16666666666667,0.240069434400411,0.210093890642291,"transcriptomics, proteomics, metabolomics",3,0,"",0.500845418127828
+"AP inhibitor",1.13266666666667,0.190161335011441,0.308401804743253,"transcriptomics, proteomics, metabolomics",3,0,"",0.624513654605088
+"androgen receptor antagonist",1.084,0.326827171453048,0.266823887159565,"transcriptomics, proteomics, metabolomics",3,0,"",0.584127969187156
+"DNA inhibitor",1.08366666666667,0.190500218722534,0.352669787379634,"transcriptomics, proteomics, metabolomics",3,0,"",0.6382960627833
+"serotonin receptor antagonist",1.04566666666667,0.340288603002412,0.373247133137964,"transcriptomics, proteomics, metabolomics",3,0,"",0.6382960627833
+"CC chemokine receptor antagonist",1.04066666666667,0.364117197250189,0.326759399681463,"transcriptomics, proteomics, metabolomics",3,0,"",0.630178842242821
+"opioid receptor agonist",1.02533333333333,0.306496873284759,0.416660861555529,"transcriptomics, proteomics, metabolomics",3,0,"",0.649029418961496
+"bromodomain inhibitor",1.00833333333333,0.388469217999745,0.428500966234831,"transcriptomics, proteomics, metabolomics",3,0,"",0.650446257698751
+"NFkB pathway inhibitor",1.00066666666667,0.383198816977993,0.481197439749004,"transcriptomics, proteomics, metabolomics",3,0,"",0.696017725351238
+"DNA alkylating agent",0.995,0.427287959109545,0.413736273268339,"transcriptomics, proteomics, metabolomics",3,0,"",0.649029418961496
+"sodium channel blocker",0.99,0.293087017795057,0.530258958675574,"transcriptomics, proteomics, metabolomics",3,0,"",0.715849594212025
+"JAK inhibitor",0.982666666666667,0.281569411217436,0.515549734111053,"transcriptomics, proteomics, metabolomics",3,0,"",0.707788618016869
+"adrenergic receptor antagonist",0.943666666666667,0.253653963764285,0.635559049668344,"transcriptomics, proteomics, metabolomics",3,0,"",0.804379422236497
+"proteasome inhibitor",0.933,0.317472833483434,0.55999947357726,"transcriptomics, proteomics, metabolomics",3,0,"",0.743605858356689
+"thymidylate synthase inhibitor",0.932,1.35350360176839,0.00504301077744804,"transcriptomics, proteomics, metabolomics",3,1,"transcriptomics",0.0816967745946582
+"progesterone receptor agonist",0.927,0.367990489007529,0.577506824057817,"transcriptomics, proteomics, metabolomics",3,0,"",0.754484721752954
+"CDK inhibitor",0.844,0.229338178243397,0.82757167059327,"transcriptomics, proteomics, metabolomics",3,0,"",0.957618647400784
+"bacterial DNA gyrase inhibitor",0.825333333333333,0.136030633804792,0.871854599105644,"transcriptomics, proteomics, metabolomics",3,0,"",0.960215940522541
+"dopamine receptor antagonist",0.791666666666667,0.206863078709888,0.90542642677809,"transcriptomics, proteomics, metabolomics",3,0,"",0.960215940522541
+"calcium channel blocker",0.791333333333333,0.118542538075297,0.91960259226323,"transcriptomics, proteomics, metabolomics",3,0,"",0.960215940522541
+"mTOR inhibitor",0.776666666666667,0.348495815374207,0.843673863270491,"transcriptomics, proteomics, metabolomics",3,0,"",0.960215940522541
+"benzodiazepine receptor agonist",0.773333333333333,0.391604817811698,0.803897232162772,"transcriptomics, proteomics, metabolomics",3,0,"",0.957583467723302
+"ribonucleotide reductase inhibitor",0.754,1.34708128930663,0.0447670838966327,"transcriptomics, proteomics, metabolomics",3,0,"",0.285565558753444
+"FLT3 inhibitor",0.714,1.26068552779827,0.0976371875375639,"transcriptomics, proteomics, metabolomics",3,0,"",0.329525507939278
+"cyclooxygenase inhibitor",0.641,0.115169440391104,0.992617654193712,"transcriptomics, proteomics, metabolomics",3,0,"",0.999803459608076
+"potassium channel blocker",0.588,1.16604116565411,0.31915113756098,"transcriptomics, proteomics, metabolomics",3,0,"",0.630178842242821
+"cytochrome P450 inhibitor",0.524,1.11214567391147,0.439817458216868,"transcriptomics, proteomics, metabolomics",3,0,"",0.650446257698751
+"antioxidant",0.502333333333333,1.22673401083256,0.304049914810119,"transcriptomics, proteomics, metabolomics",3,0,"",0.624513654605088
+"estrogen receptor antagonist",0.448,1.20522155639534,0.363876963065475,"transcriptomics, proteomics, metabolomics",3,0,"",0.6382960627833
+"phosphodiesterase inhibitor",0.433666666666667,1.17381443735087,0.441661039178165,"transcriptomics, proteomics, metabolomics",3,0,"",0.650446257698751
+"phosphatase inhibitor",0.429,1.23833073126689,0.378843242790434,"transcriptomics, proteomics, metabolomics",3,0,"",0.6382960627833
+"Bcr.Abl kinase inhibitor",0.396666666666667,1.58774473179203,0.0560128267928313,"transcriptomics, proteomics, metabolomics",3,0,"",0.285565558753444
+"HCV inhibitor",0.393333333333333,1.45822952011449,0.147756426724638,"transcriptomics, proteomics, metabolomics",3,0,"",0.427438234453418
+"glucocorticoid receptor agonist",0.358333333333333,0.880274010370256,0.818696675196103,"transcriptomics, proteomics, metabolomics",3,0,"",0.957618647400784
+"PDGFR tyrosine kinase receptor inhibitor",0.356666666666667,1.33087690389958,0.288989252911853,"transcriptomics, proteomics, metabolomics",3,0,"",0.616003407522634
+"KIT inhibitor",0.355,1.13449327895761,0.596152318363481,"transcriptomics, proteomics, metabolomics",3,0,"",0.766481552181618
+"PPAR receptor agonist",0.35,1.38924439894498,0.22404306515654,"transcriptomics, proteomics, metabolomics",3,0,"",0.504096896602216
+"Abl kinase inhibitor",0.349666666666667,1.38335112438359,0.160536038741698,"transcriptomics, proteomics, metabolomics",3,0,"",0.433447304602584
+"BCL inhibitor",0.336666666666667,1.62102848011173,0.0464684208790804,"transcriptomics, proteomics, metabolomics",3,0,"",0.285565558753444
+"FGFR inhibitor",0.3,1.58489747302467,0.102965841375668,"transcriptomics, proteomics, metabolomics",3,0,"",0.333609326057164
+"acetylcholine receptor antagonist",0.294333333333333,0.921609642600018,0.906789128471235,"transcriptomics, proteomics, metabolomics",3,0,"",0.960215940522541
+"bacterial 50S ribosomal subunit inhibitor",0.292333333333333,1.24249600938326,0.490803034982237,"transcriptomics, proteomics, metabolomics",3,0,"",0.697456944448443
+"histamine receptor antagonist",0.203,0.967905470591008,0.873078493466175,"transcriptomics, proteomics, metabolomics",3,0,"",0.960215940522541
+"glycogen synthase kinase inhibitor",0.145333333333333,0.943390339855849,0.918407696496075,"transcriptomics, proteomics, metabolomics",3,0,"",0.960215940522541
+"adrenergic receptor agonist",-0.19,0.620684299785326,0.999803459608076,"transcriptomics, proteomics, metabolomics",3,0,"",0.999803459608076
+"glutamate receptor antagonist",-0.200666666666667,1.2942106989719,0.337763993998668,"transcriptomics, proteomics, metabolomics",3,0,"",0.636253104974234
+"HSP inhibitor",-0.207333333333333,1.07157376476533,0.76820724450362,"transcriptomics, proteomics, metabolomics",3,0,"",0.957304412381435
+"MET inhibitor",-0.235666666666667,1.54887518326472,0.0635837147966158,"transcriptomics, proteomics, metabolomics",3,1,"metabolomics",0.285565558753444
+"estrogen receptor agonist",-0.246666666666667,0.902130995661569,0.924652387169855,"transcriptomics, proteomics, metabolomics",3,0,"",0.960215940522541
+"PI3K inhibitor",-0.249333333333333,0.811833932115019,0.970994407747962,"transcriptomics, proteomics, metabolomics",3,0,"",0.995576544652974
+"DNA methyltransferase inhibitor",-0.353333333333333,1.22414596079607,0.394009915298334,"transcriptomics, proteomics, metabolomics",3,0,"",0.6382960627833
+"p38 MAPK inhibitor",-0.404,1.63115541871399,0.0656656912525568,"transcriptomics, proteomics, metabolomics",3,1,"proteomics",0.285565558753444
+"RET tyrosine kinase inhibitor",-0.441666666666667,1.24382809637559,0.356406295822533,"transcriptomics, proteomics, metabolomics",3,0,"",0.6382960627833
+"retinoid receptor agonist",-0.444,1.36105400333712,0.216414686845358,"transcriptomics, proteomics, metabolomics",3,0,"",0.500845418127828
+"VEGFR inhibitor",-0.459666666666667,0.870545997253065,0.787248929107976,"transcriptomics, proteomics, metabolomics",3,0,"",0.957583467723302
+"ALK tyrosine kinase receptor inhibitor",-0.503,1.15683490611236,0.391697866815001,"transcriptomics, proteomics, metabolomics",3,0,"",0.6382960627833
+"TGF beta receptor inhibitor",-0.576666666666667,1.66452195339483,0.029594121219828,"transcriptomics, proteomics, metabolomics",3,1,"proteomics",0.239712381880607
+"tyrosine kinase inhibitor",-0.818,0.229540846038347,0.801612856650322,"transcriptomics, proteomics, metabolomics",3,0,"",0.957583467723302
+"protein tyrosine kinase inhibitor",-0.950666666666667,1.36255691012645,0.0204311970211077,"transcriptomics, proteomics, metabolomics",3,2,"transcriptomics, proteomics",0.183880773189969
+"MEK inhibitor",-1.01133333333333,0.12901679477236,0.513081914469135,"transcriptomics, proteomics, metabolomics",3,0,"",0.707788618016869
+"HDAC inhibitor",-1.06733333333333,0.615013278989432,0.170041860108312,"transcriptomics, proteomics, metabolomics",3,0,"",0.444302924799137
+"CHK inhibitor",-1.21,0.454312667664022,0.142988393629169,"transcriptomics, proteomics, metabolomics",3,0,"",0.427438234453418
+"adenosine receptor antagonist",-1.29733333333333,0.411681106359441,0.0722321335955761,"transcriptomics, proteomics, metabolomics",3,0,"",0.285565558753444
+"AKT inhibitor",-1.33566666666667,0.538596633236166,0.049627452949737,"transcriptomics, proteomics, metabolomics",3,1,"transcriptomics",0.285565558753444
+"src inhibitor",-1.38,0.223383079036887,0.0585321359439333,"transcriptomics, proteomics, metabolomics",3,0,"",0.285565558753444
+"vitamin D receptor agonist",-2.08333333333333,0.410406302745625,NA,"transcriptomics, proteomics, metabolomics",3,2,"transcriptomics, proteomics",NA
+"EGFR inhibitor",-2.11333333333333,0.316596483450675,NA,"transcriptomics, proteomics, metabolomics",3,2,"transcriptomics, proteomics",NA

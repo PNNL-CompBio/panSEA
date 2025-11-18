@@ -1,7 +1,7 @@
 mDMEA_gene_corr <- function(gmt = "PRISM",
                   expression = as.list(rep("L1000", length(types))),
                   weights, types, value = "Perturbation",
-                  sample.names = "Drug",
+                  sample.names = colnames(expression[[1]])[1],
                   feature.names = rep("Gene", length(types)),
                   rank.metric = rep("Pearson.est", length(types)), p = 0.05,
                   FDR = 0.25, num.permutations = 1000, stat.type = "Weighted",
@@ -12,9 +12,25 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
                   scatter.plot.type = "pearson", FDR.scatter.plots = 0.05,
                   xlab = "Expression", ylab = value, 
                   position.x = "min", position.y = "min", se = TRUE, 
-                  n.dot.sets = 10, ties = FALSE) {
+                  n.dot.sets = 10) {
   #### Step 1. Load data if necessary ####
-  # get gmt and expression if PRISM/L1000
+  # get drug.sensitivity, gmt, and expression if PRISM/CCLE
+  if (is.character(drug.sensitivity)) {
+    if (drug.sensitivity == "PRISM") {
+      message("Loading PRISM drug sensitivity AUC scores")
+      drug.sensitivity <- read.csv(file = paste0(
+        "https://raw.github.com/BelindaBGarana/",
+        "DMEA/shiny-app/Inputs/PRISM_drug_mean_AUC_6-23-21.csv"
+      )) # 481 cell lines
+      drug.sensitivity$X <- NULL
+    } else {
+      stop(paste(
+        "drug.sensitivity must be either 'PRISM' or data frame per",
+        "documentation"
+      ))
+    }
+  }
+
   if (is.character(gmt)) {
     if (gmt == "PRISM") {
       message("Loading PRISM drug mechanism of action annotations")
@@ -29,60 +45,32 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
     }
   }
 
-  if ("L1000" %in% expression) {
-    message("Loading L1000")
-    # source: https://github.com/PNNL-CompBio/coderdata/blob/main/build/lincs/05-LINCS_perturbations.R
-    # identify URLs
-    #basename="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE101406"
-    L1000 <- 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE101nnn/GSE101406/suppl/GSE101406%5FBroad%5FLINCS%5FL1000%5FLevel4%5FZSPCINF%5Fmlr12k%5Fn1667x12328.gctx.gz'
-    L1000.genes <- 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE101nnn/GSE101406/suppl/GSE101406%5FBroad%5FLINCS%5FL1000%5Fgene%5Finfo.txt.gz'
-    L1000.inst <- 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE101nnn/GSE101406/suppl/GSE101406%5FBroad%5FLINCS%5FL1000%5Finst%5Finfo.txt.gz'
-    
-    # download source sample & perturbation info
-    L1000.genes.info <- readr::read_delim(L1000.genes, "\t") # pr_gene_symbol, pr_gene_id
-    L1000.inst.info <- readr::read_delim(L1000.inst, "\t") # pert_iname; pert_type = "trt_cp" if drug, "ctl_vehicle" if DMSO; cell_id
-    L1000.inst.info <- L1000.inst.info[L1000.inst.info$pert_type == "trt_cp", ] # only keep drug treatments (remove DMSO controls)
-    
-    # download L1000 data
-    if (file.exists("L1000.gctx")) {
-      L1000.df <- cmapR::parse_gctx("L1000.gctx")
-    } else {
-      res<-download.file(L1000,'L1000.gctx.gz', mode="wb")
-      L1000.df<-cmapR::parse_gctx(R.utils::gunzip("L1000.gctx.gz")) 
-    }
-    
-    # put data into long format
-    L1000.long <- cmapR::melt_gct(L1000.df)
-    colnames(L1000.long) <- c("inst_id", "pr_gene_id", "data_value")
-    L1000.long$pr_gene_id <- as.numeric(L1000.long$pr_gene_id)
-    
-    # join with L1000.gene.info based on pr_gene_id;
-    # L1000.inst.info based on inst_id;
-    # keep only cell_id, pert_type, pert_iname, gene_symbol, data_value
-    L1000.full <- L1000.long |>
-      dplyr::left_join(L1000.genes.info) |>
-      dplyr::left_join(L1000.inst.info) |>
-      dplyr::select(cell_id,pert_type,pert_iname,pr_gene_symbol,data_value)|>
-      dplyr::distinct()
-    L1000.long <- NULL # save space
-    
-    # add relevant columns
-    L1000.full <- na.omit(L1000.full)
-    colnames(L1000.full)[1] <- "other_names" # match samples column name
-    colnames(L1000.full)[4] <- "gene_symbol" # match genes column name
-    colnames(L1000.full)[3] <- "chem_name"
-    L1000.full$data_type <- "transcriptomics"
-    L1000.full$source <- "Broad"
-    L1000.full$study <- "LINCS"
-    L1000.full$perturbation_type <- "drug" # all entries have pert_type="trt_cp"
+  if ("adherent CCLE" %in% expression) {
+    message("Loading adherent CCLE RNA-seq data version 19Q4")
+    download.file(
+      paste0(
+        "https://raw.github.com/BelindaBGarana/DMEA/shiny-app/Inputs/",
+        "Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_1-200.Rbin"
+      ),
+      destfile =
+        "Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_1-200.Rbin"
+    )
+    load("Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_1-200.Rbin")
 
-    # aggregate across cell types
-    L1000.full <- reshape2::dcast(L1000.full, gene_symbol ~ chem_name, 
-                                  value.var = "data_value", fun.aggregate = mean)
-    colnames(L1000.full)[1] <- feature.names[1]
+    download.file(
+      paste0(
+        "https://raw.github.com/BelindaBGarana/DMEA/shiny-app/Inputs/",
+        "Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_201-327.Rbin"
+      ),
+      destfile =
+        "Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_201-327.Rbin"
+    )
+    load("Normalized_adherent_CCLE_RNAseq_19Q4_samples_in_PRISM_201-327.Rbin")
 
-    for (i in which(expression == "L1000")) {
-      expression[[i]] <- L1000.full
+    RNA.df <- rbind(RNA.first200, RNA.rest)
+
+    for (i in which(expression == "adherent CCLE")) {
+      expression[[i]] <- RNA.df
     }
   }
 
@@ -91,13 +79,28 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
     stop("Length of types vector must match that of weights list")
   }
 
+  # check that sample names are in drug.sensitivity data frame
+  if (!(sample.names %in% names(drug.sensitivity))) {
+    stop(paste("sample.names must match across drug.sensitivity and", 
+               "expression data frames"))
+  }
+
+  # check that sample names are in expression data frames
+  for (i in 1:length(types)) {
+    if (!(sample.names %in% names(expression[[i]]))) {
+      stop(paste("sample.names must match across drug.sensitivity and", 
+                 "expression data frames"))
+    }
+  }
+
   #### Step 2. Perform DMEA on each omics type ####
   DMEA.list <- list()
   for (i in 1:length(types)) {
     message(paste("Running DMEA using", types[i], "data"))
 
     DMEA.list[[types[i]]] <- panSEA::DMEA_gene_corr(
-      gmt, expression[[i]], weights[[i]], value, sample.names,
+      drug.sensitivity, gmt, expression[[i]],
+      weights[[i]], value, sample.names,
       feature.names[i], colnames(weights[[i]])[2],
       rank.metric[i], FDR, num.permutations,
       stat.type, drug.info, drug, set.type,
@@ -105,7 +108,7 @@ mDMEA_gene_corr <- function(gmt = "PRISM",
       descriptions, min.per.corr,
       scatter.plots, scatter.plot.type,
       FDR.scatter.plots, xlab, ylab,
-      position.x, position.y, se, ties
+      position.x, position.y, se
     )
 
     # merge correlation results with drug annotations if !is.null(drug.info)

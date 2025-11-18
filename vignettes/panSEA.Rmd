@@ -26,6 +26,9 @@ data which corresponds to the input omics data type or use the default CCLE
 RNA-seq data (version 19Q4) and PRISM drug screen of 327 adherent cancer cell 
 lines.
 
+# Citation
+To cite this package, please use:
+Garana, B.B., Joly, J.H., Delfarah, A. et al. Drug mechanism enrichment analysis improves prioritization of therapeutics for repurposing. BMC Bioinformatics 24, 215 (2023). https://doi.org/10.1186/s12859-023-05343-8
 
 # Installation
 To install this package directly from GitHub, start R and enter:
@@ -34,7 +37,7 @@ if (!require("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
 
-devtools::install_github("PNNL-CompBio/panSEA")
+devtools::install_github("BelindaBGarana/panSEA")
 ```
 
 If you are using Windows OS, you may need to change the code above to:
@@ -43,7 +46,7 @@ if (!require("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
 
-devtools::install_github("PNNL-CompBio/panSEA", build = FALSE)
+devtools::install_github("BelindaBGarana/panSEA", build = FALSE)
 ```
 
 # Case 1: 2 Groups (e.g., Diseased vs. Healthy)
@@ -160,10 +163,7 @@ If you were using real transcriptomic data, you could use the default
 gmt.genes or adjust it to query the MSigDB; you could also use the default 
 gmt.drugs, drug.sensitivity, and expression to query adherent CCLE RNA-seq data 
 (version 19Q4) and the PRISM drug screen
-
-__THIS DOESNT WORK__
-
-```{r, eval=FALSE}
+```{r}
 panSEA.2groups <- panSEA::panSEA(data.list, types, gmt.features = gmt.features, 
                                  gmt.drugs = gmt.drugs, 
                                  drug.sensitivity = drug.sensitivity, 
@@ -197,8 +197,7 @@ paste0("https://raw.githubusercontent.com/BelindaBGarana/",
 ```
 
 2. Run panSEA and examine enrichment results visually
-__Also doesn't work.__
-```{r, eval=FALSE}
+```{r}
 panSEA.1group <- panSEA::panSEA(data.list, types, 
 group.names = "Sensitive_vs_resistant_to_EGFRi", group.samples = list(2))
 

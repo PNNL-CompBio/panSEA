@@ -13,7 +13,7 @@ DMEA_cell_corr <- function(drug.sensitivity, gmt = NULL, expression, weights,
                            FDR.scatter.plots = 0.05,
                            xlab = "Expression Correlation Estimate", 
                            ylab = value,
-                           position.x = "min", position.y = "min", se = TRUE, ties = FALSE) {
+                           position.x = "min", position.y = "min", se = TRUE) {
   # reformat expression data frame with cell lines as column names
   rownames(expression) <- expression[ , sample.names]
   expr <- as.data.frame(t(expression))
@@ -44,11 +44,11 @@ DMEA_cell_corr <- function(drug.sensitivity, gmt = NULL, expression, weights,
                                se = se)
   
   # run drugSEA
-  DMEA.results <- panSEA::drugSEA_ties(
+  DMEA.results <- DMEA::drugSEA(
     drug.corr$result, gmt, drug, rank.metric, set.type, FDR = FDR,
     num.permutations = num.permutations, stat.type = stat.type,
     min.per.set = min.per.set, sep = sep, exclusions = exclusions,
-    descriptions = descriptions, ties = ties
+    descriptions = descriptions
   )
 
   return(list(

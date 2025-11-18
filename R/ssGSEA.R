@@ -2,7 +2,7 @@ ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
                    feature.names = colnames(data)[1],
                    rank.var = colnames(data)[2], direction.adjust = NULL,
                    FDR = 0.25, num.permutations = 1000,
-                   stat.type = "Weighted", min.per.set = 6) {
+                   stat.type = "Weighted", min.per.set = 6, ties = FALSE) {
   # get gmt if not provided
   if (is.character(gmt)) {
     if (grepl("msigdb", gmt, ignore.case = TRUE)) {
@@ -32,14 +32,17 @@ ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
   }
 
   # run ssGSEA
-  results <- DMEA::drugSEA(
+  results <- panSEA::drugSEA_ties(
     data, gmt, feature.names, rank.var,
     "gs_name", direction.adjust, FDR,
-    num.permutations, stat.type, min.per.set
+    num.permutations, stat.type, min.per.set, ties = ties
   )
 
   # change "Drug_set" column names to "Feature_set"
   colnames(results$result)[2] <- "Feature_set"
+  if (ties) {
+    colnames(results$result.w.ties)[2] <- "Feature_set" 
+  }
   colnames(results$removed.sets)[1] <- "Feature_set"
   colnames(results$removed.sets)[2] <- "N_features"
 
@@ -47,7 +50,7 @@ ssGSEA <- function(data, gmt = "msigdb_Homo sapiens_C2_CP:KEGG",
   results$replaced.drugs <- NULL
 
   # change name of output referring to drugs to features
-  names(results)[6] <- "unannotated.features"
+  names(results)[length(results)] <- "unannotated.features"
 
   return(results)
 }

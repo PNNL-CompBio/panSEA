@@ -10,25 +10,13 @@ Authors@R: c(
 		 comment = c(ORCID = "0000-0001-8906-5270")))
 Description: Though there are many algorithms for enrichment analysis, most do not perform permutation statistics which do not rely on assumptions about the input distribution and do not allow for analysis of multiple omics data types. This tool enables users to input any omics data type as long as they provide corresponding set annotations or use the default gene set annotations. Users can also use this tool to prioritize drug mechanisms of action based on selective toxicity using drug mechanism enrichment analysis (https://belindabgarana.github.io/DMEA) as long as they provide expression data which corresponds to the input omics data type or use the default CCLE RNA-seq data (version 19Q4) and PRISM drug screen of 327 adherent cancer cell lines.
 License: MIT
-URL: https://github.com/BelindaBGarana/panSEA
-BugReports: https://github.com/BelindaBGarana/panSEA/issues
+URL: https://github.com/PNNL-CompBio/panSEA
+BugReports: https://github.com/PNNL-CompBio/panSEA/issues
 Encoding: UTF-8
+Depends: ggplot2 (>= 3.4.4)
 Imports:
 	ggplot2, DMEA, plyr, dplyr, Biobase, data.table, ggcorrplot, ggvenn, GSA, igraph, 
 	limma, metap, msigdbr, multtest, qvalue, reshape2, stats, stringr, viridis, visNetwork, utils
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
-Collate:
-	'mDEG.R'
-	'ssGSEA.R'
-	'DMEA_cell_corr.R'
-	'DMEA_gene_corr.R'
-	'compile_mDEG.R'
-	'compile_mGSEA.R'
-	'compile_mDMEA.R'
-	'mGSEA.R'
-	'mDMEA.R'
-	'mDMEA_cell_corr.R'
-	'mDMEA_gene_corr.R'
-	'netSEA.R'
-	'panSEA.R'
+RoxygenNote: 7.3.3

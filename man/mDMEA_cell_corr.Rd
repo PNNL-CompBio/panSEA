@@ -23,7 +23,7 @@ mDMEA_cell_corr(drug.sensitivity="PRISM", gmt="PRISM",
   descriptions=NULL, min.per.corr=3, scatter.plots=TRUE, 
   scatter.plot.type="pearson", FDR.scatter.plots=0.05, 
   xlab="Expression Correlation Estimate", ylab=value, position.x="min", 
-  position.y="min", se=TRUE, n.dot.sets=10)
+  position.y="min", se=TRUE, n.dot.sets=10, ties=FALSE)
 }
 
 \arguments{
@@ -158,6 +158,9 @@ mDMEA_cell_corr(drug.sensitivity="PRISM", gmt="PRISM",
   \item{n.dot.sets}{Number of sets from enrichment analyses to be represented 
   in the dot plot. The top significant sets will be selected based on 
   abs(mean_NES) and p & FDR cutoff values. Default: 10.
+  }
+  
+  \item{ties}{Logical operator describing whether or not to permute order of drugs with tied ranks. Default: FALSE.
   }
 }
 

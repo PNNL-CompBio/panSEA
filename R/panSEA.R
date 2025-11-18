@@ -17,7 +17,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                    scatter.plots = TRUE, scatter.plot.type = "pearson", 
                    drug.sensitivity = "PRISM",
                    expression = as.list(rep("adherent CCLE", length(types))),
-                   n.network.sets = 2*length(types), n.dot.sets = 10, scale = 5) {
+                   n.network.sets = 2*length(types), n.dot.sets = 10, scale = 5, ties = FALSE) {
   #### Step 1. Check if formats are correct ####
   # make sure that there are as many types as other inputs
   if (length(types) != length(gmt.features) |
@@ -77,7 +77,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
       ssGSEA.results <- panSEA::mGSEA(DEGs$all.results, gmt.features, types,
         feature.names, GSEA.rank.var, p = p, FDR = FDR, 
         num.permutations = num.permutations, stat.type = stat.type, 
-        min.per.set = min.per.set, n.dot.sets = n.dot.sets
+        min.per.set = min.per.set, n.dot.sets = n.dot.sets, ties = ties
       )
 
       # compile inputs & results for network graph
@@ -110,7 +110,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                                       min.per.set = min.per.set,
                                       scatter.plots = scatter.plots, 
                                       scatter.plot.type = scatter.plot.type,
-                                      n.dot.sets = n.dot.sets
+                                      n.dot.sets = n.dot.sets, ties = ties
         ) 
       } else if (DMEA.type == "cell_corr") {
         DMEA.results <- 
@@ -123,7 +123,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                                   min.per.set = min.per.set,
                                   scatter.plots = scatter.plots,
                                   scatter.plot.type = scatter.plot.type,
-                                  n.dot.sets = n.dot.sets
+                                  n.dot.sets = n.dot.sets, ties = ties
         ) 
       } else if (DMEA.type == "gene_corr") {
         DMEA.results <- 
@@ -136,7 +136,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                                   min.per.set = min.per.set,
                                   scatter.plots = scatter.plots,
                                   scatter.plot.type = scatter.plot.type,
-                                  n.dot.sets = n.dot.sets
+                                  n.dot.sets = n.dot.sets, ties = ties
           ) 
       }
 
@@ -191,7 +191,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                         GSEA.rank.var, p = p, FDR = FDR, 
                         num.permutations = num.permutations, 
                         stat.type = stat.type, min.per.set = min.per.set,
-                        n.dot.sets = n.dot.sets
+                        n.dot.sets = n.dot.sets, ties = ties
           )
 
         # compile inputs & outputs for network graph
@@ -225,7 +225,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                           min.per.set = min.per.set, 
                           scatter.plots = scatter.plots,
                           scatter.plot.type = scatter.plot.type, 
-                          n.dot.sets = n.dot.sets
+                          n.dot.sets = n.dot.sets, ties = ties
             ) 
         } else if (DMEA.type == "cell_corr") {
           DMEA.results[[colnames(data.list[[1]])[j]]] <-
@@ -239,7 +239,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                                     min.per.set = min.per.set, 
                                     scatter.plots = scatter.plots,
                                     scatter.plot.type = scatter.plot.type, 
-                                    n.dot.sets = n.dot.sets
+                                    n.dot.sets = n.dot.sets, ties = ties
             )
         } else if (DMEA.type == "gene_corr") {
           DMEA.results[[colnames(data.list[[1]])[j]]] <-
@@ -253,7 +253,7 @@ panSEA <- function(data.list, types, feature.names = rep("Gene", length(types)),
                                     min.per.set = min.per.set, 
                                     scatter.plots = scatter.plots,
                                     scatter.plot.type = scatter.plot.type, 
-                                    n.dot.sets = n.dot.sets
+                                    n.dot.sets = n.dot.sets, ties = ties
             )
         }
 

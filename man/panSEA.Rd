@@ -22,7 +22,7 @@ panSEA(data.list, types, feature.names = rep("Gene", length(types)),
   gmt.drugs="PRISM", GSEA=TRUE, DMEA=TRUE, DMEA.type="WV", p=0.05, FDR=0.25, 
   FDR.features=0.05, min.per.set=6, drug.sensitivity="PRISM", 
   expression=as.list(rep("adherent CCLE", length(types))), 
-  n.network.sets=2*length(types), n.dot.sets=10, scale=5)
+  n.network.sets=2*length(types), n.dot.sets=10, scale=5, ties=FALSE)
 }
 
 \arguments{
@@ -163,6 +163,9 @@ panSEA(data.list, types, feature.names = rep("Gene", length(types)),
   
   \item{scale}{Numeric value to multiply by rank.var value to size vertices on 
   network graphs for visibility. Default: 5.
+  }
+  
+  \item{ties}{Logical operator describing whether or not to permute order of genes with tied ranks. Default: FALSE.
   }
 }
 

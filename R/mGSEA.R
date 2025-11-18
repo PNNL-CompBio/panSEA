@@ -6,7 +6,7 @@ mGSEA <- function(data.list, gmt = as.list(rep(
                   rank.var = rep("Log2FC", length(types)),
                   direction.adjust = NULL, p = 0.05, FDR = 0.25,
                   num.permutations = 1000, stat.type = "Weighted", 
-                  min.per.set = 6, n.dot.sets = 10) {
+                  min.per.set = 6, n.dot.sets = 10, ties = FALSE) {
   #### Step 1. Perform ssGSEA on each omics type ####
   ssGSEA.list <- list()
   for (i in 1:length(types)) {
@@ -16,7 +16,7 @@ mGSEA <- function(data.list, gmt = as.list(rep(
       data.list[[i]],
       gmt[[i]], feature.names[i], rank.var[i],
       direction.adjust, FDR,
-      num.permutations, stat.type, min.per.set
+      num.permutations, stat.type, min.per.set, ties
     )
   }
 

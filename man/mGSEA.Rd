@@ -13,7 +13,7 @@ mGSEA(data.list, gmt=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types)
   types, feature.names=rep("Gene", length(types)), 
   rank.var=rep("Log2FC", length(types)), direction.adjust=NULL, p=0.05, 
   FDR=0.25, num.permutations=1000, stat.type="Weighted", min.per.set=6, 
-  n.dot.sets=10)
+  n.dot.sets=10, ties=FALSE)
 }
 
 \arguments{
@@ -69,6 +69,9 @@ mGSEA(data.list, gmt=as.list(rep("msigdb_Homo sapiens_C2_CP:KEGG", length(types)
   \item{n.dot.sets}{Number of sets from enrichment analyses to be represented 
   in the dot plot. The top significant sets will be selected based on 
   abs(mean_NES) and p & FDR cutoff values. Default: 10.
+  }
+  
+  \item{ties}{Logical operator describing whether or not to permute order of genes with tied ranks. Default: FALSE.
   }
 }
 

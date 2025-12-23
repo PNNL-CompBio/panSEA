@@ -48,14 +48,15 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
 
   ## create venn diagram
   # compile significant results for each type in list
-  venn.list <- list()
-  for (i in 1:length(types)) {
-    venn.list[[types[i]]] <- DMEA.df[DMEA.df$type == types[i] &
-                                       DMEA.df$sig, ]$Drug_set
-  }
+  #SG: Commenting out becuase it breaks things
+ # venn.list <- list()
+#  for (i in 1:length(types)) {
+#    venn.list[[types[i]]] <- DMEA.df[DMEA.df$type == types[i] &
+#                                       DMEA.df$sig, ]$Drug_set
+#  }
   
   # generate venn diagram
-  venn.plot <- ggvenn::ggvenn(venn.list) # only displays first 4 types
+#  venn.plot <- ggvenn::ggvenn(venn.list) # only displays first 4 types
   
   ## create dot plot
   # set theme
@@ -124,7 +125,7 @@ compile_mDMEA <- function(mDMEA.results, p = 0.05, FDR = 0.25,
     mean.results = mean.DMEA.df,
     NES.df = NES.df,
     minusLogFDR.df = minusLogFDR.df,
-    venn.diagram = venn.plot,
+    venn.diagram = NULL,##venn.plot,
     dot.plot = dot.plot,
     corr = corr.mat,
     corr.matrix = corr.mat.plot

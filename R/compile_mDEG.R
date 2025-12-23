@@ -48,14 +48,14 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR.features = 0.05,
 
   ## create venn diagram
   # compile significant results for each type in list
-  venn.list <- list()
-  for (i in 1:length(types)) {
-    venn.list[[types[i]]] <- DEG.df[DEG.df$type == types[i] &
-                                       DEG.df$sig, ]$feature
-  }
+  #venn.list <- list()
+  #for (i in 1:length(types)) {
+  #  venn.list[[types[i]]] <- DEG.df[DEG.df$type == types[i] &
+  #                                     DEG.df$sig, ]$feature
+  #}
   
   # generate venn diagram
-  venn.plot <- ggvenn::ggvenn(venn.list) # only displays first 4 types
+  #venn.plot <- ggvenn::ggvenn(venn.list) # only displays first 4 types
   
   ## create dot plot
   # set theme
@@ -124,7 +124,7 @@ compile_mDEG <- function(DEGs, p = 0.05, FDR.features = 0.05,
     mean.results = mean.DEG.df,
     Log2FC.df = Log2FC.df,
     minusLogFDR.df = minusLogFDR.df,
-    venn.diagram = venn.plot,
+    venn.diagram = NULL,#venn.plot,
     dot.plot = dot.plot,
     corr = corr.mat,
     corr.matrix = corr.mat.plot

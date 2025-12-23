@@ -53,14 +53,14 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
 
   ## create venn diagram
   # compile significant results for each type in list
-  venn.list <- list()
-  for (i in 1:length(types)) {
-    venn.list[[types[i]]] <- GSEA.df[GSEA.df$type == types[i] &
-                                       GSEA.df$sig, ]$Feature_set
-  }
+  #venn.list <- list()
+  #for (i in 1:length(types)) {
+  #  venn.list[[types[i]]] <- GSEA.df[GSEA.df$type == types[i] &
+  #                                     GSEA.df$sig, ]$Feature_set
+  #}
   
   # generate venn diagram
-  venn.plot <- ggvenn::ggvenn(venn.list) # only displays first 4 types
+  #venn.plot <- ggvenn::ggvenn(venn.list) # only displays first 4 types
   
   ## create dot plot
   # set theme
@@ -129,7 +129,7 @@ compile_mGSEA <- function(ssGSEA.list, p = 0.05, FDR = 0.25, n.dot.sets = 10) {
     mean.results = mean.GSEA.df,
     NES.df = NES.df,
     minusLogFDR.df = minusLogFDR.df,
-    venn.diagram = venn.plot,
+    venn.diagram = NULL,#venn.plot,
     dot.plot = dot.plot,
     corr = corr.mat,
     corr.matrix = corr.mat.plot

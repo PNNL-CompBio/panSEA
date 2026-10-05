@@ -16,7 +16,7 @@ Encoding: UTF-8
 Depends: ggplot2 (>= 3.4.4)
 Imports:
 	ggplot2, DMEA, plyr, dplyr, Biobase, data.table, ggcorrplot, ggvenn, GSA, igraph, 
-	limma, metap, msigdbr, multtest, qvalue, reshape2, stats, stringr, viridis, visNetwork, utils
+	limma, metap, msigdbr, qvalue, reshape2, stats, stringr, viridis, visNetwork, utils
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
 RoxygenNote: 7.3.3

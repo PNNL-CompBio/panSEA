@@ -98,6 +98,7 @@ GSEA_custom1 <- function(input.df, gmt.list,
     cores <- parallel::detectCores()
     if (cores[1] > 1) {
       cl <- snow::makeCluster(cores[1] - 1) # cluster using all but 1 core
+      parallel::clusterSetRNGStream(cl, iseed = 12340)
       doSNOW::registerDoSNOW(cl) # register cluster
     }
   }
